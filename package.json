@@ -1,0 +1,43 @@
+{
+  "name": "homebridge-mi-hygrothermograph",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for Xiaomi Mi Bluetooth Temperature and Humidity Sensor",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint ."
+  },
+  "author": "Hannes Ljungberg",
+  "license": "MIT",
+  "keywords": [
+    "homebridge-plugin",
+    "homekit",
+    "xiaomi",
+    "temperature",
+    "humidity",
+    "bluetooth"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hannseman/homebridge-mi-hygrothermograph"
+  },
+  "bugs": {
+    "url": "https://github.com/hannseman/homebridge-mi-hygrothermograph/issues"
+  },
+  "engines": {
+    "homebridge": ">=0.4.0",
+    "node": ">=6.13.0"
+  },
+  "dependencies": {
+    "binary-parser": "^1.3.2",
+    "noble": "^1.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "mocha": "^5.0.4"
+  }
+}

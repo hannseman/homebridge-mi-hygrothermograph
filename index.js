@@ -1,8 +1,6 @@
-const { MiHygrothermographAccessory } = require('./lib/accessory');
 
 module.exports = (homebridge) => {
-  global.Characteristic = homebridge.hap.Characteristic;
-  global.Service = homebridge.hap.Service;
+  const { MiHygrothermographAccessory } = require('./lib/accessory')(homebridge.hap);
   homebridge.registerAccessory(
     'homebridge-mi-hygrothermograph',
     'Hygrotermograph',

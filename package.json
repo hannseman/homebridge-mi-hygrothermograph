@@ -24,6 +24,7 @@
   "bugs": {
     "url": "https://github.com/hannseman/homebridge-mi-hygrothermograph/issues"
   },
+  "homepage": "https://github.com/hannseman/homebridge-mi-hygrothermograph#readme",
   "engines": {
     "homebridge": ">=0.4.0",
     "node": ">=6.13.0"

@@ -59,15 +59,13 @@ By using a [Bluetooth LE Sniffer](https://www.adafruit.com/product/2269) it is p
 
 Some bytes stay the same and some bytes change over time. By placing the peripheral in different temperated places it could be established that the last bytes contain the sensor data.
 
-In the first example the last two bytes `8a:01` contains the humidity data. `8a:01` as an little endian unsigned 16-bit integer is equal to `394` as in 39.4 % relative humidity. If we check the next two bytes `cc:00` they equal to `204` as in 20.4 celsius. 
+These were the observations:
 
-In the second example `84:01` equals to `388` as in 38.8 % relative humidity. No temperature could be found in this data, more on that later. 
-
-In the shortest and third example `5d` equals to `93` and this very much looks like the charge level on the battery in percent.
-
-If we start looking at the other bytes in order the next one looks like a length indicator for the following bytes with `04`, `02` and `01` as values. 
-
-The following two bytes almost always stays the same for each sized packet except for the 16 bytes sized data here they alterate between `06:10` and `04:10`. 
+* In the first example the last two bytes `8a:01` contains the humidity data. `8a:01` as an little endian unsigned 16-bit integer is equal to `394` as in 39.4 % relative humidity. If we check the next two bytes `cc:00` they equal to `204` as in 20.4 celsius. 
+* In the second example `84:01` equals to `388` as in 38.8 % relative humidity. No temperature could be found in this data, more on that later. 
+* In the shortest and third example `5d` equals to `93` and this very much looks like the charge level on the battery in percent.
+* If we start looking at the other bytes in order the next one looks like a length indicator for the following bytes with `04`, `02` and `01` as values. 
+* The following two bytes almost always stays the same for each sized packet except for the 16 bytes sized data here they alterate between `06:10` and `04:10`. 
 After some investigation it is established that these bytes indicate what type of sensor data that will follow. `06:10` will have humidity data and `04:10` will have temperature data.
 `0d:10` indicate that both humidity and temperature data will follow and `0a:10` that battery data is to be expected. 
 

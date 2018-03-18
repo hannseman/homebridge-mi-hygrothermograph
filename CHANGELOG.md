@@ -1,3 +1,5 @@
+# Changelog
+
 ## 1.0.2
 
 * Better test coverage

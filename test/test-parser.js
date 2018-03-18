@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { describe, it } = require('mocha');
+const { describe, it, xit } = require('mocha');
 const { parseServiceData } = require('../lib/parser');
 
 describe('parser', () => {

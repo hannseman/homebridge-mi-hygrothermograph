@@ -76,7 +76,7 @@ So we actually have 4 different packets that contains the sensor data:
 3. `50:20:aa:01:bf:65:ae:d0:a8:65:4c:04:10:02:cc:00`
 4. `50:20:aa:01:c0:64:ae:d0:a8:65:4c:0a:10:01:5d`
 
-After some investigation it is probable that the data of `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01` represents the following: 
+After some investigation and thanks to [node-xiaomi-gap-parser](https://github.com/LynxyssCZ/node-xiaomi-gap-parser) it is probable that the data of `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01` represents the following: 
 
 | byte  | function     | type     |
 |:-----:|--------------|----------|

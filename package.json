@@ -1,6 +1,6 @@
 {
   "name": "homebridge-mi-hygrothermograph",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Homebridge plugin for Xiaomi Mi Bluetooth Temperature and Humidity Sensor",
   "main": "index.js",
   "scripts": {

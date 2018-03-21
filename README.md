@@ -43,10 +43,33 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 ]
 ```
 
-## Limitations
-It is currently only possible to use one sensor per Homebridge process. Using multiple sensors will cause them to interfere with each other. 
-This is an limitation in the implementation and could change in the future.
+### Multiple sensors 
+When running just one Hygrotermograph accessory there is no need to specify the address of the BLE device. 
+But if you want to run multiple Hygrotermograph accessories you need to specify the BLE address for each of them. 
+If the address is not specified they will interfere with each other. 
 
+The easiest way to find the address of the device is to use `[sudo] hcitool lescan`. 
+It will start a scan for all advertising BLE peripherals within range. Look for `MJ_HT_V1` and copy the address.
+The address is in the format of `4c:64:a8:d0:ae:65`.
+
+Update your Homebridge `config.json`:
+
+```json
+"accessories": [
+    {
+      "accessory": "Hygrotermograph",
+      "name": "Room 1",
+      "address": "4c:64:a8:d0:ae:65"
+    },
+    {
+      "accessory": "Hygrotermograph",
+      "name": "Room 2",
+      "address": "2c:34:b3:d4:a1:61"
+    }
+]
+```
+
+ 
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.
 By only reading the advertisement packet there is no need to establish a connection to the peripheral.
@@ -78,16 +101,16 @@ So we actually have 4 different packets that contains the sensor data:
 
 After some investigation and thanks to [node-xiaomi-gap-parser](https://github.com/LynxyssCZ/node-xiaomi-gap-parser) it is probable that the data of `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01` represents the following: 
 
-| byte  | function     | type     |
-|:-----:|--------------|----------|
-| 1-2   | Flags?       | bits?    |
-| 3-4   | ID           | uint16LE |
-| 5     | Index        | uint8LE  |
-| 6-10  | MAC-address  | string   |
-| 11    | Flags?       | bits?    |
-| 12-13 | Type of data | uint16LE |
-| 14    | Length       | uint8LE  |
-| 15-16 | Temperature  | uint16LE |
-| 17-18 | Humidity     | uint16LE |
+| byte  | function      | type      |
+|:-----:|---------------|-----------|
+| 1-2   | Frame control | bit field |
+| 3-4   | ID            | uint16LE  |
+| 5     | Index         | uint8LE   |
+| 6-10  | MAC-address   | string    |
+| 11    | Capabilities  | bit field |
+| 12-13 | Type of data  | uint16LE  |
+| 14    | Length        | uint8LE   |
+| 15-16 | Temperature   | uint16LE  |
+| 17-18 | Humidity      | uint16LE  |
 
 Bytes 1-14 have the same function for all 4 variations but the following bytes contain different sensor data.

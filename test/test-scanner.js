@@ -32,7 +32,7 @@ describe('parser', () => {
     this.scanner.on('temperatureChange', eventSpy);
     const peripheral = getPeripheral(temperatureEvent);
     noble.emit('discover', peripheral);
-    assert(eventSpy.calledWith(21.7, peripheral.id));
+    assert(eventSpy.calledWith(21.7));
   });
 
   it('should discover humidity event', () => {
@@ -40,7 +40,7 @@ describe('parser', () => {
     this.scanner.on('humidityChange', eventSpy);
     const peripheral = getPeripheral(humidityEvent);
     noble.emit('discover', peripheral);
-    assert(eventSpy.calledWith(34.9, peripheral.id));
+    assert(eventSpy.calledWith(34.9));
   });
 
   it('should discover humidity & temperature event', () => {
@@ -50,8 +50,8 @@ describe('parser', () => {
     this.scanner.on('temperatureChange', temperatureEventSpy);
     const peripheral = getPeripheral(humidityAndTemperatureEvent);
     noble.emit('discover', peripheral);
-    assert(temperatureEventSpy.calledWith(21.7, peripheral.id));
-    assert(humidityEventSpy.calledWith(35.2, peripheral.id));
+    assert(temperatureEventSpy.calledWith(21.7));
+    assert(humidityEventSpy.calledWith(35.2));
   });
 
   it('should discover battery event', () => {
@@ -59,6 +59,6 @@ describe('parser', () => {
     this.scanner.on('batteryChange', eventSpy);
     const peripheral = getPeripheral(batteryEvent);
     noble.emit('discover', peripheral);
-    assert(eventSpy.calledWith(93, peripheral.id));
+    assert(eventSpy.calledWith(93));
   });
 });

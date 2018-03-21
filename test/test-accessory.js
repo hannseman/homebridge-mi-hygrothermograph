@@ -53,24 +53,24 @@ describe('accessory', () => {
 
   it('should update current temperature', () => {
     const accessory = new this.MiHygrothermographAccessory(this.mockLogger, {});
-    accessory.scanner.emit('temperatureChange', 20.5);
+    accessory.scanner.emit('temperatureChange', 20.5, { address: '123', id: '123' });
     assert.equal(accessory.currentTemperature, 20.5);
-    accessory.scanner.emit('temperatureChange', 25.5, 123);
+    accessory.scanner.emit('temperatureChange', 25.5, { address: '123', id: '123' });
     assert.equal(accessory.currentTemperature, 25.5);
   });
   it('should update current humidity', () => {
     const accessory = new this.MiHygrothermographAccessory(this.mockLogger, {});
-    accessory.scanner.emit('humidityChange', 30.5);
+    accessory.scanner.emit('humidityChange', 30.5, { address: '123', id: '123' });
     assert.equal(accessory.currentHumidity, 30.5);
-    accessory.scanner.emit('humidityChange', 35.5, 123);
+    accessory.scanner.emit('humidityChange', 35.5, { address: '123', id: '123' });
     assert.equal(accessory.currentHumidity, 35.5);
   });
 
   it('should update current battery level', () => {
     const accessory = new this.MiHygrothermographAccessory(this.mockLogger, {});
-    accessory.scanner.emit('batteryChange', 90);
+    accessory.scanner.emit('batteryChange', 90, { address: '123', id: '123' });
     assert.equal(accessory.currentBatteryLevel, 90);
-    accessory.scanner.emit('batteryChange', 15, 123);
+    accessory.scanner.emit('batteryChange', 15, { address: '123', id: '123' });
     assert.equal(accessory.currentBatteryLevel, 15);
   });
 });

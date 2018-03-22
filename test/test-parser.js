@@ -104,8 +104,13 @@ describe('parser', () => {
     assert.equal(result.event.battery, 93);
   });
 
-  it('should parse fail on ', () => {
+  it('should parse fail on too short', () => {
     const buffer = Buffer.from('5020', 'hex');
     assert.throws(() => new Parser(buffer), Error);
+  });
+
+  it('should parse fail on invalid eventtype', () => {
+    const buffer = Buffer.from('5020aa014e64aed0a8654c0a11015d', 'hex');
+    assert.throws(() => new Parser(buffer).parse(), Error);
   });
 });

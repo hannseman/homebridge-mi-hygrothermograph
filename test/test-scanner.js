@@ -4,14 +4,14 @@ const noble = require('noble');
 const sinon = require('sinon');
 const { Scanner } = require('../lib/scanner');
 
-const getPeripheral = event => ({
+const getPeripheral = (event, address = '4c:65:a8:d0:ae:64', uuid = 'fe95') => ({
   id: '4c65a8d0ae65',
-  address: '4c:65:a8:d0:ae:64',
+  address,
   rssi: -67,
   advertisement: {
     localName: 'MJ_HT_V1',
     serviceData: [{
-      uuid: 'fe95',
+      uuid,
       data: event,
     }],
   },
@@ -23,8 +23,11 @@ const batteryEvent = Buffer.from('5020aa014e65aed0a8654c0a10015d', 'hex');
 
 describe('parser', () => {
   beforeEach(() => {
-    const dummyLogger = { debug() { } };
-    this.scanner = new Scanner(dummyLogger);
+    this.dummyLogger = {
+      debug() {
+      },
+    };
+    this.scanner = new Scanner(this.dummyLogger);
   });
 
   it('should discover temperature event', () => {
@@ -60,5 +63,43 @@ describe('parser', () => {
     const peripheral = getPeripheral(batteryEvent);
     noble.emit('discover', peripheral);
     assert(eventSpy.calledWith(93));
+  });
+
+  it('should not discover all peripherals with defined address', () => {
+    const eventSpy = sinon.spy();
+    const wrongPeripheral = getPeripheral(temperatureEvent, 'cdb');
+    const correctPeripheral = getPeripheral(temperatureEvent, 'abc');
+    const scanner = new Scanner(this.dummyLogger, 'abc');
+    scanner.on('temperatureChange', eventSpy);
+    noble.emit('discover', wrongPeripheral);
+    assert(eventSpy.notCalled);
+    noble.emit('discover', correctPeripheral);
+    assert(eventSpy.calledWith(21.7));
+  });
+
+  it('should discard wrongs uuids', () => {
+    const eventSpy = sinon.spy();
+    this.scanner.on('temperatureChange', eventSpy);
+    const peripheral = getPeripheral(temperatureEvent, '123', 'deadbeef');
+    noble.emit('discover', peripheral);
+    assert(eventSpy.notCalled);
+  });
+
+  it('should handle parse errors', () => {
+    const eventSpy = sinon.spy();
+    this.scanner.on('temperatureChange', eventSpy);
+    const peripheral = getPeripheral(Buffer.from('deadbeefed', 'hex'));
+    assert.throws(() => noble.emit('discover', peripheral));
+  });
+
+  it('should start scanning', () => {
+    const startScanningStub = sinon.stub(noble, 'startScanning');
+    const stopScanningStub = sinon.stub(noble, 'stopScanning');
+
+    this.scanner.start();
+    noble.emit('stateChange', 'poweredOn');
+    assert(startScanningStub.called);
+    noble.emit('stateChange', 'poweredOff');
+    assert(stopScanningStub.called);
   });
 });

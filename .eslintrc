@@ -1,5 +1,5 @@
 {
-  "extends": "eslint-config-airbnb",
+  "extends": "airbnb-base",
   "rules": {
     "class-methods-use-this": "off"
   }

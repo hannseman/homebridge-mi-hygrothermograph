@@ -9,7 +9,6 @@ class CharacteristicMock extends EventEmitter {
     super();
     this.BATTERY_LEVEL_NORMAL = 1;
     this.BATTERY_LEVEL_LOW = 0;
-
   }
   setProps() { return this; }
   updateValue() { return this; }
@@ -142,5 +141,4 @@ describe('accessory', () => {
     const services = accessory.getServices();
     assert(services.length, 4);
   });
-  
 });

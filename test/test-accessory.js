@@ -1,6 +1,7 @@
 const assert = require('assert');
 const EventEmitter = require('events');
 const proxyquire = require('proxyquire');
+const sinon = require('sinon');
 const { describe, it, beforeEach } = require('mocha');
 
 class CharacteristicMock {
@@ -20,7 +21,7 @@ class ScannerMock extends EventEmitter {
 
 describe('accessory', () => {
   beforeEach(() => {
-    this.mockLogger = { debug() { } };
+    this.mockLogger = { debug() { }, error() { } };
 
     proxyquire('../lib/accessory', {
       './scanner': {
@@ -70,7 +71,14 @@ describe('accessory', () => {
     const accessory = new this.MiHygrothermographAccessory(this.mockLogger, {});
     accessory.scanner.emit('batteryChange', 90, { address: '123', id: '123' });
     assert.equal(accessory.currentBatteryLevel, 90);
-    accessory.scanner.emit('batteryChange', 15, { address: '123', id: '123' });
-    assert.equal(accessory.currentBatteryLevel, 15);
+    accessory.scanner.emit('batteryChange', 9, { address: '123', id: '123' });
+    assert.equal(accessory.currentBatteryLevel, 9);
+  });
+
+  it('should receive error', () => {
+    const spyLogger = sinon.spy(this.mockLogger, 'error');
+    const accessory = new this.MiHygrothermographAccessory(this.mockLogger, {});
+    accessory.scanner.emit('error', new Error('error'));
+    assert(spyLogger.called);
   });
 });

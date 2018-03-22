@@ -73,7 +73,7 @@ Update your Homebridge `config.json`:
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.
 By only reading the advertisement packet there is no need to establish a connection to the peripheral.
-Inside the each packet discovered we look for Service Data with a UUID of `0xfe95`. If found we start trying to parse the actual Service Data to find the temperature and humidity.
+Inside each packet discovered we look for Service Data with a UUID of `0xfe95`. If found we start trying to parse the actual Service Data to find the temperature and humidity.
 
 By using a [Bluetooth LE Sniffer](https://www.adafruit.com/product/2269) it is possible to see that the peripheral advertises 3 different sized Service Data: 
 1. `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01`

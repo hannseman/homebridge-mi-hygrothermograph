@@ -119,4 +119,10 @@ describe('accessory', () => {
     const services = accessory.getServices();
     assert(services.length, 4);
   });
+
+  it('should set address config', () => {
+    const config = { address: 'deadbeef' };
+    const accessory = new this.MiHygrothermographAccessory(mockLogger, config);
+    assert.deepEqual(config, accessory.config);
+  });
 });

@@ -4,7 +4,7 @@
   "description": "Homebridge plugin for Xiaomi Mi Bluetooth Temperature and Humidity Sensor",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --exit",
+    "test": "mocha",
     "lint": "eslint ."
   },
   "author": "Hannes Ljungberg",

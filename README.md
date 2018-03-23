@@ -1,5 +1,5 @@
 # homebridge-mi-hygrothermograph
-[![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Build Status](https://travis-ci.org/hannseman/homebridge-mi-hygrothermograph.svg?branch=master)](https://travis-ci.org/hannseman/homebridge-mi-hygrothermograph)
+[![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Build Status](https://travis-ci.org/hannseman/homebridge-mi-hygrothermograph.svg?branch=master)](https://travis-ci.org/hannseman/homebridge-mi-hygrothermograph) [![Coverage Status](https://coveralls.io/repos/github/hannseman/homebridge-mi-hygrothermograph/badge.svg?branch=master)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
 [Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory.
 

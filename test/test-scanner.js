@@ -1,5 +1,7 @@
 const assert = require('assert');
-const { describe, it, beforeEach } = require('mocha');
+const {
+  describe, it, beforeEach, xit,
+} = require('mocha');
 const noble = require('noble');
 const sinon = require('sinon');
 const { Scanner } = require('../lib/scanner');
@@ -92,7 +94,7 @@ describe('parser', () => {
     assert.throws(() => noble.emit('discover', peripheral));
   });
 
-  it('should start scanning', () => {
+  xit('should start scanning', () => {
     const startScanningStub = sinon.stub(noble, 'startScanning');
     const stopScanningStub = sinon.stub(noble, 'stopScanning');
 

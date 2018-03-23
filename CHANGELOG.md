@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+* Expose Low Battery Characteristic.
+* Better test coverage.
+
 ## 1.1.0
 
 * Support multiple sensors by specifying BLE addresses.

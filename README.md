@@ -84,7 +84,7 @@ Some bytes stay the same and some bytes change over time. By placing the periphe
 
 These were the observations:
 
-* In the first example the last two bytes `8a:01` contains the humidity data. `8a:01` as an little endian unsigned 16-bit integer is equal to `394` as in 39.4 % relative humidity. If we check the next two bytes `cc:00` they equal to `204` as in 20.4 celsius. 
+* In the first example the last two bytes `8a:01` contains the humidity data. `8a:01` as an little endian 16-bit integer is equal to `394` as in 39.4 % relative humidity. If we check the next two bytes `cc:00` they equal to `204` as in 20.4 celsius. 
 * In the second example `84:01` equals to `388` as in 38.8 % relative humidity. No temperature could be found in this data, more on that later. 
 * In the shortest and third example `5d` equals to `93` and this very much looks like the charge level on the battery in percent.
 * If we start looking at the other bytes in order the next one looks like a length indicator for the following bytes with `04`, `02` and `01` as values. 
@@ -110,7 +110,7 @@ After some investigation and thanks to [node-xiaomi-gap-parser](https://github.c
 | 11    | Capabilities  | bit field |
 | 12-13 | Type of data  | uint16LE  |
 | 14    | Length        | uint8LE   |
-| 15-16 | Temperature   | uint16LE  |
+| 15-16 | Temperature   | int16LE   |
 | 17-18 | Humidity      | uint16LE  |
 
 Bytes 1-14 have the same function for all 4 variations but the following bytes contain different sensor data.

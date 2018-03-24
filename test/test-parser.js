@@ -113,4 +113,12 @@ describe('parser', () => {
     const buffer = Buffer.from('5020aa014e64aed0a8654c0a11015d', 'hex');
     assert.throws(() => new Parser(buffer).parse(), Error);
   });
+
+  it('should parse negative temperature', () => {
+    const buffer = Buffer.from('5020aa01a664aed0a8654c04100285FF', 'hex');
+    const result = new Parser(buffer).parse();
+    assert.equal(result.eventType, 4100);
+    assert.equal(result.eventLength, 2);
+    assert.equal(result.event.temperature, -12.3);
+  });
 });

@@ -45,25 +45,25 @@ describe('accessory', () => {
   it('should update current temperature', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('temperatureChange', 20.5, { address: '123', id: '123' });
-    assert.strictEqual(accessory.currentTemperature, 20.5);
+    assert.strictEqual(accessory.latestTemperature, 20.5);
     accessory.scanner.emit('temperatureChange', 25.5, { address: '123', id: '123' });
-    assert.strictEqual(accessory.currentTemperature, 25.5);
+    assert.strictEqual(accessory.latestTemperature, 25.5);
   });
 
   it('should update current humidity', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('humidityChange', 30.5, { address: '123', id: '123' });
-    assert.strictEqual(accessory.currentHumidity, 30.5);
+    assert.strictEqual(accessory.latestHumidity, 30.5);
     accessory.scanner.emit('humidityChange', 35.5, { address: '123', id: '123' });
-    assert.strictEqual(accessory.currentHumidity, 35.5);
+    assert.strictEqual(accessory.latestHumidity, 35.5);
   });
 
   it('should update current battery level', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('batteryChange', 90, { address: '123', id: '123' });
-    assert.strictEqual(accessory.currentBatteryLevel, 90);
+    assert.strictEqual(accessory.latestBatteryLevel, 90);
     accessory.scanner.emit('batteryChange', 9, { address: '123', id: '123' });
-    assert.strictEqual(accessory.currentBatteryLevel, 9);
+    assert.strictEqual(accessory.latestBatteryLevel, 9);
   });
 
   it('should receive error', () => {
@@ -82,6 +82,15 @@ describe('accessory', () => {
     assert(temperatureSpy.calledWith(null, 23));
   });
 
+  it('should error on undefined temperature characteristic get value ', () => {
+    const temperatureSpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentTemperature;
+    assert.strictEqual(accessory.temperature, undefined);
+    characteristic.emit('get', temperatureSpy);
+    assert(temperatureSpy.calledWith(sinon.match.instanceOf(Error)));
+  });
+
   it('should answer humidity characteristic get value', () => {
     const humiditySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
@@ -89,6 +98,15 @@ describe('accessory', () => {
     accessory.humidity = 30;
     characteristic.emit('get', humiditySpy);
     assert(humiditySpy.calledWith(null, 30));
+  });
+
+  it('should error on undefined humidity characteristic get value ', () => {
+    const humiditySpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    assert.strictEqual(accessory.humidity, undefined);
+    characteristic.emit('get', humiditySpy);
+    assert(humiditySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
   it('should answer low battery characteristic get value', () => {
@@ -105,6 +123,15 @@ describe('accessory', () => {
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_NORMAL));
   });
 
+  it('should error on undefined low battery characteristic get value', () => {
+    const lowBatterySpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.StatusLowBattery;
+    assert.strictEqual(accessory.batteryLevel, undefined);
+    characteristic.emit('get', lowBatterySpy);
+    assert(lowBatterySpy.calledWith(sinon.match.instanceOf(Error)));
+  });
+
   it('should answer battery level characteristic get value', () => {
     const batterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
@@ -113,6 +140,15 @@ describe('accessory', () => {
     accessory.batteryLevel = 99;
     characteristic.emit('get', batterySpy);
     assert(batterySpy.calledWith(null, 99));
+  });
+
+  it('should error on undefined battery level characteristic get value ', () => {
+    const batterySpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.BatteryLevel;
+    assert.strictEqual(accessory.batteryLevel, undefined);
+    characteristic.emit('get', batterySpy);
+    assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
   it('should return all services', () => {

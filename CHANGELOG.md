@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.1
+
 * Expose Low Battery Characteristic.
 * Better test coverage.
 

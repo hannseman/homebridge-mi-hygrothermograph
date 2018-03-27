@@ -38,12 +38,12 @@ describe('accessory', () => {
       Characteristic: this.characteristics,
     };
     // eslint-disable-next-line global-require
-    const { MiHygrothermographAccessory } = require('../lib/accessory')(mockedHap);
-    this.MiHygrothermographAccessory = MiHygrothermographAccessory;
+    const { HygrothermographAccessory } = require('../lib/accessory')(mockedHap);
+    this.HygrothermographAccessory = HygrothermographAccessory;
   });
 
   it('should update current temperature', () => {
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('temperatureChange', 20.5, { address: '123', id: '123' });
     assert.strictEqual(accessory.currentTemperature, 20.5);
     accessory.scanner.emit('temperatureChange', 25.5, { address: '123', id: '123' });
@@ -51,7 +51,7 @@ describe('accessory', () => {
   });
 
   it('should update current humidity', () => {
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('humidityChange', 30.5, { address: '123', id: '123' });
     assert.strictEqual(accessory.currentHumidity, 30.5);
     accessory.scanner.emit('humidityChange', 35.5, { address: '123', id: '123' });
@@ -59,7 +59,7 @@ describe('accessory', () => {
   });
 
   it('should update current battery level', () => {
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('batteryChange', 90, { address: '123', id: '123' });
     assert.strictEqual(accessory.currentBatteryLevel, 90);
     accessory.scanner.emit('batteryChange', 9, { address: '123', id: '123' });
@@ -68,14 +68,14 @@ describe('accessory', () => {
 
   it('should receive error', () => {
     const spyLogger = sinon.spy(mockLogger, 'error');
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit('error', new Error('error'));
     assert(spyLogger.called);
   });
 
   it('should answer temperature characteristic get value', () => {
     const temperatureSpy = sinon.spy();
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentTemperature;
     accessory.temperature = 23;
     characteristic.emit('get', temperatureSpy);
@@ -84,7 +84,7 @@ describe('accessory', () => {
 
   it('should answer humidity characteristic get value', () => {
     const humiditySpy = sinon.spy();
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentRelativeHumidity;
     accessory.humidity = 30;
     characteristic.emit('get', humiditySpy);
@@ -93,7 +93,7 @@ describe('accessory', () => {
 
   it('should answer low battery characteristic get value', () => {
     const lowBatterySpy = sinon.spy();
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.StatusLowBattery;
     // Low battery
     accessory.batteryLevel = 9;
@@ -107,7 +107,7 @@ describe('accessory', () => {
 
   it('should answer battery level characteristic get value', () => {
     const batterySpy = sinon.spy();
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.BatteryLevel;
     // Low battery
     accessory.batteryLevel = 99;
@@ -116,14 +116,14 @@ describe('accessory', () => {
   });
 
   it('should return all services', () => {
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const services = accessory.getServices();
     assert(services.length, 4);
   });
 
   it('should set address config', () => {
     const config = { address: 'deadbeef' };
-    const accessory = new this.MiHygrothermographAccessory(mockLogger, config);
+    const accessory = new this.HygrothermographAccessory(mockLogger, config);
     assert.deepEqual(config, accessory.config);
   });
 });

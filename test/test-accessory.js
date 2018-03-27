@@ -18,6 +18,7 @@ describe('accessory', () => {
     this.characteristics = {
       BatteryLevel: new CharacteristicMock(),
       StatusLowBattery: new CharacteristicMock(),
+      ChargingState: new CharacteristicMock(),
       Manufacturer: new CharacteristicMock(),
       Model: new CharacteristicMock(),
       SerialNumber: new CharacteristicMock(),

@@ -3,8 +3,9 @@ const EventEmitter = require('events');
 class CharacteristicMock extends EventEmitter {
   constructor() {
     super();
-    this.BATTERY_LEVEL_NORMAL = 1;
     this.BATTERY_LEVEL_LOW = 0;
+    this.BATTERY_LEVEL_NORMAL = 1;
+    this.NOT_CHARGEABLE = 2;
   }
   setProps() { return this; }
   updateValue() { return this; }

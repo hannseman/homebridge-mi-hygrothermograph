@@ -160,6 +160,6 @@ describe('accessory', () => {
   it('should set address config', () => {
     const config = { address: 'deadbeef' };
     const accessory = new this.HygrothermographAccessory(mockLogger, config);
-    assert.deepEqual(config, accessory.config);
+    assert.deepStrictEqual(config, accessory.config);
   });
 });

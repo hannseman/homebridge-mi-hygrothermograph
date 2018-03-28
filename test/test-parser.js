@@ -12,7 +12,7 @@ describe('parser', () => {
   Object.keys(sensorData).forEach((sensorKey) => {
     it('should parse frame control', () => {
       const result = new Parser(sensorData[sensorKey]).parse();
-      assert.deepEqual(result.frameControl, {
+      assert.deepStrictEqual(result.frameControl, {
         isFactoryNew: false,
         isConnected: false,
         isCentral: false,
@@ -64,10 +64,10 @@ describe('parser', () => {
   Object.keys(sensorData).forEach((sensorKey) => {
     it('should parse capabilities', () => {
       const result = new Parser(sensorData[sensorKey]).parse();
-      assert.deepEqual(result.capabilities, {
-        connectable: 0,
-        central: 0,
-        secure: 1,
+      assert.deepStrictEqual(result.capabilities, {
+        connectable: false,
+        central: false,
+        secure: true,
       });
     });
   });
@@ -125,7 +125,7 @@ describe('parser', () => {
   it('should handle missing capabilities', () => {
     const buffer = Buffer.from('5010aa01a664aed0a865041002d900', 'hex');
     const result = new Parser(buffer).parse();
-    assert.deepEqual(result.frameControl, {
+    assert.deepStrictEqual(result.frameControl, {
       isFactoryNew: false,
       isConnected: false,
       isCentral: false,
@@ -145,7 +145,7 @@ describe('parser', () => {
   it('should handle missing mac address', () => {
     const buffer = Buffer.from('4020aa01a64c041002d900', 'hex');
     const result = new Parser(buffer).parse();
-    assert.deepEqual(result.frameControl, {
+    assert.deepStrictEqual(result.frameControl, {
       isFactoryNew: false,
       isConnected: false,
       isCentral: false,
@@ -158,10 +158,10 @@ describe('parser', () => {
       hasBinding: false,
     });
     assert.strictEqual(result.macAddress, null);
-    assert.deepEqual(result.capabilities, {
-      connectable: 0,
-      central: 0,
-      secure: 1,
+    assert.deepStrictEqual(result.capabilities, {
+      connectable: false,
+      central: false,
+      secure: true,
     });
     assert.strictEqual(result.eventLength, 2);
     assert.strictEqual(result.eventType, 4100);
@@ -170,7 +170,7 @@ describe('parser', () => {
   it('should handle missing event', () => {
     const buffer = Buffer.from('1020aa01a664aed0a8654c04', 'hex');
     const result = new Parser(buffer).parse();
-    assert.deepEqual(result.frameControl, {
+    assert.deepStrictEqual(result.frameControl, {
       isFactoryNew: false,
       isConnected: false,
       isCentral: false,

@@ -1,7 +1,9 @@
 const assert = require('assert');
 const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
-const { describe, it, beforeEach, afterEach } = require('mocha');
+const {
+  describe, it, beforeEach, afterEach,
+} = require('mocha');
 const {
   CharacteristicMock, ServiceMock, nobleMock, mockLogger,
 } = require('./mocks');

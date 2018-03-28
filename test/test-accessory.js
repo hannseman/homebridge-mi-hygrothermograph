@@ -1,20 +1,17 @@
 const assert = require('assert');
 const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
-const { describe, it, beforeEach } = require('mocha');
+const { describe, it, beforeEach, afterEach } = require('mocha');
 const {
-  CharacteristicMock, ServiceMock, ScannerMock, mockLogger,
+  CharacteristicMock, ServiceMock, nobleMock, mockLogger,
 } = require('./mocks');
 
+const { Scanner } = proxyquire('../lib/scanner', {
+  noble: nobleMock,
+});
 
 describe('accessory', () => {
   beforeEach(() => {
-    proxyquire('../lib/accessory', {
-      './scanner': {
-        Scanner: ScannerMock,
-      },
-    });
-
     this.characteristics = {
       BatteryLevel: new CharacteristicMock(),
       StatusLowBattery: new CharacteristicMock(),
@@ -38,8 +35,17 @@ describe('accessory', () => {
       Characteristic: this.characteristics,
     };
     // eslint-disable-next-line global-require
-    const { HygrothermographAccessory } = require('../lib/accessory')(mockedHap);
+    const { HygrothermographAccessory } = proxyquire('../lib/accessory', {
+      './scanner': {
+        Scanner,
+      },
+    })(mockedHap);
+
     this.HygrothermographAccessory = HygrothermographAccessory;
+  });
+
+  afterEach(() => {
+    nobleMock.removeAllListeners();
   });
 
   it('should update current temperature', () => {

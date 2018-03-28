@@ -18,10 +18,6 @@ class ServiceMock {
   }
 }
 
-class ScannerMock extends EventEmitter {
-  start() {}
-}
-
 const mockLogger = { debug() { }, error() { } };
 
 class NobleMock extends EventEmitter {
@@ -47,7 +43,6 @@ class PeripheralMock {
 module.exports = {
   CharacteristicMock,
   ServiceMock,
-  ScannerMock,
   mockLogger,
   PeripheralMock,
   nobleMock: new NobleMock(),

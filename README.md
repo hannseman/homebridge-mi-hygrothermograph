@@ -79,7 +79,7 @@ The default timeout is 15 minutes but can be changed by specifying the number of
 "accessories": [
     {
       "accessory": "Hygrotermograph",
-      "name": "Temperature & Humidity"
+      "name": "Temperature & Humidity",
       "timeout": 30
     }
 ]

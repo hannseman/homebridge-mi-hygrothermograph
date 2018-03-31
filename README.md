@@ -52,7 +52,7 @@ The easiest way to find the address of the device is to use `[sudo] hcitool lesc
 It will start a scan for all advertising BLE peripherals within range. Look for `MJ_HT_V1` and copy the address.
 The address is in the format of `4c:64:a8:d0:ae:65`.
 
-Update your Homebridge `config.json`:
+Update your Homebridge `config.json` and specify the `address` key:
 
 ```json
 "accessories": [
@@ -65,6 +65,22 @@ Update your Homebridge `config.json`:
       "accessory": "Hygrotermograph",
       "name": "Room 2",
       "address": "2c:34:b3:d4:a1:61"
+    }
+]
+```
+
+## Timeout
+If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
+that the accessory is not reachable by returning an error until it receives an updated value. 
+
+The default timeout is 15 minutes but can be changed by specifying the number of minutes under the `timeout` key in `config.json`:
+
+```json
+"accessories": [
+    {
+      "accessory": "Hygrotermograph",
+      "name": "Temperature & Humidity"
+      "timeout": 30
     }
 ]
 ```

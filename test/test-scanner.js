@@ -22,6 +22,10 @@ describe('parser', () => {
     this.scanner = new Scanner(mockLogger);
   });
 
+  afterEach(() => {
+    nobleMock.removeAllListeners();
+  });
+
   it('should discover temperature event', () => {
     const eventSpy = sinon.spy();
     this.scanner.on('temperatureChange', eventSpy);
@@ -82,6 +86,14 @@ describe('parser', () => {
     this.scanner.on('temperatureChange', eventSpy);
     const peripheral = new PeripheralMock(Buffer.from('deadbeefed', 'hex'));
     assert.throws(() => nobleMock.emit('discover', peripheral));
+  });
+
+  it('should emit errors', () => {
+    const eventSpy = sinon.spy();
+    this.scanner.on('error', eventSpy);
+    const peripheral = new PeripheralMock(Buffer.from('deadbeefed', 'hex'));
+    nobleMock.emit('discover', peripheral);
+    assert(eventSpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
   it('should start scanning', () => {

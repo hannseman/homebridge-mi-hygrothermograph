@@ -8,7 +8,7 @@
 ## Installation
 Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) installed. 
 
-[Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the hygrothermograph. 
+[Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor. 
 
  These libraries and their dependencies are required by [Noble](https://www.npmjs.com/package/noble) package and provide access to the kernel Bluetooth subsystem.
 

@@ -6,7 +6,7 @@
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 
 ## Installation
-Make sure your system matches the prerequisites. You need to have a C compiler and the [Node.js](https://nodejs.org/) server. 
+Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) installed. 
 
 [Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the hygrothermograph. 
 

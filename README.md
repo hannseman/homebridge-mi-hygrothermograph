@@ -73,7 +73,7 @@ Update your Homebridge `config.json` and specify the `address` key:
 If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
 that the accessory is not reachable by returning an error until it receives an updated value. 
 
-The default timeout is 15 minutes but can be changed by specifying the number of minutes under the `timeout` key in `config.json`:
+The default timeout is 15 minutes but can be changed by specifying the number of minutes under the `timeout` parameter in `config.json`:
 
 ```json
 "accessories": [
@@ -85,6 +85,20 @@ The default timeout is 15 minutes but can be changed by specifying the number of
 ]
 ```
 
+## Naming
+By default the Humidity and Temperature accessories visible in the Home-app will have the names "Humidity" and "Temperature".
+These are the names which Siri will respond to. Example: "What's the _Humidity_ in the bedroom?" They can be changed in the Home-app if wanted.
+
+It is also possible to set custom initial values by specifying the `humidityName` and `temperatureName` parameters in `config.json`:
+
+```json
+{
+  "humidityName": "Luftfuktighet",
+  "temperatureName": "Temperatur"
+}
+```
+
+Siri will now respond to these names instead.
  
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.

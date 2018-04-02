@@ -239,4 +239,26 @@ describe('accessory', () => {
     assert(!accessory.hasTimedOut());
     clock.restore();
   });
+
+  it('should have custom temperature name when configured', () => {
+    const temperatureName = 'CustomTemperatureName';
+    const accessory = new this.HygrothermographAccessory(mockLogger, { temperatureName });
+    assert.strictEqual(accessory.temperatureName, temperatureName);
+  });
+
+  it('should have default temperature name when not configured', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.strictEqual(accessory.temperatureName, 'Temperature');
+  });
+
+  it('should have custom humidity name when configured', () => {
+    const humidityName = 'CustomHumidityName';
+    const accessory = new this.HygrothermographAccessory(mockLogger, { humidityName });
+    assert.strictEqual(accessory.humidityName, humidityName);
+  });
+
+  it('should have default humidity name when not configured', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.strictEqual(accessory.humidityName, 'Humidity');
+  });
 });

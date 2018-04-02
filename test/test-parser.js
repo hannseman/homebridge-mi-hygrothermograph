@@ -114,13 +114,23 @@ describe('parser', () => {
     assert.throws(() => new Parser(buffer).parse(), Error);
   });
 
-  it('should parse negative temperature', () => {
+  it('should parse negative temperature for temperature event', () => {
     const buffer = Buffer.from('5020aa01a664aed0a8654c04100285FF', 'hex');
     const result = new Parser(buffer).parse();
     assert.strictEqual(result.eventType, 4100);
     assert.strictEqual(result.eventLength, 2);
     assert.strictEqual(result.event.temperature, -12.3);
   });
+
+  it('should parse negative temperature for temperature & humdity event', () => {
+    const buffer = Buffer.from('5020aa01b064aed0a8654c0d100485FF6001', 'hex');
+    const result = new Parser(buffer).parse();
+    assert.strictEqual(result.eventType, 4109);
+    assert.strictEqual(result.eventLength, 4);
+    assert.strictEqual(result.event.temperature, -12.3);
+    assert.strictEqual(result.event.humidity, 35.2);
+  });
+
 
   it('should handle missing capabilities', () => {
     const buffer = Buffer.from('5010aa01a664aed0a865041002d900', 'hex');

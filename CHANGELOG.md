@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0
+
+* Mark devices as unreachable after a a treshold has been reached. Default 15 minutes. Can be configured by setting `timeout` in config.json.
+* Allow customisation of temperature / humidity names which are exposed in the Home-app. Can be configured in config.json.
+* Bugfix: Negative temperatures are now parsed for all events sent by the sensor.
+* Bugfix: Start scanning after events have been bound on accessory.
+* Better test coverage.
+* Updates to README
+
 ## 1.2.0
 
 * Handle negative temperatures. 

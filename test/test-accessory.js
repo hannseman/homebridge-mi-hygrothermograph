@@ -261,4 +261,15 @@ describe('accessory', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     assert.strictEqual(accessory.humidityName, 'Humidity');
   });
+
+  it('should get serial number from configured address', () => {
+    const address = 'de:ad:be:ef';
+    const accessory = new this.HygrothermographAccessory(mockLogger, { address });
+    assert.strictEqual(accessory.serialNumber, address);
+  });
+
+  it('should have undefined serial number of no configured address', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.strictEqual(accessory.serialNumber, undefined);
+  });
 });

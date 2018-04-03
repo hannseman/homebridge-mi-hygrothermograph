@@ -86,8 +86,7 @@ The default timeout is 15 minutes but can be changed by specifying the number of
 ```
 
 ## Naming
-By default the Humidity and Temperature accessories visible in the Home-app will have the names "Humidity" and "Temperature".
-These are the names which Siri will respond to. Example: "What's the _Humidity_ in the bedroom?" They can be changed in the Home-app if wanted.
+By default the Humidity and Temperature accessories visible in the Home-app will have the names "Humidity" and "Temperature". They can be changed in the Home-app if wanted.
 
 It is also possible to set custom initial values by specifying the `humidityName` and `temperatureName` parameters in `config.json`:
 
@@ -98,8 +97,6 @@ It is also possible to set custom initial values by specifying the `humidityName
 }
 ```
 
-Siri will now respond to these names instead.
- 
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.
 By only reading the advertisement packet there is no need to establish a connection to the peripheral.

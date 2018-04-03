@@ -45,12 +45,12 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 
 | Key             | Default       | Description         |
 |-----------------|---------------|---------------------|
-| accessory       |               | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".  |
-| name            |               | Mandatory. The name of this accessory. This will appear in your Home-app. |
-| address         |               | Optional. The address of the device. Used when running multiple devices. |
-| timeout         | 15            | Time in minutes after last contact when the accessory should be regarded as unreachable. |
-| humidityName    | "Humidity"    | Name of the humidity sensor as it will appear in your Home-app. |
-| temperatureName | "Temperature" | Name of the temperature sensor as it will appear in your Home-app. | 
+| `accessory`       |                 | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".  |
+| `name`            |                 | Mandatory. The name of this accessory. This will appear in your Home-app. |
+| `address`         |                 | Optional. The address of the device. Used when running multiple devices. |
+| `timeout`         | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. |
+| `humidityName`    | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
+| `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
 
 
 ### Multiple sensors 

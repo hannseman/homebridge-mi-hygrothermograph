@@ -43,6 +43,16 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 ]
 ```
 
+| Key             | Default       | Description         |
+|-----------------|---------------|---------------------|
+| accessory       |               | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".  |
+| name            |               | Mandatory. The name of this accessory. This will appear in your Home-app. |
+| address         |               | Optional. The address of the device. Used when running multiple devices. |
+| timeout         | 15            | Time in minutes after last contact when the accessory should be regarded as unreachable. |
+| humidityName    | "Humidity"    | Name of the humidity sensor as it will appear in your Home-app. |
+| temperatureName | "Temperature" | Name of the temperature sensor as it will appear in your Home-app. | 
+
+
 ### Multiple sensors 
 When running just one Hygrotermograph accessory there is no need to specify the address of the BLE device. 
 But if you want to run multiple Hygrotermograph accessories you need to specify the BLE address for each of them. 
@@ -69,7 +79,7 @@ Update your Homebridge `config.json` and specify the `address` key:
 ]
 ```
 
-## Timeout
+### Timeout
 If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
 that the accessory is not reachable by returning an error until it receives an updated value. 
 
@@ -85,7 +95,7 @@ The default timeout is 15 minutes but can be changed by specifying the number of
 ]
 ```
 
-## Naming
+### Naming
 By default the Humidity and Temperature accessories visible in the Home-app will have the names "Humidity" and "Temperature". They can be changed in the Home-app if wanted.
 
 It is also possible to set custom initial values by specifying the `humidityName` and `temperatureName` parameters in `config.json`:

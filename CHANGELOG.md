@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1
+* Bugfix: Remove trailing commas from function calls to fix Node 6 support
+* Bugfix: Allow `address` specified in config.json to be both uppercase and lowercase.
+* Run Node 6 tests on Travis CI
+* Add test for index.js
+
 ## 1.3.0
 
 * Mark devices as unreachable after a a treshold has been reached. Default 15 minutes. Can be configured by setting `timeout` in config.json.

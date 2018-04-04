@@ -65,7 +65,7 @@ describe('parser', () => {
     const eventSpy = sinon.spy();
     const wrongPeripheral = new PeripheralMock(sensorData.temperatureAndHumidity, 'cdb');
     const correctPeripheral = new PeripheralMock(sensorData.temperatureAndHumidity, 'abc');
-    const scanner = new Scanner(mockLogger, 'abc');
+    const scanner = new Scanner(mockLogger, 'ABC');
     scanner.on('temperatureChange', eventSpy);
     nobleMock.emit('discover', wrongPeripheral);
     assert(eventSpy.notCalled);

@@ -5,6 +5,6 @@ module.exports = (homebridge) => {
   homebridge.registerAccessory(
     'homebridge-mi-hygrothermograph',
     'Hygrotermograph',
-    HygrothermographAccessory,
+    HygrothermographAccessory
   );
 };

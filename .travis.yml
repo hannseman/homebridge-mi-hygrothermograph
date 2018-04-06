@@ -12,6 +12,6 @@ install:
 script:
   - npm test
   - npm run lint
-after_success: npm run coverage
+after_success: npm run coveralls
 notifications:
   email: false

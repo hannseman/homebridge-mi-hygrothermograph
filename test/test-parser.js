@@ -68,6 +68,7 @@ describe('parser', () => {
         connectable: false,
         central: false,
         secure: true,
+        io: true,
       });
     });
   });
@@ -172,6 +173,7 @@ describe('parser', () => {
       connectable: false,
       central: false,
       secure: true,
+      io: true,
     });
     assert.strictEqual(result.eventLength, 2);
     assert.strictEqual(result.eventType, 4100);

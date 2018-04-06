@@ -28,6 +28,11 @@ describe('parser', () => {
   });
 
   Object.keys(sensorData).forEach((sensorKey) => {
+    it('should parse version', () => {
+      const result = new Parser(sensorData[sensorKey]).parse();
+      assert.strictEqual(result.version, 2);
+    });
+    
     it('should parse product id', () => {
       const result = new Parser(sensorData[sensorKey]).parse();
       assert.strictEqual(result.productId, 426);

@@ -1,10 +1,20 @@
 # Changelog
 
+## 1.4.0
+
+* Use configured address as serial number. If no address is configured no serial number is exposed to Homekit.
+* Log when accessory has timed out.
+* Fully parse capability bits.
+* Parse device version.
+* Some code cleanup.
+
+
 ## 1.3.1
-* Bugfix: Remove trailing commas from function calls to fix Node 6 support
+
+* Bugfix: Remove trailing commas from function calls to fix Node 6 support.
 * Bugfix: Allow `address` specified in config.json to be both uppercase and lowercase.
-* Run Node 6 tests on Travis CI
-* Add test for index.js
+* Run Node 6 tests on Travis CI.
+* Add test for index.js.
 
 ## 1.3.0
 
@@ -13,7 +23,7 @@
 * Bugfix: Negative temperatures are now parsed for all events sent by the sensor.
 * Bugfix: Start scanning after events have been bound on accessory.
 * Better test coverage.
-* Updates to README
+* Updates to README.
 
 ## 1.2.0
 
@@ -36,6 +46,6 @@
 
 ## 1.0.2
 
-* Better test coverage
-* Pass peripheral id when emitting sensor events
-* Only log when `DEBUG` is set 
+* Better test coverage.
+* Pass peripheral id when emitting sensor events.
+* Only log when `DEBUG` is set .

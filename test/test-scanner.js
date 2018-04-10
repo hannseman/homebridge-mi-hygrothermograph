@@ -4,7 +4,14 @@ const {
 } = require('mocha');
 const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
-const { nobleMock, PeripheralMock, mockLogger } = require('./mocks');
+const {
+  PeripheralMock, ParseMock, nobleMock, mockLogger,
+} = require('./mocks');
+const {
+  EventTypes,
+  SERVICE_DATA_UUID,
+} = require('../lib/parser');
+
 
 const { Scanner } = proxyquire('../lib/scanner', {
   noble: nobleMock,
@@ -105,5 +112,24 @@ describe('parser', () => {
     assert(startScanningStub.called);
     nobleMock.emit('stateChange', 'poweredOff');
     assert(stopScanningStub.called);
+  });
+
+  it('should handle unknown event type', () => {
+    const mockedScanner = proxyquire('../lib/scanner', {
+      noble: nobleMock,
+      './parser': {
+        Parser: ParseMock,
+        SERVICE_DATA_UUID,
+        EventTypes,
+      },
+    });
+    const scanner = new mockedScanner.Scanner(mockLogger);
+    scanner.start();
+    const peripheral = new PeripheralMock(Buffer.from('5020aa01a164aed0a8654c0610025d01', 'hex'));
+    assert.throws(() => nobleMock.emit('discover', peripheral), Error);
+    const eventSpy = sinon.spy();
+    scanner.on('error', eventSpy);
+    nobleMock.emit('discover', peripheral);
+    assert(eventSpy.calledWith(sinon.match.instanceOf(Error)));
   });
 });

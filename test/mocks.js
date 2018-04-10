@@ -40,10 +40,20 @@ class PeripheralMock {
   }
 }
 
+class ParseMock {
+  parse() {
+    return {
+      event: undefined,
+      eventType: 1337,
+    };
+  }
+}
+
 module.exports = {
   CharacteristicMock,
   ServiceMock,
-  mockLogger: logMock,
   PeripheralMock,
+  ParseMock,
+  mockLogger: logMock,
   nobleMock: new NobleMock(),
 };

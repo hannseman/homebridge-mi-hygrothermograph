@@ -21,7 +21,7 @@ For more detailed information and descriptions for other platforms please see th
 ### Install homebridge and this plugin 
 ```
 [sudo] npm install -g --unsafe-perm homebridge
-[sudo] npm install -g homebridge-mi-hygrothermograph
+[sudo] npm install -g --unsafe-perm homebridge-mi-hygrothermograph
 ```
 
 **Note:** depending on your platform you might need to run `npm install -g`  with root privileges.

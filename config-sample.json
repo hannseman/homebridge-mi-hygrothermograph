@@ -13,7 +13,8 @@
       "address": "4c:64:a8:d0:ae:65",
       "timeout": 10,
       "temperatureName": "Temperature",
-      "humidityName": "Humidity"
+      "humidityName": "Humidity",
+      "fakeGatoEnabled": true
     }
   ]
 }

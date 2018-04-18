@@ -40,6 +40,17 @@ class PeripheralMock {
   }
 }
 
+class AccessoryMock {
+  constructor(log, config) {
+    this.log = log;
+    this.config = config;
+  }
+}
+
+class FakeGatoHistoryServiceMock {
+  addEntry() {}
+}
+
 class ParseMock {
   parse() {
     return {
@@ -54,6 +65,8 @@ module.exports = {
   ServiceMock,
   PeripheralMock,
   ParseMock,
+  AccessoryMock,
+  FakeGatoHistoryServiceMock,
   mockLogger: logMock,
   nobleMock: new NobleMock(),
 };

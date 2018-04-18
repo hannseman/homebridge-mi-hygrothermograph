@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const assert = require('assert');
 const proxyquire = require('proxyquire').noCallThru();
 const sinon = require('sinon');
@@ -5,7 +6,7 @@ const {
   describe, it, beforeEach, afterEach,
 } = require('mocha');
 const {
-  CharacteristicMock, ServiceMock, nobleMock, mockLogger,
+  CharacteristicMock, ServiceMock, FakeGatoHistoryServiceMock, nobleMock, mockLogger,
 } = require('./mocks');
 
 const { Scanner } = proxyquire('../lib/scanner', {
@@ -19,6 +20,7 @@ describe('accessory', () => {
       StatusLowBattery: new CharacteristicMock(),
       ChargingState: new CharacteristicMock(),
       Manufacturer: new CharacteristicMock(),
+      Firmware: new CharacteristicMock(),
       Model: new CharacteristicMock(),
       SerialNumber: new CharacteristicMock(),
       CurrentTemperature: new CharacteristicMock(),
@@ -32,16 +34,20 @@ describe('accessory', () => {
       AccessoryInformation: ServiceMock,
     };
 
-    const mockedHap = {
-      Service: this.services,
-      Characteristic: this.characteristics,
+    this.homebridgeMock = {
+      hap: {
+        Service: this.services,
+        Characteristic: this.characteristics,
+      },
     };
     // eslint-disable-next-line global-require
+
     const { HygrothermographAccessory } = proxyquire('../lib/accessory', {
       './scanner': {
         Scanner,
       },
-    })(mockedHap);
+      'fakegato-history': () => FakeGatoHistoryServiceMock,
+    })(this.homebridgeMock);
 
     this.HygrothermographAccessory = HygrothermographAccessory;
   });
@@ -201,7 +207,7 @@ describe('accessory', () => {
   it('should return all services', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const services = accessory.getServices();
-    assert(services.length, 4);
+    assert.strictEqual(services.length, 4);
   });
 
   it('should set address config', () => {
@@ -265,11 +271,47 @@ describe('accessory', () => {
   it('should get serial number from configured address', () => {
     const address = 'de:ad:be:ef';
     const accessory = new this.HygrothermographAccessory(mockLogger, { address });
-    assert.strictEqual(accessory.serialNumber, address);
+    assert.strictEqual(accessory.serialNumber, 'deadbeef');
   });
 
   it('should have undefined serial number of no configured address', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     assert.strictEqual(accessory.serialNumber, undefined);
+  });
+
+  it('should setup fakeGatoHistoryService when configured', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
+    assert(accessory.fakeGatoHistoryService !== undefined);
+  });
+
+  it('should not setup fakeGatoHistoryService when not configured', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: false });
+    assert.strictEqual(accessory.fakeGatoHistoryService, undefined);
+  });
+
+  it('should add fakegato to getServices when configured', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
+    const services = accessory.getServices();
+    assert.strictEqual(services.length, 5);
+  });
+
+  it('should add temperature entry', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
+    const spy = sinon.spy(accessory.fakeGatoHistoryService, 'addEntry');
+    accessory.latestHumidity = 34.0;
+    accessory.temperature = 28.0;
+    assert(spy.called);
+    assert.strictEqual(spy.args[0][0].temp, 28.0);
+    assert.strictEqual(spy.args[0][0].humidity, 34.0);
+  });
+
+  it('should add humidity entry', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
+    const spy = sinon.spy(accessory.fakeGatoHistoryService, 'addEntry');
+    accessory.latestTemperature = 28.0;
+    accessory.humidity = 34.0;
+    assert(spy.called);
+    assert.strictEqual(spy.args[0][0].humidity, 34.0);
+    assert.strictEqual(spy.args[0][0].temp, 28.0);
   });
 });

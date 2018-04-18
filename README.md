@@ -51,6 +51,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `timeout`         | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. |
 | `humidityName`    | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
 | `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
+| `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
 
 
 ### Multiple sensors 
@@ -104,6 +105,20 @@ It is also possible to set custom initial values by specifying the `humidityName
 {
   "humidityName": "Luftfuktighet",
   "temperatureName": "Temperatur"
+}
+```
+
+### Elgato Eve
+
+This plugin has support for adding historical data to the [Elgato Eve App](https://itunes.apple.com/us/app/elgato-eve/id917695792) by using the excellent module [fakegato-history](https://github.com/simont77/fakegato-history).
+When using this feature it's required to specify the address of the device as described in [Multiple sensors](#multiple-sensors).
+This is required because [fakegato-history](https://github.com/simont77/fakegato-history) requires a unique serial number for each device.
+
+To enable this feature set `fakeGatoEnabled` to `true` in `config.json`
+
+```json
+{
+  "fakeGatoEnabled": true
 }
 ```
 

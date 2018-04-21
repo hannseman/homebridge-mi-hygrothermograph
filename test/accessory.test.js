@@ -241,6 +241,14 @@ describe('accessory', () => {
     clock.restore();
   });
 
+  it('should return timed out false when set as 0', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, { timeout: 0 });
+    accessory.lastUpdatedAt = Date.now();
+    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * (accessory.timeout + 15)));
+    assert(!accessory.hasTimedOut());
+    clock.restore();
+  });
+
   it('should return timed out false with undefined timestamp', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * (accessory.timeout + 15)));

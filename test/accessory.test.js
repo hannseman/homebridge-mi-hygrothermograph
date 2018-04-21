@@ -39,8 +39,10 @@ describe('accessory', () => {
         Service: this.services,
         Characteristic: this.characteristics,
       },
+      user: {
+        storagePath: () => '/tmp/',
+      },
     };
-    // eslint-disable-next-line global-require
 
     const { HygrothermographAccessory } = proxyquire('../lib/accessory', {
       './scanner': {
@@ -293,6 +295,22 @@ describe('accessory', () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
     const services = accessory.getServices();
     assert.strictEqual(services.length, 5);
+  });
+
+  it('should use custom fakegato storage path when configured', () => {
+    const path = '/home/bridge/';
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true,
+      fakeGatoStoragePath: path,
+    });
+    assert.strictEqual(accessory.fakeGatoStoragePath, path);
+  });
+
+  it('should use homebridge storage path for fakegato storage when not configured', () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true,
+    });
+    assert.strictEqual(accessory.fakeGatoStoragePath, this.homebridgeMock.user.storagePath());
   });
 
   it('should add temperature entry', () => {

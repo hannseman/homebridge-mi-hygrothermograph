@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0
+
+* Add support for fakegato-history.
+* Add option to disable timeouts.
+* Package version is now reported on the Firmware characteristic.
+* Invalid characters are stripped from Serial number characteristic for fakegato-history support.
+
 ## 1.4.0
 
 * Use configured address as serial number. If no address is configured no serial number is exposed to Homekit.

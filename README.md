@@ -48,10 +48,11 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `accessory`       |                 | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".  |
 | `name`            |                 | Mandatory. The name of this accessory. This will appear in your Home-app. |
 | `address`         |                 | Optional. The address of the device. Used when running multiple devices. |
-| `timeout`         | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. |
+| `timeout`         | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. If set to `0`, timeout will be disabled. |
 | `humidityName`    | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
 | `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
 | `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
+| `fakeGatoStoragePath` |             | Path where to save fakegato history. Defaults to homebridge storage path, usually `/var/lib/homebridge` or `~/.homebridge` |
 
 
 ### Multiple sensors 
@@ -82,7 +83,7 @@ Update your Homebridge `config.json` and specify the `address` key:
 
 ### Timeout
 If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
-that the accessory is not reachable by returning an error until it receives an updated value. 
+that the accessory is not responsive by returning an error until it receives an updated value.
 
 The default timeout is 15 minutes but can be changed by specifying the number of minutes under the `timeout` parameter in `config.json`:
 
@@ -95,6 +96,8 @@ The default timeout is 15 minutes but can be changed by specifying the number of
     }
 ]
 ```
+
+If the `timeout` parameter is set to `0` timeouts are disabled and and devices will not be reported as unresponsive to Homekit.
 
 ### Naming
 By default the Humidity and Temperature accessories visible in the Home-app will have the names "Humidity" and "Temperature". They can be changed in the Home-app if wanted.

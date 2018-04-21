@@ -20,7 +20,7 @@ describe('accessory', () => {
       StatusLowBattery: new CharacteristicMock(),
       ChargingState: new CharacteristicMock(),
       Manufacturer: new CharacteristicMock(),
-      Firmware: new CharacteristicMock(),
+      FirmwareRevision: new CharacteristicMock(),
       Model: new CharacteristicMock(),
       SerialNumber: new CharacteristicMock(),
       CurrentTemperature: new CharacteristicMock(),

@@ -52,7 +52,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `humidityName`    | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
 | `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
 | `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
-| `fakeGatoStoragePath` |             | Path where to save fakegato history. Defaults to homebridge storage path, usually `/var/lib/homebridge` or `~/.homebridge` |
+| `fakeGatoStoragePath` |             | Custom path where to save fakegato history. |
 
 
 ### Multiple sensors 
@@ -117,11 +117,21 @@ This plugin has support for adding historical data to the [Elgato Eve App](https
 When using this feature it's required to specify the address of the device as described in [Multiple sensors](#multiple-sensors).
 This is required because [fakegato-history](https://github.com/simont77/fakegato-history) requires a unique serial number for each device.
 
+
 To enable this feature set `fakeGatoEnabled` to `true` in `config.json`
 
 ```json
 {
   "fakeGatoEnabled": true
+}
+```
+
+[fakegato-history](https://github.com/simont77/fakegato-history) caches historical values into a json-file.
+Usually located in `/var/lib/homebridge` or `~/.homebridge`. To customise this one can set `fakeGatoStoragePath` to the desired path:
+
+```json
+{
+  "fakeGatoStoragePath": "/tmp/"
 }
 ```
 

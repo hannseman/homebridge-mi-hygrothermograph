@@ -114,11 +114,14 @@ It is also possible to set custom initial values by specifying the `humidityName
 ### Elgato Eve
 
 This plugin has support for adding historical data to the [Elgato Eve App](https://itunes.apple.com/us/app/elgato-eve/id917695792) by using the excellent module [fakegato-history](https://github.com/simont77/fakegato-history).
+
 When using this feature it's required to specify the address of the device as described in [Multiple sensors](#multiple-sensors).
 This is required because [fakegato-history](https://github.com/simont77/fakegato-history) requires a unique serial number for each device.
 
+When restarting Homebridge the Eve app will show the Accessories as having 0% battery until the sensor actually reports its battery status. This can sometimes take a couple of minutes. Just be patient and the actual battery status will show up.
 
-To enable this feature set `fakeGatoEnabled` to `true` in `config.json`
+
+To enable the Elgato Eve feature set `fakeGatoEnabled` to `true` in `config.json`
 
 ```json
 {

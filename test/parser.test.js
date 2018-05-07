@@ -3,6 +3,7 @@ const { describe, it } = require("mocha");
 const { Parser } = require("../lib/parser");
 
 describe("parser", () => {
+  const isFlora = key => ["illuminance", "moisture", "fertility"].includes(key);
   const sensorData = {
     temperatureAndHumidity: Buffer.from(
       "5020aa01b064aed0a8654c0d1004d9006001",
@@ -10,18 +11,21 @@ describe("parser", () => {
     ),
     humidity: Buffer.from("5020aa01a164aed0a8654c0610025d01", "hex"),
     temperature: Buffer.from("5020aa01a664aed0a8654c041002d900", "hex"),
-    battery: Buffer.from("5020aa014e64aed0a8654c0a10015d", "hex")
+    battery: Buffer.from("5020aa014e64aed0a8654c0a10015d", "hex"),
+    illuminance: Buffer.from("71209800a764aed0a8654c0d0710030e0000", "hex"),
+    moisture: Buffer.from("71209800a864aed0a8654c0d08100112", "hex"),
+    fertility: Buffer.from("71209800a564aed0a8654c0d091002b800", "hex")
   };
   Object.keys(sensorData).forEach(sensorKey => {
     it("should parse frame control", () => {
       const result = new Parser(sensorData[sensorKey]).parse();
       assert.deepStrictEqual(result.frameControl, {
-        isFactoryNew: false,
+        isFactoryNew: isFlora(sensorKey),
         isConnected: false,
         isCentral: false,
         isEncrypted: false,
         hasMacAddress: true,
-        hasCapabilities: true,
+        hasCapabilities: isFlora(sensorKey),
         hasEvent: true,
         hasCustomData: false,
         hasSubtitle: false,
@@ -38,7 +42,7 @@ describe("parser", () => {
 
     it("should parse product id", () => {
       const result = new Parser(sensorData[sensorKey]).parse();
-      assert.strictEqual(result.productId, 426);
+      assert.strictEqual(result.productId, isFlora(sensorKey) ? 152 : 426);
     });
   });
 
@@ -65,21 +69,24 @@ describe("parser", () => {
   Object.keys(sensorData).forEach(sensorKey => {
     it("should parse macAddress", () => {
       const result = new Parser(sensorData[sensorKey]).parse();
-      assert.strictEqual(result.macAddress, "64aed0a865");
+      assert.strictEqual(Buffer.from(result.macAddress, "hex").length, 6);
+      assert.strictEqual(result.macAddress, "4c65a8d0ae64");
     });
   });
 
-  Object.keys(sensorData).forEach(sensorKey => {
-    it("should parse capabilities", () => {
-      const result = new Parser(sensorData[sensorKey]).parse();
-      assert.deepStrictEqual(result.capabilities, {
-        connectable: false,
-        central: false,
-        secure: true,
-        io: true
+  Object.keys(sensorData)
+    .filter(key => isFlora(key))
+    .forEach(sensorKey => {
+      it("should parse capabilities", () => {
+        const result = new Parser(sensorData[sensorKey]).parse();
+        assert.deepStrictEqual(result.capabilities, {
+          connectable: true,
+          central: false,
+          secure: true,
+          io: true
+        });
       });
     });
-  });
 
   it("should parse humidity and temperature data", () => {
     const result = new Parser(sensorData.temperatureAndHumidity).parse();
@@ -113,6 +120,30 @@ describe("parser", () => {
     assert.strictEqual(result.event.battery, 93);
   });
 
+  it("should parse moisture data", () => {
+    const buffer = Buffer.from(sensorData.moisture, "hex");
+    const result = new Parser(buffer).parse();
+    assert.strictEqual(result.eventType, 4104);
+    assert.strictEqual(result.eventLength, 1);
+    assert.strictEqual(result.event.moisture, 18);
+  });
+
+  it("should parse illuminance data", () => {
+    const buffer = Buffer.from(sensorData.illuminance, "hex");
+    const result = new Parser(buffer).parse();
+    assert.strictEqual(result.eventType, 4103);
+    assert.strictEqual(result.eventLength, 3);
+    assert.strictEqual(result.event.illuminance, 14);
+  });
+
+  it("should parse fertility data", () => {
+    const buffer = Buffer.from(sensorData.fertility, "hex");
+    const result = new Parser(buffer).parse();
+    assert.strictEqual(result.eventType, 4105);
+    assert.strictEqual(result.eventLength, 2);
+    assert.strictEqual(result.event.fertility, 184);
+  });
+
   it("should parse fail on too short", () => {
     const buffer = Buffer.from("5020", "hex");
     assert.throws(() => new Parser(buffer), Error);
@@ -141,7 +172,7 @@ describe("parser", () => {
   });
 
   it("should handle missing capabilities", () => {
-    const buffer = Buffer.from("5010aa01a664aed0a865041002d900", "hex");
+    const buffer = Buffer.from("5020aa01b064aed0a8654c0d100485FF6001", "hex");
     const result = new Parser(buffer).parse();
     assert.deepStrictEqual(result.frameControl, {
       isFactoryNew: false,
@@ -156,12 +187,12 @@ describe("parser", () => {
       hasBinding: false
     });
     assert.strictEqual(result.capabilities, null);
-    assert.strictEqual(result.macAddress, "64aed0a865");
-    assert.strictEqual(result.eventType, 4100);
+    assert.strictEqual(result.macAddress, "4c65a8d0ae64");
+    assert.strictEqual(result.eventType, 4109);
   });
 
   it("should handle missing mac address", () => {
-    const buffer = Buffer.from("4020aa01a64c041002d900", "hex");
+    const buffer = Buffer.from("60209800a80d08100112", "hex");
     const result = new Parser(buffer).parse();
     assert.deepStrictEqual(result.frameControl, {
       isFactoryNew: false,
@@ -176,14 +207,8 @@ describe("parser", () => {
       hasBinding: false
     });
     assert.strictEqual(result.macAddress, null);
-    assert.deepStrictEqual(result.capabilities, {
-      connectable: false,
-      central: false,
-      secure: true,
-      io: true
-    });
-    assert.strictEqual(result.eventLength, 2);
-    assert.strictEqual(result.eventType, 4100);
+    assert.strictEqual(result.eventLength, 1);
+    assert.strictEqual(result.eventType, 4104);
   });
 
   it("should handle missing event", () => {
@@ -195,7 +220,7 @@ describe("parser", () => {
       isCentral: false,
       isEncrypted: false,
       hasMacAddress: true,
-      hasCapabilities: true,
+      hasCapabilities: false,
       hasEvent: false,
       hasCustomData: false,
       hasSubtitle: false,

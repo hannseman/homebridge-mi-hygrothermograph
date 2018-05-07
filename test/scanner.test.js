@@ -9,7 +9,7 @@ const { Scanner } = proxyquire("../lib/scanner", {
   noble: nobleMock
 });
 
-describe("parser", () => {
+describe("scanner", () => {
   const sensorData = {
     temperatureAndHumidity: Buffer.from(
       "5020aa01b064aed0a8654c0d1004d9006001",

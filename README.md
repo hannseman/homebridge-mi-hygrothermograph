@@ -81,6 +81,8 @@ Update your Homebridge `config.json` and specify the `address` key:
 ]
 ```
 
+Note that this step is also required when running [Mi Flora](https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/) devices in the same location as they use the same protocol and their data will be intercepted by this plugin.
+
 ### Timeout
 If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
 that the accessory is not responsive by returning an error until it receives an updated value.
@@ -174,8 +176,7 @@ After some investigation and thanks to [node-xiaomi-gap-parser](https://github.c
 | 1-2   | Frame control | bit field |
 | 3-4   | ID            | uint16LE  |
 | 5     | Index         | uint8LE   |
-| 6-10  | MAC-address   | string    |
-| 11    | Capabilities  | bit field |
+| 6-11  | MAC-address   | string    |
 | 12-13 | Type of data  | uint16LE  |
 | 14    | Length        | uint8LE   |
 | 15-16 | Temperature   | int16LE   |

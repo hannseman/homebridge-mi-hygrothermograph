@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 const assert = require("assert");
 const proxyquire = require("proxyquire").noCallThru();
 const sinon = require("sinon");

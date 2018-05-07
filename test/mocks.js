@@ -1,4 +1,4 @@
-const EventEmitter = require('events');
+const EventEmitter = require("events");
 
 class CharacteristicMock extends EventEmitter {
   constructor() {
@@ -7,18 +7,24 @@ class CharacteristicMock extends EventEmitter {
     this.BATTERY_LEVEL_NORMAL = 1;
     this.NOT_CHARGEABLE = 2;
   }
-  setProps() { return this; }
-  updateValue() { return this; }
+  setProps() {
+    return this;
+  }
+  updateValue() {
+    return this;
+  }
 }
 
 class ServiceMock {
-  setCharacteristic() { return this; }
+  setCharacteristic() {
+    return this;
+  }
   getCharacteristic(type) {
     return type;
   }
 }
 
-const logMock = { debug() { }, error() { }, warn() {} };
+const logMock = { debug() {}, error() {}, warn() {} };
 
 class NobleMock extends EventEmitter {
   startScanning() {}
@@ -26,16 +32,18 @@ class NobleMock extends EventEmitter {
 }
 
 class PeripheralMock {
-  constructor(event, address = '4c:65:a8:d0:ae:64', uuid = 'fe95') {
-    this.id = '4c65a8d0ae65';
+  constructor(event, address = "4c:65:a8:d0:ae:64", uuid = "fe95") {
+    this.id = "4c65a8d0ae65";
     this.address = address;
     this.rssi = -67;
     this.advertisement = {
-      localName: 'MJ_HT_V1',
-      serviceData: [{
-        uuid,
-        data: event,
-      }],
+      localName: "MJ_HT_V1",
+      serviceData: [
+        {
+          uuid,
+          data: event
+        }
+      ]
     };
   }
 }
@@ -55,7 +63,7 @@ class ParseMock {
   parse() {
     return {
       event: undefined,
-      eventType: 1337,
+      eventType: 1337
     };
   }
 }
@@ -68,5 +76,5 @@ module.exports = {
   AccessoryMock,
   FakeGatoHistoryServiceMock,
   mockLogger: logMock,
-  nobleMock: new NobleMock(),
+  nobleMock: new NobleMock()
 };

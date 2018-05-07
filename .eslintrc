@@ -1,13 +1,7 @@
 {
-  "extends": "airbnb-base",
-  "rules": {
-    "class-methods-use-this": "off",
-    "comma-dangle": ["error", {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "never"
-    }]
+  "extends": ["plugin:prettier/recommended"],
+  "env": {
+    "es6": true,
+    "node": true
   }
 }

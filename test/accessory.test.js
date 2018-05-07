@@ -1,19 +1,21 @@
 /* eslint-disable global-require */
-const assert = require('assert');
-const proxyquire = require('proxyquire').noCallThru();
-const sinon = require('sinon');
+const assert = require("assert");
+const proxyquire = require("proxyquire").noCallThru();
+const sinon = require("sinon");
+const { describe, it, beforeEach, afterEach } = require("mocha");
 const {
-  describe, it, beforeEach, afterEach,
-} = require('mocha');
-const {
-  CharacteristicMock, ServiceMock, FakeGatoHistoryServiceMock, nobleMock, mockLogger,
-} = require('./mocks');
+  CharacteristicMock,
+  ServiceMock,
+  FakeGatoHistoryServiceMock,
+  nobleMock,
+  mockLogger
+} = require("./mocks");
 
-const { Scanner } = proxyquire('../lib/scanner', {
-  noble: nobleMock,
+const { Scanner } = proxyquire("../lib/scanner", {
+  noble: nobleMock
 });
 
-describe('accessory', () => {
+describe("accessory", () => {
   beforeEach(() => {
     this.characteristics = {
       BatteryLevel: new CharacteristicMock(),
@@ -24,31 +26,31 @@ describe('accessory', () => {
       Model: new CharacteristicMock(),
       SerialNumber: new CharacteristicMock(),
       CurrentTemperature: new CharacteristicMock(),
-      CurrentRelativeHumidity: new CharacteristicMock(),
+      CurrentRelativeHumidity: new CharacteristicMock()
     };
 
     this.services = {
       BatteryService: ServiceMock,
       HumiditySensor: ServiceMock,
       TemperatureSensor: ServiceMock,
-      AccessoryInformation: ServiceMock,
+      AccessoryInformation: ServiceMock
     };
 
     this.homebridgeMock = {
       hap: {
         Service: this.services,
-        Characteristic: this.characteristics,
+        Characteristic: this.characteristics
       },
       user: {
-        storagePath: () => '/tmp/',
-      },
+        storagePath: () => "/tmp/"
+      }
     };
 
-    const { HygrothermographAccessory } = proxyquire('../lib/accessory', {
-      './scanner': {
-        Scanner,
+    const { HygrothermographAccessory } = proxyquire("../lib/accessory", {
+      "./scanner": {
+        Scanner
       },
-      'fakegato-history': () => FakeGatoHistoryServiceMock,
+      "fakegato-history": () => FakeGatoHistoryServiceMock
     })(this.homebridgeMock);
 
     this.HygrothermographAccessory = HygrothermographAccessory;
@@ -58,272 +60,317 @@ describe('accessory', () => {
     nobleMock.removeAllListeners();
   });
 
-  it('should update current temperature', () => {
+  it("should update current temperature", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    accessory.scanner.emit('temperatureChange', 20.5, { address: '123', id: '123' });
+    accessory.scanner.emit("temperatureChange", 20.5, {
+      address: "123",
+      id: "123"
+    });
     assert.strictEqual(accessory.latestTemperature, 20.5);
-    accessory.scanner.emit('temperatureChange', 25.5, { address: '123', id: '123' });
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123"
+    });
     assert.strictEqual(accessory.latestTemperature, 25.5);
   });
 
-  it('should update current humidity', () => {
+  it("should update current humidity", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    accessory.scanner.emit('humidityChange', 30.5, { address: '123', id: '123' });
+    accessory.scanner.emit("humidityChange", 30.5, {
+      address: "123",
+      id: "123"
+    });
     assert.strictEqual(accessory.latestHumidity, 30.5);
-    accessory.scanner.emit('humidityChange', 35.5, { address: '123', id: '123' });
+    accessory.scanner.emit("humidityChange", 35.5, {
+      address: "123",
+      id: "123"
+    });
     assert.strictEqual(accessory.latestHumidity, 35.5);
   });
 
-  it('should update current battery level', () => {
+  it("should update current battery level", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    accessory.scanner.emit('batteryChange', 90, { address: '123', id: '123' });
+    accessory.scanner.emit("batteryChange", 90, { address: "123", id: "123" });
     assert.strictEqual(accessory.latestBatteryLevel, 90);
-    accessory.scanner.emit('batteryChange', 9, { address: '123', id: '123' });
+    accessory.scanner.emit("batteryChange", 9, { address: "123", id: "123" });
     assert.strictEqual(accessory.latestBatteryLevel, 9);
   });
 
-  it('should receive error', () => {
-    const spyLogger = sinon.spy(mockLogger, 'error');
+  it("should receive error", () => {
+    const spyLogger = sinon.spy(mockLogger, "error");
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    accessory.scanner.emit('error', new Error('error'));
+    accessory.scanner.emit("error", new Error("error"));
     assert(spyLogger.called);
   });
 
-  it('should answer temperature characteristic get value', () => {
+  it("should answer temperature characteristic get value", () => {
     const temperatureSpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentTemperature;
     accessory.temperature = 23;
-    characteristic.emit('get', temperatureSpy);
+    characteristic.emit("get", temperatureSpy);
     assert(temperatureSpy.calledWith(null, 23));
   });
 
-  it('should error on undefined temperature characteristic get value ', () => {
+  it("should error on undefined temperature characteristic get value ", () => {
     const temperatureSpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentTemperature;
     assert.strictEqual(accessory.temperature, undefined);
-    characteristic.emit('get', temperatureSpy);
+    characteristic.emit("get", temperatureSpy);
     assert(temperatureSpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
-  it('should error on timeout temperature characteristic get value', () => {
+  it("should error on timeout temperature characteristic get value", () => {
     const temperatureSpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentTemperature;
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
     accessory.temperature = 25;
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * accessory.timeout));
-    characteristic.emit('get', temperatureSpy);
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * accessory.timeout
+    );
+    characteristic.emit("get", temperatureSpy);
     assert(temperatureSpy.calledWith(sinon.match.instanceOf(Error)));
     clock.restore();
   });
 
-  it('should answer humidity characteristic get value', () => {
+  it("should answer humidity characteristic get value", () => {
     const humiditySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentRelativeHumidity;
     accessory.humidity = 30;
-    characteristic.emit('get', humiditySpy);
+    characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(null, 30));
   });
 
-  it('should error on undefined humidity characteristic get value ', () => {
+  it("should error on undefined humidity characteristic get value ", () => {
     const humiditySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentRelativeHumidity;
     assert.strictEqual(accessory.humidity, undefined);
-    characteristic.emit('get', humiditySpy);
+    characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
-  it('should error on timeout humidity characteristic get value', () => {
+  it("should error on timeout humidity characteristic get value", () => {
     const humiditySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentRelativeHumidity;
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
     accessory.humidity = 30;
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * accessory.timeout));
-    characteristic.emit('get', humiditySpy);
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * accessory.timeout
+    );
+    characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(sinon.match.instanceOf(Error)));
     clock.restore();
   });
 
-  it('should answer low battery characteristic get value', () => {
+  it("should answer low battery characteristic get value", () => {
     const lowBatterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.StatusLowBattery;
     // Low battery
     accessory.batteryLevel = 9;
-    characteristic.emit('get', lowBatterySpy);
+    characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
     // Normal battery
     accessory.batteryLevel = 15;
-    characteristic.emit('get', lowBatterySpy);
+    characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_NORMAL));
   });
 
-  it('should error on undefined low battery characteristic get value', () => {
+  it("should error on undefined low battery characteristic get value", () => {
     const lowBatterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.StatusLowBattery;
     assert.strictEqual(accessory.batteryLevel, undefined);
-    characteristic.emit('get', lowBatterySpy);
+    characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
-  it('should answer battery level characteristic get value', () => {
+  it("should answer battery level characteristic get value", () => {
     const batterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.BatteryLevel;
     // Low battery
     accessory.batteryLevel = 99;
-    characteristic.emit('get', batterySpy);
+    characteristic.emit("get", batterySpy);
     assert(batterySpy.calledWith(null, 99));
   });
 
-  it('should error on undefined battery level characteristic get value ', () => {
+  it("should error on undefined battery level characteristic get value ", () => {
     const batterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.BatteryLevel;
     assert.strictEqual(accessory.batteryLevel, undefined);
-    characteristic.emit('get', batterySpy);
+    characteristic.emit("get", batterySpy);
     assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
-  it('should error on timeout humidity characteristic get value', () => {
+  it("should error on timeout humidity characteristic get value", () => {
     const batterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.BatteryLevel;
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
     accessory.batteryLevel = 99;
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * accessory.timeout));
-    characteristic.emit('get', batterySpy);
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * accessory.timeout
+    );
+    characteristic.emit("get", batterySpy);
     assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
     clock.restore();
   });
 
-  it('should return all services', () => {
+  it("should return all services", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const services = accessory.getServices();
     assert.strictEqual(services.length, 4);
   });
 
-  it('should set address config', () => {
-    const config = { address: 'deadbeef' };
+  it("should set address config", () => {
+    const config = { address: "deadbeef" };
     const accessory = new this.HygrothermographAccessory(mockLogger, config);
     assert.deepStrictEqual(config, accessory.config);
   });
 
-  it('should set timeout config', () => {
+  it("should set timeout config", () => {
     const config = { timeout: 25 };
     const accessory = new this.HygrothermographAccessory(mockLogger, config);
     assert.deepStrictEqual(config, accessory.config);
     assert.strictEqual(config.timeout, accessory.timeout);
   });
 
-  it('should return timed out true when timed out', () => {
+  it("should return timed out true when timed out", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.lastUpdatedAt = Date.now();
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * (accessory.timeout + 15)));
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * (accessory.timeout + 15)
+    );
     assert(accessory.hasTimedOut());
     clock.restore();
   });
 
-  it('should return timed out false when not timed out', () => {
+  it("should return timed out false when not timed out", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.lastUpdatedAt = Date.now();
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * (accessory.timeout - 5)));
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * (accessory.timeout - 5)
+    );
     assert(!accessory.hasTimedOut());
     clock.restore();
   });
 
-  it('should return timed out false when set as 0', () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, { timeout: 0 });
+  it("should return timed out false when set as 0", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      timeout: 0
+    });
     accessory.lastUpdatedAt = Date.now();
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * (accessory.timeout + 15)));
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * (accessory.timeout + 15)
+    );
     assert(!accessory.hasTimedOut());
     clock.restore();
   });
 
-  it('should return timed out false with undefined timestamp', () => {
+  it("should return timed out false with undefined timestamp", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    const clock = sinon.useFakeTimers(Date.now() + (1000 * 60 * (accessory.timeout + 15)));
+    const clock = sinon.useFakeTimers(
+      Date.now() + 1000 * 60 * (accessory.timeout + 15)
+    );
     assert(!accessory.hasTimedOut());
     clock.restore();
   });
 
-  it('should have custom temperature name when configured', () => {
-    const temperatureName = 'CustomTemperatureName';
-    const accessory = new this.HygrothermographAccessory(mockLogger, { temperatureName });
+  it("should have custom temperature name when configured", () => {
+    const temperatureName = "CustomTemperatureName";
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      temperatureName
+    });
     assert.strictEqual(accessory.temperatureName, temperatureName);
   });
 
-  it('should have default temperature name when not configured', () => {
+  it("should have default temperature name when not configured", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    assert.strictEqual(accessory.temperatureName, 'Temperature');
+    assert.strictEqual(accessory.temperatureName, "Temperature");
   });
 
-  it('should have custom humidity name when configured', () => {
-    const humidityName = 'CustomHumidityName';
-    const accessory = new this.HygrothermographAccessory(mockLogger, { humidityName });
+  it("should have custom humidity name when configured", () => {
+    const humidityName = "CustomHumidityName";
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      humidityName
+    });
     assert.strictEqual(accessory.humidityName, humidityName);
   });
 
-  it('should have default humidity name when not configured', () => {
+  it("should have default humidity name when not configured", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    assert.strictEqual(accessory.humidityName, 'Humidity');
+    assert.strictEqual(accessory.humidityName, "Humidity");
   });
 
-  it('should get serial number from configured address', () => {
-    const address = 'de:ad:be:ef';
-    const accessory = new this.HygrothermographAccessory(mockLogger, { address });
-    assert.strictEqual(accessory.serialNumber, 'deadbeef');
+  it("should get serial number from configured address", () => {
+    const address = "de:ad:be:ef";
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      address
+    });
+    assert.strictEqual(accessory.serialNumber, "deadbeef");
   });
 
-  it('should have undefined serial number of no configured address', () => {
+  it("should have undefined serial number of no configured address", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     assert.strictEqual(accessory.serialNumber, undefined);
   });
 
-  it('should setup fakeGatoHistoryService when configured', () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
+  it("should setup fakeGatoHistoryService when configured", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true
+    });
     assert(accessory.fakeGatoHistoryService !== undefined);
   });
 
-  it('should not setup fakeGatoHistoryService when not configured', () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: false });
+  it("should not setup fakeGatoHistoryService when not configured", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: false
+    });
     assert.strictEqual(accessory.fakeGatoHistoryService, undefined);
   });
 
-  it('should add fakegato to getServices when configured', () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
+  it("should add fakegato to getServices when configured", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true
+    });
     const services = accessory.getServices();
     assert.strictEqual(services.length, 5);
   });
 
-  it('should use custom fakegato storage path when configured', () => {
-    const path = '/home/bridge/';
+  it("should use custom fakegato storage path when configured", () => {
+    const path = "/home/bridge/";
     const accessory = new this.HygrothermographAccessory(mockLogger, {
       fakeGatoEnabled: true,
-      fakeGatoStoragePath: path,
+      fakeGatoStoragePath: path
     });
     assert.strictEqual(accessory.fakeGatoStoragePath, path);
   });
 
-  it('should use homebridge storage path for fakegato storage when not configured', () => {
+  it("should use homebridge storage path for fakegato storage when not configured", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {
-      fakeGatoEnabled: true,
+      fakeGatoEnabled: true
     });
-    assert.strictEqual(accessory.fakeGatoStoragePath, this.homebridgeMock.user.storagePath());
+    assert.strictEqual(
+      accessory.fakeGatoStoragePath,
+      this.homebridgeMock.user.storagePath()
+    );
   });
 
-  it('should add temperature entry', () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
-    const spy = sinon.spy(accessory.fakeGatoHistoryService, 'addEntry');
+  it("should add temperature entry", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true
+    });
+    const spy = sinon.spy(accessory.fakeGatoHistoryService, "addEntry");
     accessory.latestHumidity = 34.0;
     accessory.temperature = 28.0;
     assert(spy.called);
@@ -331,9 +378,11 @@ describe('accessory', () => {
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
   });
 
-  it('should add humidity entry', () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, { fakeGatoEnabled: true });
-    const spy = sinon.spy(accessory.fakeGatoHistoryService, 'addEntry');
+  it("should add humidity entry", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true
+    });
+    const spy = sinon.spy(accessory.fakeGatoHistoryService, "addEntry");
     accessory.latestTemperature = 28.0;
     accessory.humidity = 34.0;
     assert(spy.called);

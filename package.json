@@ -37,11 +37,11 @@
     "node": ">=6.13.0"
   },
   "dependencies": {
-    "fakegato-history": "^0.5.0",
+    "fakegato-history": "^0.5.1",
     "noble": "^1.9.1"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",

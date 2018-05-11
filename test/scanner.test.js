@@ -17,7 +17,10 @@ describe("scanner", () => {
     ),
     humidity: Buffer.from("5020aa01a164aed0a8654c0610025d01", "hex"),
     temperature: Buffer.from("5020aa01a664aed0a8654c041002d900", "hex"),
-    battery: Buffer.from("5020aa014e64aed0a8654c0a10015d", "hex")
+    battery: Buffer.from("5020aa014e64aed0a8654c0a10015d", "hex"),
+    illuminance: Buffer.from("71209800a764aed0a8654c0d0710030e0000", "hex"),
+    moisture: Buffer.from("71209800a864aed0a8654c0d08100112", "hex"),
+    fertility: Buffer.from("71209800a564aed0a8654c0d091002b800", "hex")
   };
 
   beforeEach(() => {
@@ -61,6 +64,30 @@ describe("scanner", () => {
     const peripheral = new PeripheralMock(sensorData.battery);
     nobleMock.emit("discover", peripheral);
     assert(eventSpy.calledWith(93));
+  });
+
+  it("should discover illuminance event", () => {
+    const eventSpy = sinon.spy();
+    this.scanner.on("illuminanceChange", eventSpy);
+    const peripheral = new PeripheralMock(sensorData.illuminance);
+    nobleMock.emit("discover", peripheral);
+    assert(eventSpy.calledWith(14));
+  });
+
+  it("should discover moisture event", () => {
+    const eventSpy = sinon.spy();
+    this.scanner.on("moistureChange", eventSpy);
+    const peripheral = new PeripheralMock(sensorData.moisture);
+    nobleMock.emit("discover", peripheral);
+    assert(eventSpy.calledWith(18));
+  });
+
+  it("should discover fertility event", () => {
+    const eventSpy = sinon.spy();
+    this.scanner.on("fertilityChange", eventSpy);
+    const peripheral = new PeripheralMock(sensorData.fertility);
+    nobleMock.emit("discover", peripheral);
+    assert(eventSpy.calledWith(184));
   });
 
   it("should not discover all peripherals with defined address", () => {

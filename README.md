@@ -183,3 +183,10 @@ After some investigation and thanks to [node-xiaomi-gap-parser](https://github.c
 | 17-18 | Humidity      | uint16LE  |
 
 Bytes 1-14 have the same function for all 4 variations but the following bytes contain different sensor data.
+
+
+## Legal
+
+*Xiaomi* and *Mi* are registered trademarks of BEIJING XIAOMI TECHNOLOGY CO., LTD.
+
+This project is in no way affiliated with, authorized, maintained, sponsored or endorsed by *Xiaomi* or any of its affiliates or subsidiaries.

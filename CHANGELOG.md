@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.0
+* Correctly parse the MAC address as 48-bits.
+* Extend parser to support data emitted by Mi Flora devices. Note that the data from these devices are not actually exposed to Homekit.
+* General cleanup and refactoring.
+* Updated dependencies.
+* Use Prettier for linting.
+
 ## 1.5.0
 
 * Add support for fakegato-history.

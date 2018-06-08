@@ -7,6 +7,7 @@ const {
   ServiceMock,
   FakeGatoHistoryServiceMock,
   nobleMock,
+  mqttMock,
   mockLogger
 } = require("./mocks");
 
@@ -49,7 +50,8 @@ describe("accessory", () => {
       "./scanner": {
         Scanner
       },
-      "fakegato-history": () => FakeGatoHistoryServiceMock
+      "fakegato-history": () => FakeGatoHistoryServiceMock,
+      mqtt: mqttMock
     })(this.homebridgeMock);
 
     this.HygrothermographAccessory = HygrothermographAccessory;
@@ -387,5 +389,64 @@ describe("accessory", () => {
     assert(spy.called);
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
     assert.strictEqual(spy.args[0][0].temp, 28.0);
+  });
+
+  it("should publish temperature to mqtt", () => {
+    const topic = "sensors/temperature";
+    const value = 19.0;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        temperatureTopic: topic
+      }
+    });
+    assert.notEqual(accessory.mqttClient, null);
+    const publishSpy = sinon.spy(accessory.mqttClient, "publish");
+    accessory.temperature = value;
+    accessory.battery = 10;
+    assert(publishSpy.calledOnce);
+    assert.strictEqual(publishSpy.args[0][0], topic);
+    assert.strictEqual(publishSpy.args[0][1], value);
+  });
+
+  it("should publish humidity to mqtt", () => {
+    const topic = "sensors/humidity";
+    const value = 25.0;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        humidityTopic: topic
+      }
+    });
+    assert.notEqual(accessory.mqttClient, null);
+    const publishSpy = sinon.spy(accessory.mqttClient, "publish");
+    accessory.humidity = value;
+    accessory.temperature = 23;
+    assert(publishSpy.calledOnce);
+    assert.strictEqual(publishSpy.args[0][0], topic);
+    assert.strictEqual(publishSpy.args[0][1], value);
+  });
+
+  it("should publish battery to mqtt", () => {
+    const topic = "sensors/battery";
+    const value = 93;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        batteryTopic: topic
+      }
+    });
+    assert.notEqual(accessory.mqttClient, null);
+    const publishSpy = sinon.spy(accessory.mqttClient, "publish");
+    accessory.batteryLevel = value;
+    accessory.temperature = 23;
+    assert(publishSpy.calledOnce);
+    assert.strictEqual(publishSpy.args[0][0], topic);
+    assert.strictEqual(publishSpy.args[0][1], value);
+  });
+
+  it("should not configure mqtt client when not configured", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.equal(accessory.mqttClient, null);
   });
 });

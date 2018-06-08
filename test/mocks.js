@@ -68,6 +68,14 @@ class ParseMock {
   }
 }
 
+class MQTTMock {
+  connect() {
+    return {
+      publish: () => {}
+    };
+  }
+}
+
 module.exports = {
   CharacteristicMock,
   ServiceMock,
@@ -76,5 +84,6 @@ module.exports = {
   AccessoryMock,
   FakeGatoHistoryServiceMock,
   mockLogger: logMock,
-  nobleMock: new NobleMock()
+  nobleMock: new NobleMock(),
+  mqttMock: new MQTTMock()
 };

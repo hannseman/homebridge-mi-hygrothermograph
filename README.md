@@ -53,6 +53,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
 | `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
 | `fakeGatoStoragePath` |             | Custom path where to save fakegato history. |
+| `mqtt` |             | Configuration for publishing values to an MQTT-broker. See the [MQTT](#MQTT) section for details. |
 
 
 ### Multiple sensors 
@@ -139,6 +140,50 @@ Usually located in `/var/lib/homebridge` or `~/.homebridge`. To customise this o
   "fakeGatoStoragePath": "/tmp/"
 }
 ```
+
+### MQTT
+
+The plugin can be configured to publish temperature/humidity/battery values to an MQTT-broker. 
+
+Basic configuration:
+
+```json
+{
+  "mqtt": {
+    "url": "mqtt://test.mosquitto.org",
+    "temperatureTopic": "sensors/temperature",
+    "humidityTopic": "sensors/humidity",
+    "batteryTopic": "sensors/battery"
+  }
+}
+```
+
+If one is interested in only publishing a specific value just skip configuring the topics wished to ignore:
+
+```json
+{
+  "mqtt": {
+    "url": "mqtt://test.mosquitto.org",
+    "temperatureTopic": "sensors/temperature"
+  }
+}
+```
+
+To enable authentication specify the `username` and `password` parameters:
+
+```json
+{
+  "mqtt": {
+    "url": "mqtt://test.mosquitto.org",
+    "username": "admin",
+    "password": "hunter2",
+    "temperatureTopic": "sensors/temperature"
+  }
+}
+```
+
+QOS can be configured by setting the `qos` parameter to the desired level.
+
 
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.

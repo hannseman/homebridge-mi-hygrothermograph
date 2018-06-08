@@ -53,7 +53,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
 | `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
 | `fakeGatoStoragePath` |             | Custom path where to save fakegato history. |
-| `mqtt` |             | Configuration for publishing values to an MQTT-broker. See the [MQTT](#MQTT) section for details. |
+| `mqtt` |             | Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
 
 
 ### Multiple sensors 

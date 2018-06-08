@@ -406,12 +406,12 @@ describe("accessory", () => {
     accessory.battery = 10;
     assert(publishSpy.calledOnce);
     assert.strictEqual(publishSpy.args[0][0], topic);
-    assert.strictEqual(publishSpy.args[0][1], value);
+    assert.strictEqual(publishSpy.args[0][1], String(value));
   });
 
   it("should publish humidity to mqtt", () => {
     const topic = "sensors/humidity";
-    const value = 25.0;
+    const value = 25.5;
     const accessory = new this.HygrothermographAccessory(mockLogger, {
       mqtt: {
         url: "mqtt://127.0.0.1",
@@ -424,7 +424,7 @@ describe("accessory", () => {
     accessory.temperature = 23;
     assert(publishSpy.calledOnce);
     assert.strictEqual(publishSpy.args[0][0], topic);
-    assert.strictEqual(publishSpy.args[0][1], value);
+    assert.strictEqual(publishSpy.args[0][1], String(value));
   });
 
   it("should publish battery to mqtt", () => {
@@ -442,7 +442,7 @@ describe("accessory", () => {
     accessory.temperature = 23;
     assert(publishSpy.calledOnce);
     assert.strictEqual(publishSpy.args[0][0], topic);
-    assert.strictEqual(publishSpy.args[0][1], value);
+    assert.strictEqual(publishSpy.args[0][1], String(value));
   });
 
   it("should not configure mqtt client when not configured", () => {

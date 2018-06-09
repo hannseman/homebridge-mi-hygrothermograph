@@ -61,10 +61,9 @@ describe("accessory", () => {
     nobleMock.removeAllListeners();
   });
 
-  it("should initialize without params", () => {
-    const accessory = new this.HygrothermographAccessory();
+  it("should initialize without config param", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger);
     assert(accessory.config);
-    assert(accessory.log);
   });
 
   it("should update current temperature", () => {

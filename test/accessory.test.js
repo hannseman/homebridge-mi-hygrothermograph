@@ -454,18 +454,23 @@ describe("accessory", () => {
   it("should log on mqtt events", () => {
     const spyErrorLogger = sinon.spy(mockLogger, "error");
     const spyInfoLogger = sinon.spy(mockLogger, "info");
+    const spyDebugLogger = sinon.spy(mockLogger, "debug");
     const accessory = new this.HygrothermographAccessory(mockLogger, {
       mqtt: {
         url: "mqtt://127.0.0.1",
         batteryTopic: "battery/"
       }
     });
+    spyDebugLogger.restore();
     accessory.mqttClient.emit("error", new Error("error"));
     assert(spyErrorLogger.calledOnce);
     accessory.mqttClient.emit("connect");
     assert(spyInfoLogger.calledOnce);
     spyInfoLogger.restore();
     accessory.mqttClient.emit("close");
-    assert(spyInfoLogger.calledOnce);
+    assert(spyDebugLogger.called);
+    spyDebugLogger.restore();
+    accessory.mqttClient.emit("reconnect");
+    assert(spyDebugLogger.calledOnce);
   });
 });

@@ -102,6 +102,7 @@ describe("accessory", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit("error", new Error("error"));
     assert(spyLogger.called);
+    spyLogger.restore();
   });
 
   it("should answer temperature characteristic get value", () => {
@@ -448,5 +449,23 @@ describe("accessory", () => {
   it("should not configure mqtt client when not configured", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     assert.equal(accessory.mqttClient, null);
+  });
+
+  it("should log on mqtt events", () => {
+    const spyErrorLogger = sinon.spy(mockLogger, "error");
+    const spyInfoLogger = sinon.spy(mockLogger, "info");
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        batteryTopic: "battery/"
+      }
+    });
+    accessory.mqttClient.emit("error", new Error("error"));
+    assert(spyErrorLogger.calledOnce);
+    accessory.mqttClient.emit("connect");
+    assert(spyInfoLogger.calledOnce);
+    spyInfoLogger.restore();
+    accessory.mqttClient.emit("close");
+    assert(spyInfoLogger.calledOnce);
   });
 });

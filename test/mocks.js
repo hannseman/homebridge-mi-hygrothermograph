@@ -24,7 +24,7 @@ class ServiceMock {
   }
 }
 
-const logMock = { debug() {}, error() {}, warn() {} };
+const logMock = { debug() {}, error() {}, warn() {}, info() {} };
 
 class NobleMock extends EventEmitter {
   startScanning() {}
@@ -48,13 +48,6 @@ class PeripheralMock {
   }
 }
 
-class AccessoryMock {
-  constructor(log, config) {
-    this.log = log;
-    this.config = config;
-  }
-}
-
 class FakeGatoHistoryServiceMock {
   addEntry() {}
 }
@@ -68,12 +61,9 @@ class ParseMock {
   }
 }
 
-class MQTTMock {
-  connect() {
-    return {
-      publish: () => {}
-    };
-  }
+class MQTTMock extends EventEmitter {
+  publish() {}
+  end() {}
 }
 
 module.exports = {
@@ -81,9 +71,8 @@ module.exports = {
   ServiceMock,
   PeripheralMock,
   ParseMock,
-  AccessoryMock,
   FakeGatoHistoryServiceMock,
   mockLogger: logMock,
   nobleMock: new NobleMock(),
-  mqttMock: new MQTTMock()
+  mqttMock: { connect: () => new MQTTMock() }
 };

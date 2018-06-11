@@ -7,6 +7,7 @@ const {
   ServiceMock,
   FakeGatoHistoryServiceMock,
   nobleMock,
+  mqttMock,
   mockLogger
 } = require("./mocks");
 
@@ -49,7 +50,8 @@ describe("accessory", () => {
       "./scanner": {
         Scanner
       },
-      "fakegato-history": () => FakeGatoHistoryServiceMock
+      "fakegato-history": () => FakeGatoHistoryServiceMock,
+      mqtt: mqttMock
     })(this.homebridgeMock);
 
     this.HygrothermographAccessory = HygrothermographAccessory;
@@ -57,6 +59,11 @@ describe("accessory", () => {
 
   afterEach(() => {
     nobleMock.removeAllListeners();
+  });
+
+  it("should initialize without config param", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger);
+    assert(accessory.config);
   });
 
   it("should update current temperature", () => {
@@ -100,6 +107,7 @@ describe("accessory", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit("error", new Error("error"));
     assert(spyLogger.called);
+    spyLogger.restore();
   });
 
   it("should answer temperature characteristic get value", () => {
@@ -387,5 +395,87 @@ describe("accessory", () => {
     assert(spy.called);
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
     assert.strictEqual(spy.args[0][0].temp, 28.0);
+  });
+
+  it("should publish temperature to mqtt", () => {
+    const topic = "sensors/temperature";
+    const value = 19.0;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        temperatureTopic: topic
+      }
+    });
+    assert.notEqual(accessory.mqttClient, null);
+    const publishSpy = sinon.spy(accessory.mqttClient, "publish");
+    accessory.temperature = value;
+    accessory.battery = 10;
+    assert(publishSpy.calledOnce);
+    assert.strictEqual(publishSpy.args[0][0], topic);
+    assert.strictEqual(publishSpy.args[0][1], String(value));
+  });
+
+  it("should publish humidity to mqtt", () => {
+    const topic = "sensors/humidity";
+    const value = 25.5;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        humidityTopic: topic
+      }
+    });
+    assert.notEqual(accessory.mqttClient, null);
+    const publishSpy = sinon.spy(accessory.mqttClient, "publish");
+    accessory.humidity = value;
+    accessory.temperature = 23;
+    assert(publishSpy.calledOnce);
+    assert.strictEqual(publishSpy.args[0][0], topic);
+    assert.strictEqual(publishSpy.args[0][1], String(value));
+  });
+
+  it("should publish battery to mqtt", () => {
+    const topic = "sensors/battery";
+    const value = 93;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        batteryTopic: topic
+      }
+    });
+    assert.notEqual(accessory.mqttClient, null);
+    const publishSpy = sinon.spy(accessory.mqttClient, "publish");
+    accessory.batteryLevel = value;
+    accessory.temperature = 23;
+    assert(publishSpy.calledOnce);
+    assert.strictEqual(publishSpy.args[0][0], topic);
+    assert.strictEqual(publishSpy.args[0][1], String(value));
+  });
+
+  it("should not configure mqtt client when not configured", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.equal(accessory.mqttClient, null);
+  });
+
+  it("should log on mqtt events", () => {
+    const spyErrorLogger = sinon.spy(mockLogger, "error");
+    const spyInfoLogger = sinon.spy(mockLogger, "info");
+    const spyDebugLogger = sinon.spy(mockLogger, "debug");
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      mqtt: {
+        url: "mqtt://127.0.0.1",
+        batteryTopic: "battery/"
+      }
+    });
+    spyDebugLogger.restore();
+    accessory.mqttClient.emit("error", new Error("error"));
+    assert(spyErrorLogger.calledOnce);
+    accessory.mqttClient.emit("connect");
+    assert(spyInfoLogger.calledOnce);
+    spyInfoLogger.restore();
+    accessory.mqttClient.emit("close");
+    assert(spyDebugLogger.called);
+    spyDebugLogger.restore();
+    accessory.mqttClient.emit("reconnect");
+    assert(spyDebugLogger.calledOnce);
   });
 });

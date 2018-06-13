@@ -166,4 +166,28 @@ describe("scanner", () => {
     nobleMock.emit("discover", peripheral);
     assert(eventSpy.calledWith(sinon.match.instanceOf(Error)));
   });
+
+  it("should log on scanStart", () => {
+    const spyDebugLogger = sinon.spy(mockLogger, "debug");
+    new Scanner(mockLogger, "ABC");
+    nobleMock.emit("scanStart");
+    assert(spyDebugLogger.called);
+    spyDebugLogger.restore();
+  });
+
+  it("should log on scanStop", () => {
+    const spyDebugLogger = sinon.spy(mockLogger, "debug");
+    new Scanner(mockLogger, "ABC");
+    nobleMock.emit("scanStop");
+    assert(spyDebugLogger.called);
+    spyDebugLogger.restore();
+  });
+
+  it("should log on warning", () => {
+    const spyInfoLogger = sinon.spy(mockLogger, "info");
+    new Scanner(mockLogger, "ABC");
+    nobleMock.emit("warning", "some warning");
+    assert(spyInfoLogger.called);
+    spyInfoLogger.restore();
+  });
 });

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.1
+* More detailed logging.
+
 ## 1.7.0
 * Add support for publishing temperature/humidity/battery values to MQTT topics.
 

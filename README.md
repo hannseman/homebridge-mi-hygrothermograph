@@ -84,6 +84,14 @@ Update your Homebridge `config.json` and specify the `address` key:
 
 Note that this step is also required when running [Mi Flora](https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/) devices in the same location as they use the same protocol and their data will be intercepted by this plugin.
 
+#### MacOS
+
+On MacOS `hcitool` can't be used since MacOS does not provide a way to read the MAC-address of a BLE device. 
+Instead MacOS assigns a device unique identifier for each BLE device in the format of `5C61F8CE-9F0B-4371-B996-5C9AE0E0D14B`. 
+This identifier can be found using iOS apps like [nRF Connect](https://itunes.apple.com/us/app/nrf-connect/id1054362403) 
+or MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/). Use this identifier as `address` in the configuration file.
+
+
 ### Timeout
 If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
 that the accessory is not responsive by returning an error until it receives an updated value.

@@ -32,8 +32,13 @@ class NobleMock extends EventEmitter {
 }
 
 class PeripheralMock {
-  constructor(event, address = "4c:65:a8:d0:ae:64", uuid = "fe95") {
-    this.id = "4c65a8d0ae65";
+  constructor(
+    event,
+    address = "4c:65:a8:d0:ae:64",
+    id = "4c65a8d0ae65",
+    uuid = "fe95"
+  ) {
+    this.id = id;
     this.address = address;
     this.rssi = -67;
     this.advertisement = {

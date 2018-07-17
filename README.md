@@ -10,7 +10,7 @@ Make sure your system matches the prerequisites. You need to have a C compiler a
 
 [Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor. 
 
- These libraries and their dependencies are required by [Noble](https://www.npmjs.com/package/noble) package and provide access to the kernel Bluetooth subsystem.
+ These libraries and their dependencies are required by [Noble](https://www.npmjs.com/package/noble) package and provide access to the kernel Bluetooth subsystem:
 
 ```sh
 sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
@@ -52,8 +52,8 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `humidityName`    | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
 | `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
 | `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
-| `fakeGatoStoragePath` |             | Custom path where to save fakegato history. |
-| `mqtt` |             | Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
+| `fakeGatoStoragePath` |             | Optional. Custom path where to save fakegato history. |
+| `mqtt` |             | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
 
 
 ### Multiple sensors 

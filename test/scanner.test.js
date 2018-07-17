@@ -108,11 +108,36 @@ describe("scanner", () => {
     assert(eventSpy.calledWith(21.7));
   });
 
+  it("should discover peripherals with matching id", () => {
+    const eventSpy = sinon.spy();
+    const uuid = "f4f7f9907f7c4d5a8c9f8c264e9baa7d";
+    const wrongPeripheral = new PeripheralMock(
+      sensorData.temperatureAndHumidity,
+      "unknown",
+      "a09e0b69-0742-4353-b7e7-653fa4f2993b"
+    );
+    const correctPeripheral = new PeripheralMock(
+      sensorData.temperatureAndHumidity,
+      "unknown",
+      uuid
+    );
+    const scanner = new Scanner(
+      mockLogger,
+      "f4f7f990-7f7c-4d5a-8c9f-8c264e9baa7d"
+    );
+    scanner.on("temperatureChange", eventSpy);
+    nobleMock.emit("discover", wrongPeripheral);
+    assert(eventSpy.notCalled);
+    nobleMock.emit("discover", correctPeripheral);
+    assert(eventSpy.calledWith(21.7));
+  });
+
   it("should discard wrongs uuids", () => {
     const eventSpy = sinon.spy();
     this.scanner.on("temperatureChange", eventSpy);
     const peripheral = new PeripheralMock(
       sensorData.temperature,
+      "123",
       "123",
       "deadbeef"
     );
@@ -189,5 +214,15 @@ describe("scanner", () => {
     nobleMock.emit("warning", "some warning");
     assert(spyInfoLogger.called);
     spyInfoLogger.restore();
+  });
+
+  it("should clean addresses", () => {
+    const address = "de:ad:be:ef";
+    const scanner = new Scanner(mockLogger, address);
+    assert.deepEqual(scanner.cleanAddress(scanner.address), "deadbeef");
+    assert.deepEqual(
+      scanner.cleanAddress("F4F7F990-7F7C-4D5A-8C9F-8C264E9BAA7D"),
+      "f4f7f9907f7c4d5a8c9f8c264e9baa7d"
+    );
   });
 });

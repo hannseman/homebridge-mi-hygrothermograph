@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.0
+* Add support for MacOS-style bluetooth addresses.
+
 ## 1.7.1
 * More detailed logging.
 

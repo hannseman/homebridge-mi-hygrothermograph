@@ -37,18 +37,18 @@
     "node": ">=6.14.0"
   },
   "dependencies": {
-    "fakegato-history": "^0.5.1",
-    "mqtt": "^2.18.1",
+    "fakegato-history": "^0.5.2",
+    "mqtt": "^2.18.2",
     "noble": "^1.9.1"
   },
   "devDependencies": {
-    "coveralls": "^3.0.1",
+    "coveralls": "^3.0.2",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-prettier": "^2.6.1",
+    "eslint-plugin-prettier": "^2.6.2",
     "mocha": "^5.2.0",
     "nyc": "^11.9.0",
-    "prettier": "^1.13.5",
+    "prettier": "^1.13.7",
     "proxyquire": "^2.0.1",
     "sinon": "^4.5.0"
   }

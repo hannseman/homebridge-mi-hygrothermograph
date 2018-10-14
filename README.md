@@ -31,6 +31,12 @@ See the [Homebridge documentation](https://github.com/nfarina/homebridge#readme)
 If you are running Homebridge as another user than `root`  (you should) then some additional configuration needs to be made to allow [Node.js](https://nodejs.org/) access to the kernel Bluetooth subsystem without root privileges. 
 Please see the [Noble documentation](https://github.com/noble/noble#running-without-rootsudo) for instructions.
 
+### Issues
+
+* At the moment [Noble](https://www.npmjs.com/package/noble) does not support [MacOS 10.14](https://github.com/noble/noble/pull/804).
+* At the moment [Noble](https://www.npmjs.com/package/noble) does not support [Node 10](https://github.com/noble/node-bluetooth-hci-socket/issues/84).
+
+
 ## Homebridge configuration
 Update your Homebridge `config.json` file. See [config-sample.json](config-sample.json) for a complete example.
 

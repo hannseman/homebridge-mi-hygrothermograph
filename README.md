@@ -7,7 +7,7 @@
 
 ## Installation
 Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) installed. 
-Until some issues in [Noble](https://github.com/noble/noble) are resolved Node.js 8 is latest version supported. (see [Known issues](#known-issues)).
+Until some issues in [Noble](https://github.com/noble/noble) are resolved Node.js 10 and later are _not_ supported. See [Known issues](#known-issues) for details.
 
 [Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor. 
 

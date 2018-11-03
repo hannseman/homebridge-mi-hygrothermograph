@@ -34,7 +34,7 @@
   ],
   "engines": {
     "homebridge": ">=0.4.0",
-    "node": ">=6.14.0"
+    "node": ">=6.14.0 <10.0.0"
   },
   "dependencies": {
     "fakegato-history": "^0.5.2",

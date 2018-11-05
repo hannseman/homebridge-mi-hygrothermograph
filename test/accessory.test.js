@@ -478,4 +478,17 @@ describe("accessory", () => {
     accessory.mqttClient.emit("reconnect");
     assert(spyDebugLogger.calledOnce);
   });
+
+  it("should set forceDiscovering to false when not set", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.strictEqual(accessory.forceDiscovering, false);
+  });
+
+  it("should pass forceDiscovering to scanner", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      forceDiscovering: true
+    });
+    assert.strictEqual(accessory.forceDiscovering, true);
+    assert.strictEqual(accessory.scanner.forceDiscovering, true);
+  });
 });

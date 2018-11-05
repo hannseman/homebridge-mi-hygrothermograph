@@ -66,6 +66,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
 | `fakeGatoStoragePath` |             | Optional. Custom path where to save fakegato history. |
 | `mqtt` |             | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
+| `forceDiscovering` | `false`         | Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting `forceDiscovering` to `true` will start scanning again in these cases. |
 
 
 ### Multiple sensors 

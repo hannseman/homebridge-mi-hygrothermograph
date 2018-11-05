@@ -166,9 +166,11 @@ describe("scanner", () => {
 
     this.scanner.start();
     nobleMock.emit("stateChange", "poweredOn");
+    assert(this.scanner.scanning);
     assert(startScanningStub.called);
     nobleMock.emit("stateChange", "poweredOff");
     assert(stopScanningStub.called);
+    assert(this.scanner.scanning === false);
   });
 
   it("should handle unknown event type", () => {
@@ -201,11 +203,11 @@ describe("scanner", () => {
   });
 
   it("should log on scanStop", () => {
-    const spyDebugLogger = sinon.spy(mockLogger, "debug");
+    const spyInfoLogger = sinon.spy(mockLogger, "info");
     new Scanner(mockLogger, "ABC");
     nobleMock.emit("scanStop");
-    assert(spyDebugLogger.called);
-    spyDebugLogger.restore();
+    assert(spyInfoLogger.called);
+    spyInfoLogger.restore();
   });
 
   it("should log on warning", () => {
@@ -224,5 +226,31 @@ describe("scanner", () => {
       scanner.cleanAddress("F4F7F990-7F7C-4D5A-8C9F-8C264E9BAA7D"),
       "f4f7f9907f7c4d5a8c9f8c264e9baa7d"
     );
+  });
+
+  it("should retry on scanStop when forceDiscovering is true", () => {
+    const clock = sinon.useFakeTimers();
+    const scanner = new Scanner(mockLogger, "de:ad:be:ef", true);
+    scanner.start();
+    nobleMock.emit("stateChange", "poweredOn");
+    const startSpy = sinon.spy(scanner, "start");
+    nobleMock.emit("scanStop");
+    clock.tick(5001);
+    assert(startSpy.called);
+    startSpy.restore();
+    clock.restore();
+  });
+
+  it("should not retry on scanStop when forceDiscovering is false", () => {
+    const clock = sinon.useFakeTimers();
+    const scanner = new Scanner(mockLogger, "de:ad:be:ef", false);
+    scanner.start();
+    nobleMock.emit("stateChange", "poweredOn");
+    const startSpy = sinon.spy(scanner, "start");
+    nobleMock.emit("scanStop");
+    clock.tick(scanner.restartDelay + 1);
+    assert(startSpy.notCalled);
+    startSpy.restore();
+    clock.restore();
   });
 });

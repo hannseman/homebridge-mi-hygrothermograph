@@ -164,7 +164,6 @@ describe("scanner", () => {
     const startScanningStub = sinon.stub(nobleMock, "startScanning");
     const stopScanningStub = sinon.stub(nobleMock, "stopScanning");
 
-    this.scanner.start();
     nobleMock.emit("stateChange", "poweredOn");
     assert(this.scanner.scanning);
     assert(startScanningStub.called);
@@ -183,7 +182,6 @@ describe("scanner", () => {
       }
     });
     const scanner = new mockedScanner.Scanner(mockLogger);
-    scanner.start();
     const peripheral = new PeripheralMock(
       Buffer.from("5020aa01a164aed0a8654c0610025d01", "hex")
     );
@@ -231,7 +229,6 @@ describe("scanner", () => {
   it("should retry on scanStop when forceDiscovering is true", () => {
     const clock = sinon.useFakeTimers();
     const scanner = new Scanner(mockLogger, "de:ad:be:ef", true);
-    scanner.start();
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");
     nobleMock.emit("scanStop");
@@ -244,7 +241,6 @@ describe("scanner", () => {
   it("should not retry on scanStop when forceDiscovering is false", () => {
     const clock = sinon.useFakeTimers();
     const scanner = new Scanner(mockLogger, "de:ad:be:ef", false);
-    scanner.start();
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");
     nobleMock.emit("scanStop");

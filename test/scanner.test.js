@@ -170,6 +170,17 @@ describe("scanner", () => {
     nobleMock.emit("stateChange", "poweredOff");
     assert(stopScanningStub.called);
     assert(this.scanner.scanning === false);
+    startScanningStub.restore();
+    stopScanningStub.restore();
+  });
+
+  it("should handle error on startScanning", () => {
+    const startScanningStub = sinon.stub(nobleMock, "startScanning");
+    startScanningStub.throws("error");
+    nobleMock.emit("stateChange", "poweredOn");
+    assert(startScanningStub.called);
+    assert(this.scanner.scanning === false);
+    startScanningStub.restore();
   });
 
   it("should handle unknown event type", () => {
@@ -228,6 +239,7 @@ describe("scanner", () => {
 
   it("should retry on scanStop when forceDiscovering is true", () => {
     const clock = sinon.useFakeTimers();
+    const startScanningStub = sinon.stub(nobleMock, "startScanning");
     const scanner = new Scanner(mockLogger, "de:ad:be:ef", true);
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");
@@ -236,6 +248,7 @@ describe("scanner", () => {
     assert(startSpy.called);
     startSpy.restore();
     clock.restore();
+    startScanningStub.restore();
   });
 
   it("should not retry on scanStop when forceDiscovering is false", () => {

@@ -479,16 +479,31 @@ describe("accessory", () => {
     assert(spyDebugLogger.calledOnce);
   });
 
-  it("should set forceDiscovering to false when not set", () => {
+  it("should set forceDiscovering to true when not set", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    assert.strictEqual(accessory.forceDiscovering, false);
+    assert.strictEqual(accessory.forceDiscovering, true);
   });
 
   it("should pass forceDiscovering to scanner", () => {
-    const accessory = new this.HygrothermographAccessory(mockLogger, {
-      forceDiscovering: true
-    });
-    assert.strictEqual(accessory.forceDiscovering, true);
-    assert.strictEqual(accessory.scanner.forceDiscovering, true);
+    const accessoryForcedDiscovery = new this.HygrothermographAccessory(
+      mockLogger,
+      {
+        forceDiscovering: true
+      }
+    );
+    assert.strictEqual(accessoryForcedDiscovery.forceDiscovering, true);
+    assert.strictEqual(accessoryForcedDiscovery.scanner.forceDiscovering, true);
+
+    const accessoryNotForcedDiscovery = new this.HygrothermographAccessory(
+      mockLogger,
+      {
+        forceDiscovering: false
+      }
+    );
+    assert.strictEqual(accessoryNotForcedDiscovery.forceDiscovering, false);
+    assert.strictEqual(
+      accessoryNotForcedDiscovery.scanner.forceDiscovering,
+      false
+    );
   });
 });

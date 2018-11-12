@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0 (UNRELEASED)
+* MQTT-configuration now supports all available MQTT.js client options
+* Update dependencies.
+
 ## 1.8.0
 * Add support for MacOS-style bluetooth addresses.
 

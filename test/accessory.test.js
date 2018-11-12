@@ -506,4 +506,17 @@ describe("accessory", () => {
       false
     );
   });
+
+  it("should set scanner.restartDelay to default when not set", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert.strictEqual(accessory.scanner.restartDelay, 2500);
+  });
+
+  it("should set scanner.restartDelay when forceDiscoveringDelay is configured", () => {
+    const forceDiscoveringDelay = 2500;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      forceDiscoveringDelay
+    });
+    assert.strictEqual(accessory.scanner.restartDelay, forceDiscoveringDelay);
+  });
 });

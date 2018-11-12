@@ -67,6 +67,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `fakeGatoStoragePath` |             | Optional. Custom path where to save fakegato history. |
 | `mqtt` |             | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
 | `forceDiscovering` | `true`         | Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting `forceDiscovering` to `true` will start scanning again in these cases. |
+| `forceDiscoveringDelay` | `2500`    | The delay for when to start scanning again when stopped. Only applicable if `forceDiscovering` is `true`. |
 
 
 ### Multiple sensors 

@@ -149,6 +149,10 @@ describe("parser", () => {
     assert.throws(() => new Parser(buffer), Error);
   });
 
+  it("should parse fail on missing buffer", () => {
+    assert.throws(() => new Parser(), Error);
+  });
+
   it("should parse fail on invalid eventtype", () => {
     const buffer = Buffer.from("5020aa014e64aed0a8654c0a11015d", "hex");
     assert.throws(() => new Parser(buffer).parse(), Error);

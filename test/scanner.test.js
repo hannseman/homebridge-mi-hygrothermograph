@@ -24,7 +24,7 @@ describe("scanner", () => {
   };
 
   beforeEach(() => {
-    this.scanner = new Scanner(mockLogger);
+    this.scanner = new Scanner(null, { log: mockLogger });
   });
 
   afterEach(() => {
@@ -100,7 +100,7 @@ describe("scanner", () => {
       sensorData.temperatureAndHumidity,
       "abc"
     );
-    const scanner = new Scanner(mockLogger, "ABC");
+    const scanner = new Scanner("ABC", { log: mockLogger });
     scanner.on("temperatureChange", eventSpy);
     nobleMock.emit("discover", wrongPeripheral);
     assert(eventSpy.notCalled);
@@ -121,10 +121,9 @@ describe("scanner", () => {
       "unknown",
       uuid
     );
-    const scanner = new Scanner(
-      mockLogger,
-      "f4f7f990-7f7c-4d5a-8c9f-8c264e9baa7d"
-    );
+    const scanner = new Scanner("f4f7f990-7f7c-4d5a-8c9f-8c264e9baa7d", {
+      log: mockLogger
+    });
     scanner.on("temperatureChange", eventSpy);
     nobleMock.emit("discover", wrongPeripheral);
     assert(eventSpy.notCalled);
@@ -192,7 +191,7 @@ describe("scanner", () => {
         EventTypes
       }
     });
-    const scanner = new mockedScanner.Scanner(mockLogger);
+    const scanner = new mockedScanner.Scanner(null, { log: mockLogger });
     const peripheral = new PeripheralMock(
       Buffer.from("5020aa01a164aed0a8654c0610025d01", "hex")
     );
@@ -205,7 +204,7 @@ describe("scanner", () => {
 
   it("should log on scanStart", () => {
     const spyDebugLogger = sinon.spy(mockLogger, "debug");
-    new Scanner(mockLogger, "ABC");
+    new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("scanStart");
     assert(spyDebugLogger.called);
     spyDebugLogger.restore();
@@ -213,7 +212,7 @@ describe("scanner", () => {
 
   it("should log on scanStop", () => {
     const spyInfoLogger = sinon.spy(mockLogger, "info");
-    new Scanner(mockLogger, "ABC");
+    new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("scanStop");
     assert(spyInfoLogger.called);
     spyInfoLogger.restore();
@@ -221,7 +220,7 @@ describe("scanner", () => {
 
   it("should log on warning", () => {
     const spyInfoLogger = sinon.spy(mockLogger, "info");
-    new Scanner(mockLogger, "ABC");
+    new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("warning", "some warning");
     assert(spyInfoLogger.called);
     spyInfoLogger.restore();
@@ -229,7 +228,7 @@ describe("scanner", () => {
 
   it("should clean addresses", () => {
     const address = "de:ad:be:ef";
-    const scanner = new Scanner(mockLogger, address);
+    const scanner = new Scanner(address, { log: mockLogger });
     assert.deepEqual(scanner.cleanAddress(scanner.address), "deadbeef");
     assert.deepEqual(
       scanner.cleanAddress("F4F7F990-7F7C-4D5A-8C9F-8C264E9BAA7D"),
@@ -240,7 +239,10 @@ describe("scanner", () => {
   it("should retry on scanStop when forceDiscovering is true", () => {
     const clock = sinon.useFakeTimers();
     const startScanningStub = sinon.stub(nobleMock, "startScanning");
-    const scanner = new Scanner(mockLogger, "de:ad:be:ef", true);
+    const scanner = new Scanner("de:ad:be:ef", {
+      log: mockLogger,
+      forceDiscovering: true
+    });
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");
     nobleMock.emit("scanStop");
@@ -253,7 +255,10 @@ describe("scanner", () => {
 
   it("should not retry on scanStop when forceDiscovering is false", () => {
     const clock = sinon.useFakeTimers();
-    const scanner = new Scanner(mockLogger, "de:ad:be:ef", false);
+    const scanner = new Scanner("de:ad:be:ef", {
+      log: mockLogger,
+      forceDiscovering: false
+    });
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");
     nobleMock.emit("scanStop");
@@ -261,5 +266,10 @@ describe("scanner", () => {
     assert(startSpy.notCalled);
     startSpy.restore();
     clock.restore();
+  });
+
+  it("should default logger to console.log", () => {
+    const scanner = new Scanner("de:ad:be:ef");
+    assert.strictEqual(scanner.log, console);
   });
 });

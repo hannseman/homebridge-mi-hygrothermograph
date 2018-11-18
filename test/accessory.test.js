@@ -481,7 +481,7 @@ describe("accessory", () => {
 
   it("should set forceDiscovering to true when not set", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    assert.strictEqual(accessory.forceDiscovering, true);
+    assert.strictEqual(accessory.scanner.forceDiscovering, true);
   });
 
   it("should pass forceDiscovering to scanner", () => {
@@ -491,7 +491,6 @@ describe("accessory", () => {
         forceDiscovering: true
       }
     );
-    assert.strictEqual(accessoryForcedDiscovery.forceDiscovering, true);
     assert.strictEqual(accessoryForcedDiscovery.scanner.forceDiscovering, true);
 
     const accessoryNotForcedDiscovery = new this.HygrothermographAccessory(
@@ -500,7 +499,6 @@ describe("accessory", () => {
         forceDiscovering: false
       }
     );
-    assert.strictEqual(accessoryNotForcedDiscovery.forceDiscovering, false);
     assert.strictEqual(
       accessoryNotForcedDiscovery.scanner.forceDiscovering,
       false

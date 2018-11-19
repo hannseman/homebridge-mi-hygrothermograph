@@ -352,7 +352,7 @@ describe("accessory", () => {
     );
   });
 
-  it("should add temperature entry", () => {
+  it("should add temperature  fakegato entry", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {
       fakeGatoEnabled: true
     });
@@ -364,7 +364,7 @@ describe("accessory", () => {
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
   });
 
-  it("should add humidity entry", () => {
+  it("should add humidity fakegato entry", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {
       fakeGatoEnabled: true
     });

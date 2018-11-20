@@ -233,7 +233,6 @@ describe("scanner", () => {
 
   it("should retry on scanStop when forceDiscovering is true", () => {
     const clock = sinon.useFakeTimers();
-    const startScanningStub = sinon.stub(nobleMock, "startScanning");
     const scanner = new Scanner("de:ad:be:ef", {
       log: mockLogger,
       forceDiscovering: true

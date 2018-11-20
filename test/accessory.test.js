@@ -135,9 +135,7 @@ describe("accessory", () => {
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
     accessory.temperature = 25;
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * accessory.timeout
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * accessory.timeout);
     characteristic.emit("get", temperatureSpy);
     assert(temperatureSpy.calledWith(sinon.match.instanceOf(Error)));
   });
@@ -167,9 +165,7 @@ describe("accessory", () => {
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
     accessory.humidity = 30;
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * accessory.timeout
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * accessory.timeout);
     characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(sinon.match.instanceOf(Error)));
   });
@@ -223,9 +219,7 @@ describe("accessory", () => {
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
     accessory.batteryLevel = 99;
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * accessory.timeout
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * accessory.timeout);
     characteristic.emit("get", batterySpy);
     assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
   });
@@ -252,18 +246,14 @@ describe("accessory", () => {
   it("should return timed out true when timed out", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.lastUpdatedAt = Date.now();
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * (accessory.timeout + 15)
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * (accessory.timeout + 15));
     assert(accessory.hasTimedOut());
   });
 
   it("should return timed out false when not timed out", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.lastUpdatedAt = Date.now();
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * (accessory.timeout - 5)
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * (accessory.timeout - 5));
     assert(!accessory.hasTimedOut());
   });
 
@@ -272,17 +262,13 @@ describe("accessory", () => {
       timeout: 0
     });
     accessory.lastUpdatedAt = Date.now();
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * (accessory.timeout + 15)
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * (accessory.timeout + 15));
     assert(!accessory.hasTimedOut());
   });
 
   it("should return timed out false with undefined timestamp", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    const clock = sinon.useFakeTimers(
-      Date.now() + 1000 * 60 * (accessory.timeout + 15)
-    );
+    sinon.useFakeTimers(Date.now() + 1000 * 60 * (accessory.timeout + 15));
     assert(!accessory.hasTimedOut());
   });
 

@@ -29,6 +29,7 @@ describe("scanner", () => {
 
   afterEach(() => {
     nobleMock.removeAllListeners();
+    sinon.restore();
   });
 
   it("should discover temperature event", () => {
@@ -169,8 +170,6 @@ describe("scanner", () => {
     nobleMock.emit("stateChange", "poweredOff");
     assert(stopScanningStub.called);
     assert(this.scanner.scanning === false);
-    startScanningStub.restore();
-    stopScanningStub.restore();
   });
 
   it("should handle error on startScanning", () => {
@@ -179,7 +178,6 @@ describe("scanner", () => {
     nobleMock.emit("stateChange", "poweredOn");
     assert(startScanningStub.called);
     assert(this.scanner.scanning === false);
-    startScanningStub.restore();
   });
 
   it("should handle unknown event type", () => {
@@ -207,7 +205,6 @@ describe("scanner", () => {
     new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("scanStart");
     assert(spyDebugLogger.called);
-    spyDebugLogger.restore();
   });
 
   it("should log on scanStop", () => {
@@ -215,7 +212,6 @@ describe("scanner", () => {
     new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("scanStop");
     assert(spyInfoLogger.called);
-    spyInfoLogger.restore();
   });
 
   it("should log on warning", () => {
@@ -223,7 +219,6 @@ describe("scanner", () => {
     new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("warning", "some warning");
     assert(spyInfoLogger.called);
-    spyInfoLogger.restore();
   });
 
   it("should clean addresses", () => {
@@ -248,9 +243,6 @@ describe("scanner", () => {
     nobleMock.emit("scanStop");
     clock.tick(5001);
     assert(startSpy.called);
-    startSpy.restore();
-    clock.restore();
-    startScanningStub.restore();
   });
 
   it("should not retry on scanStop when forceDiscovering is false", () => {
@@ -264,8 +256,6 @@ describe("scanner", () => {
     nobleMock.emit("scanStop");
     clock.tick(scanner.restartDelay + 1);
     assert(startSpy.notCalled);
-    startSpy.restore();
-    clock.restore();
   });
 
   it("should default logger to console.log", () => {

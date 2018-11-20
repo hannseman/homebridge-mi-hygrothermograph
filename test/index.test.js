@@ -4,6 +4,10 @@ const { describe, it } = require("mocha");
 const sinon = require("sinon");
 
 describe("index", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
   it("should export accessory", () => {
     const registerStub = sinon.stub();
     const accessoryStub = sinon.stub();

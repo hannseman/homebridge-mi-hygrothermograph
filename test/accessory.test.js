@@ -59,6 +59,7 @@ describe("accessory", () => {
 
   afterEach(() => {
     nobleMock.removeAllListeners();
+    sinon.restore();
   });
 
   it("should initialize without config param", () => {
@@ -107,7 +108,6 @@ describe("accessory", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     accessory.scanner.emit("error", new Error("error"));
     assert(spyLogger.called);
-    spyLogger.restore();
   });
 
   it("should answer temperature characteristic get value", () => {
@@ -140,7 +140,6 @@ describe("accessory", () => {
     );
     characteristic.emit("get", temperatureSpy);
     assert(temperatureSpy.calledWith(sinon.match.instanceOf(Error)));
-    clock.restore();
   });
 
   it("should answer humidity characteristic get value", () => {
@@ -173,7 +172,6 @@ describe("accessory", () => {
     );
     characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(sinon.match.instanceOf(Error)));
-    clock.restore();
   });
 
   it("should answer low battery characteristic get value", () => {
@@ -230,7 +228,6 @@ describe("accessory", () => {
     );
     characteristic.emit("get", batterySpy);
     assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
-    clock.restore();
   });
 
   it("should return all services", () => {
@@ -259,7 +256,6 @@ describe("accessory", () => {
       Date.now() + 1000 * 60 * (accessory.timeout + 15)
     );
     assert(accessory.hasTimedOut());
-    clock.restore();
   });
 
   it("should return timed out false when not timed out", () => {
@@ -269,7 +265,6 @@ describe("accessory", () => {
       Date.now() + 1000 * 60 * (accessory.timeout - 5)
     );
     assert(!accessory.hasTimedOut());
-    clock.restore();
   });
 
   it("should return timed out false when set as 0", () => {
@@ -281,7 +276,6 @@ describe("accessory", () => {
       Date.now() + 1000 * 60 * (accessory.timeout + 15)
     );
     assert(!accessory.hasTimedOut());
-    clock.restore();
   });
 
   it("should return timed out false with undefined timestamp", () => {
@@ -290,7 +284,6 @@ describe("accessory", () => {
       Date.now() + 1000 * 60 * (accessory.timeout + 15)
     );
     assert(!accessory.hasTimedOut());
-    clock.restore();
   });
 
   it("should have custom temperature name when configured", () => {
@@ -466,17 +459,15 @@ describe("accessory", () => {
         batteryTopic: "battery/"
       }
     });
-    spyDebugLogger.restore();
+    assert.strictEqual(spyDebugLogger.callCount, 1);
     accessory.mqttClient.emit("error", new Error("error"));
     assert(spyErrorLogger.calledOnce);
     accessory.mqttClient.emit("connect");
     assert(spyInfoLogger.calledOnce);
-    spyInfoLogger.restore();
     accessory.mqttClient.emit("close");
-    assert(spyDebugLogger.called);
-    spyDebugLogger.restore();
+    assert.strictEqual(spyDebugLogger.callCount, 2);
     accessory.mqttClient.emit("reconnect");
-    assert(spyDebugLogger.calledOnce);
+    assert.strictEqual(spyDebugLogger.callCount, 3);
   });
 
   it("should set forceDiscovering to true when not set", () => {

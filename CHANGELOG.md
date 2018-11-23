@@ -1,19 +1,29 @@
 # Changelog
 
-## 1.9.0 (UNRELEASED)
+## 1.9.0
+
+* Keep trying to scan for devices even when stopped by external party. This can be disabled by setting `forceDiscovering` to `false`.
 * MQTT-configuration now supports all available MQTT.js client options
 * Update dependencies.
+* Better handling of default arguments.
+* Better error logging related to parse errors.
+* Make it clearer that Node <=10 is not supported at the moment due to issues in Noble.
+* Make it clearer that MacOS Mojave is not supported.
 
 ## 1.8.0
+
 * Add support for MacOS-style bluetooth addresses.
 
 ## 1.7.1
+
 * More detailed logging.
 
 ## 1.7.0
+
 * Add support for publishing temperature/humidity/battery values to MQTT topics.
 
 ## 1.6.0
+
 * Correctly parse the MAC address as 48-bits.
 * Extend parser to support data emitted by Mi Flora devices. Note that the data from these devices are not actually exposed to Homekit.
 * General cleanup and refactoring.

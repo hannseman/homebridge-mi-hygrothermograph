@@ -12,7 +12,7 @@ const {
 } = require("./mocks");
 
 const { Scanner } = proxyquire("../lib/scanner", {
-  noble: nobleMock
+  '@abandonware/noble': nobleMock
 });
 
 describe("accessory", () => {

@@ -6,7 +6,7 @@ const { PeripheralMock, ParseMock, nobleMock, mockLogger } = require("./mocks");
 const { EventTypes, SERVICE_DATA_UUID } = require("../lib/parser");
 
 const { Scanner } = proxyquire("../lib/scanner", {
-  noble: nobleMock
+  "@abandonware/noble": nobleMock
 });
 
 describe("scanner", () => {
@@ -182,7 +182,7 @@ describe("scanner", () => {
 
   it("should handle unknown event type", () => {
     const mockedScanner = proxyquire("../lib/scanner", {
-      noble: nobleMock,
+      "@abandonware/noble": nobleMock,
       "./parser": {
         Parser: ParseMock,
         SERVICE_DATA_UUID,

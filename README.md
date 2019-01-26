@@ -7,7 +7,6 @@
 
 ## Installation
 Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) installed. 
-Until some issues in [Noble](https://github.com/noble/noble) are resolved Node.js 10 and later are _not_ supported. See [Known issues](#known-issues) for details.
 
 [Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor. 
 
@@ -21,7 +20,6 @@ For more detailed information and descriptions for other platforms please see th
 
 ## Known issues
 
-* At the moment [Noble](https://www.npmjs.com/package/noble) does not support Node 10. See [noble/node-bluetooth-hci-socket#84](https://github.com/noble/node-bluetooth-hci-socket/issues/84).
 * At the moment [Noble](https://www.npmjs.com/package/noble) does not support MacOS 10.14 (Mojave). See [noble/noble#804](https://github.com/noble/noble/pull/804).
 
 ### Install homebridge and this plugin 

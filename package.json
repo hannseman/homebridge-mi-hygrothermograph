@@ -39,7 +39,7 @@
   "dependencies": {
     "fakegato-history": "^0.5.3",
     "mqtt": "^2.18.8",
-    "@abandonware/noble": "^1.9.2-1"
+    "@abandonware/noble": "1.9.2-1"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",

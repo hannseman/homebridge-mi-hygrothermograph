@@ -114,7 +114,7 @@ describe("accessory", () => {
     const temperatureSpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentTemperature;
-    accessory.temperature = 23;
+    accessory.setTemperature(23);
     characteristic.emit("get", temperatureSpy);
     assert(temperatureSpy.calledWith(null, 23));
   });
@@ -133,7 +133,7 @@ describe("accessory", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentTemperature;
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
-    accessory.temperature = 25;
+    accessory.setTemperature(25);
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
     sinon.useFakeTimers(Date.now() + 1000 * 60 * accessory.timeout);
     characteristic.emit("get", temperatureSpy);
@@ -144,7 +144,7 @@ describe("accessory", () => {
     const humiditySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentRelativeHumidity;
-    accessory.humidity = 30;
+    accessory.setHumidity(30);
     characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(null, 30));
   });
@@ -163,7 +163,7 @@ describe("accessory", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.CurrentRelativeHumidity;
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
-    accessory.humidity = 30;
+    accessory.setHumidity(30);
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
     sinon.useFakeTimers(Date.now() + 1000 * 60 * accessory.timeout);
     characteristic.emit("get", humiditySpy);
@@ -175,11 +175,11 @@ describe("accessory", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger);
     const characteristic = this.characteristics.StatusLowBattery;
     // Low battery
-    accessory.batteryLevel = 9;
+    accessory.setBatteryLevel(9);
     characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
     // Normal battery
-    accessory.batteryLevel = 15;
+    accessory.setBatteryLevel(15);
     characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_NORMAL));
   });
@@ -218,8 +218,7 @@ describe("accessory", () => {
     const batterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.BatteryLevel;
-    // Low battery
-    accessory.batteryLevel = 99;
+    accessory.setBatteryLevel(99);
     characteristic.emit("get", batterySpy);
     assert(batterySpy.calledWith(null, 99));
   });
@@ -233,12 +232,12 @@ describe("accessory", () => {
     assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
-  it("should error on timeout humidity characteristic get value", () => {
+  it("should error on timeout battery level characteristic get value", () => {
     const batterySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const characteristic = this.characteristics.BatteryLevel;
     assert.strictEqual(accessory.lastUpdatedAt, undefined);
-    accessory.batteryLevel = 99;
+    accessory.setBatteryLevel(99);
     assert.notStrictEqual(accessory.lastUpdatedAt, undefined);
     sinon.useFakeTimers(Date.now() + 1000 * 60 * accessory.timeout);
     characteristic.emit("get", batterySpy);
@@ -379,7 +378,7 @@ describe("accessory", () => {
     });
     const spy = sinon.spy(accessory.fakeGatoHistoryService, "addEntry");
     accessory.latestHumidity = 34.0;
-    accessory.temperature = 28.0;
+    accessory.setTemperature(28.0);
     assert(spy.called);
     assert.strictEqual(spy.args[0][0].temp, 28.0);
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
@@ -391,7 +390,7 @@ describe("accessory", () => {
     });
     const spy = sinon.spy(accessory.fakeGatoHistoryService, "addEntry");
     accessory.latestTemperature = 28.0;
-    accessory.humidity = 34.0;
+    accessory.setHumidity(34.0);
     assert(spy.called);
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
     assert.strictEqual(spy.args[0][0].temp, 28.0);
@@ -408,8 +407,8 @@ describe("accessory", () => {
     });
     assert.notEqual(accessory.mqttClient, null);
     const publishSpy = sinon.spy(accessory.mqttClient, "publish");
-    accessory.temperature = value;
-    accessory.battery = 10;
+    accessory.setTemperature(value);
+    accessory.setBatteryLevel(10);
     assert(publishSpy.calledOnce);
     assert.strictEqual(publishSpy.args[0][0], topic);
     assert.strictEqual(publishSpy.args[0][1], String(value));
@@ -426,8 +425,8 @@ describe("accessory", () => {
     });
     assert.notEqual(accessory.mqttClient, null);
     const publishSpy = sinon.spy(accessory.mqttClient, "publish");
-    accessory.humidity = value;
-    accessory.temperature = 23;
+    accessory.setHumidity(value);
+    accessory.setTemperature(23);
     assert(publishSpy.calledOnce);
     assert.strictEqual(publishSpy.args[0][0], topic);
     assert.strictEqual(publishSpy.args[0][1], String(value));
@@ -444,8 +443,8 @@ describe("accessory", () => {
     });
     assert.notEqual(accessory.mqttClient, null);
     const publishSpy = sinon.spy(accessory.mqttClient, "publish");
-    accessory.batteryLevel = value;
-    accessory.temperature = 23;
+    accessory.setBatteryLevel(value);
+    accessory.setTemperature(23);
     assert(publishSpy.calledOnce);
     assert.strictEqual(publishSpy.args[0][0], topic);
     assert.strictEqual(publishSpy.args[0][1], String(value));

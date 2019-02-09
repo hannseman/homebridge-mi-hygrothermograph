@@ -1,5 +1,5 @@
 # homebridge-mi-hygrothermograph
-[![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Travis](https://img.shields.io/travis/com/hannseman/homebridge-mi-hygrothermograph.svg)](https://travis-ci.com/hannseman/homebridge-mi-hygrothermograph) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
+[![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Travis](https://img.shields.io/travis/hannseman/homebridge-mi-hygrothermograph.svg)](https://travis-ci.org/hannseman/homebridge-mi-hygrothermograph) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
 [Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory.
 
@@ -48,20 +48,21 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 ]
 ```
 
-| Key             | Default       | Description         |
-|-----------------|---------------|---------------------|
-| `accessory`       |                 | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".  |
-| `name`            |                 | Mandatory. The name of this accessory. This will appear in your Home-app. |
-| `address`         |                 | Optional. The address of the device. Used when running multiple devices. |
-| `timeout`         | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. If set to `0`, timeout will be disabled. |
-| `humidityName`    | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
-| `temperatureName` | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. | 
-| `fakeGatoEnabled` | `false`         | If historical data should be reported to the Elgato Eve App. |
-| `fakeGatoStoragePath` |             | Optional. Custom path where to save fakegato history. |
-| `mqtt` |             | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
-| `forceDiscovering` | `true`         | Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting `forceDiscovering` to `true` will start scanning again in these cases. |
-| `forceDiscoveringDelay` | `2500`    | The delay for when to start scanning again when stopped. Only applicable if `forceDiscovering` is `true`. |
-| `lowBattery` | `10`    | At what battery percentage Homekit should start warning about low battery.  |
+| Key                     | Default         | Description         |
+|-------------------------|-----------------|---------------------|
+| `accessory`             |                 | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".  |
+| `name`                  |                 | Mandatory. The name of this accessory. This will appear in your Home-app. |
+| `address`               |                 | Optional. The address of the device. Used when running multiple devices. |
+| `timeout`               | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. If set to `0`, timeout will be disabled. |
+| `humidityName`          | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app. |
+| `temperatureName`       | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app. |
+| `fakeGatoEnabled`       | `false`         | If historical data should be reported to the Elgato Eve App. |
+| `fakeGatoStoragePath`   |                 | Optional. Custom path where to save fakegato history. |
+| `mqtt`                  |                 | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details. |
+| `forceDiscovering`      | `true`          | Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting `forceDiscovering` to `true` will start scanning again in these cases. |
+| `forceDiscoveringDelay` | `2500`          | The delay for when to start scanning again when stopped. Only applicable if `forceDiscovering` is `true`. |
+| `updateInterval`        |                 | By default values will be updated as they come in. Often this is once per second, if this is not desired `updateInterval` can be set to how often updates should be made. Accepts values in seconds. |
+| `lowBattery`            | `10`            | At what battery percentage Homekit should start warning about low battery.  |
 
 
 ### Multiple sensors 

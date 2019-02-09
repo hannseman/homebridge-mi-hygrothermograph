@@ -69,6 +69,8 @@ describe("accessory", () => {
 
   it("should update current temperature", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentTemperature;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
     accessory.scanner.emit("temperatureChange", 20.5, {
       address: "123",
       id: "123"
@@ -79,10 +81,26 @@ describe("accessory", () => {
       id: "123"
     });
     assert.strictEqual(accessory.latestTemperature, 25.5);
+    assert(updateValueSpy.called);
+  });
+
+  it("should not update temperature characteristic when using update interval", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: 60
+    });
+    const characteristic = this.characteristics.CurrentTemperature;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123"
+    });
+    assert(updateValueSpy.called === false);
   });
 
   it("should update current humidity", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
     accessory.scanner.emit("humidityChange", 30.5, {
       address: "123",
       id: "123"
@@ -93,14 +111,41 @@ describe("accessory", () => {
       id: "123"
     });
     assert.strictEqual(accessory.latestHumidity, 35.5);
+    assert(updateValueSpy.called);
+  });
+
+  it("should not update humidity characteristic when using update interval", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: 60
+    });
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("humidityChange", 25.0, {
+      address: "123",
+      id: "123"
+    });
+    assert(updateValueSpy.called === false);
   });
 
   it("should update current battery level", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.BatteryLevel;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
     accessory.scanner.emit("batteryChange", 90, { address: "123", id: "123" });
     assert.strictEqual(accessory.latestBatteryLevel, 90);
     accessory.scanner.emit("batteryChange", 9, { address: "123", id: "123" });
     assert.strictEqual(accessory.latestBatteryLevel, 9);
+    assert(updateValueSpy.called);
+  });
+
+  it("should not update battery characteristic when using update interval", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: 60
+    });
+    const characteristic = this.characteristics.BatteryLevel;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("batteryChange", 90, { address: "123", id: "123" });
+    assert(updateValueSpy.called === false);
   });
 
   it("should receive error", () => {
@@ -513,5 +558,81 @@ describe("accessory", () => {
       forceDiscoveringDelay
     });
     assert.strictEqual(accessory.scanner.restartDelay, forceDiscoveringDelay);
+  });
+
+  it("should batch update on change when configured with updateInterval", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger);
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("humidityChange", 35.5, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("batteryChange", 99, {
+      address: "123",
+      id: "123"
+    });
+    const updateTemperatureValueSpy = sinon.spy(
+      this.characteristics.CurrentTemperature,
+      "updateValue"
+    );
+    const updateHumidityValueSpy = sinon.spy(
+      this.characteristics.CurrentRelativeHumidity,
+      "updateValue"
+    );
+    const updateBatteryValueSpy = sinon.spy(
+      this.characteristics.BatteryLevel,
+      "updateValue"
+    );
+
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateHumidityValueSpy.called === false);
+    assert(updateBatteryValueSpy.called === false);
+  });
+
+  it("should not batch update on change when configured with updateInterval", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: 60
+    });
+    const updateTemperatureValueSpy = sinon.spy(
+      this.characteristics.CurrentTemperature,
+      "updateValue"
+    );
+    const updateHumidityValueSpy = sinon.spy(
+      this.characteristics.CurrentRelativeHumidity,
+      "updateValue"
+    );
+    const updateBatteryValueSpy = sinon.spy(
+      this.characteristics.BatteryLevel,
+      "updateValue"
+    );
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123"
+    });
+    assert(updateTemperatureValueSpy.called === false);
+    accessory.scanner.emit("humidityChange", 35.5, {
+      address: "123",
+      id: "123"
+    });
+    assert(updateHumidityValueSpy.called === false);
+    accessory.scanner.emit("batteryChange", 99, {
+      address: "123",
+      id: "123"
+    });
+    assert(updateBatteryValueSpy.called === false);
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateHumidityValueSpy.called);
+    assert(updateBatteryValueSpy.called);
   });
 });

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0
+
+* Support for Node >= 10. 
+* Dropped support for Node < 8.6.0.
+
 ## 1.9.0
 
 * Keep trying to scan for devices even when stopped by external party. This can be disabled by setting `forceDiscovering` to `false`.

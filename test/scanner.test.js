@@ -251,8 +251,8 @@ describe("scanner", () => {
   it("should clean addresses", () => {
     const address = "de:ad:be:ef";
     const scanner = new Scanner(address, { log: mockLogger });
-    assert.deepEqual(scanner.cleanAddress(scanner.address), "deadbeef");
-    assert.deepEqual(
+    assert.deepStrictEqual(scanner.cleanAddress(scanner.address), "deadbeef");
+    assert.deepStrictEqual(
       scanner.cleanAddress("F4F7F990-7F7C-4D5A-8C9F-8C264E9BAA7D"),
       "f4f7f9907f7c4d5a8c9f8c264e9baa7d"
     );

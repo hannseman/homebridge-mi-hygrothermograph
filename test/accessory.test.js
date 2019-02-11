@@ -450,7 +450,7 @@ describe("accessory", () => {
         temperatureTopic: topic
       }
     });
-    assert.notEqual(accessory.mqttClient, null);
+    assert(accessory.mqttClient != null);
     const publishSpy = sinon.spy(accessory.mqttClient, "publish");
     accessory.setTemperature(value);
     accessory.setBatteryLevel(10);
@@ -468,7 +468,7 @@ describe("accessory", () => {
         humidityTopic: topic
       }
     });
-    assert.notEqual(accessory.mqttClient, null);
+    assert(accessory.mqttClient != null);
     const publishSpy = sinon.spy(accessory.mqttClient, "publish");
     accessory.setHumidity(value);
     accessory.setTemperature(23);
@@ -486,7 +486,7 @@ describe("accessory", () => {
         batteryTopic: topic
       }
     });
-    assert.notEqual(accessory.mqttClient, null);
+    assert(accessory.mqttClient != null);
     const publishSpy = sinon.spy(accessory.mqttClient, "publish");
     accessory.setBatteryLevel(value);
     accessory.setTemperature(23);
@@ -497,7 +497,7 @@ describe("accessory", () => {
 
   it("should not configure mqtt client when not configured", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
-    assert.equal(accessory.mqttClient, null);
+    assert(accessory.mqttClient == null);
   });
 
   it("should log on mqtt events", () => {

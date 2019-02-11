@@ -417,7 +417,7 @@ describe("accessory", () => {
     );
   });
 
-  it("should add temperature  fakegato entry", () => {
+  it("should add temperature fakegato entry", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {
       fakeGatoEnabled: true
     });
@@ -632,6 +632,95 @@ describe("accessory", () => {
       id: "123"
     });
     assert(updateTemperatureValueSpy.called);
+    assert(updateHumidityValueSpy.called);
+    assert(updateBatteryValueSpy.called);
+  });
+
+  it("should batch update with missing values", () => {
+    const updateInterval = 60;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: updateInterval
+    });
+    const updateTemperatureValueSpy = sinon.spy(
+      this.characteristics.CurrentTemperature,
+      "updateValue"
+    );
+    const updateHumidityValueSpy = sinon.spy(
+      this.characteristics.CurrentRelativeHumidity,
+      "updateValue"
+    );
+    const updateBatteryValueSpy = sinon.spy(
+      this.characteristics.BatteryLevel,
+      "updateValue"
+    );
+    accessory.lastBatchUpdatedAt = Date.now();
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateHumidityValueSpy.called === false);
+    assert(updateBatteryValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("temperatureChange", 26.5, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateHumidityValueSpy.called === false);
+    assert(updateBatteryValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+
+    accessory.scanner.emit("humidityChange", 35.5, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateHumidityValueSpy.called);
+    assert(updateBatteryValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("batteryChange", 99, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+
+    assert(updateTemperatureValueSpy.called);
+    assert(updateHumidityValueSpy.called);
+    assert(updateBatteryValueSpy.called);
+
+    // Reset temperature
+    accessory.latestTemperature = null;
+    updateTemperatureValueSpy.resetHistory();
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("batteryChange", 99, {
+      address: "123",
+      id: "123"
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123"
+    });
+
+    assert(updateTemperatureValueSpy.called === false);
     assert(updateHumidityValueSpy.called);
     assert(updateBatteryValueSpy.called);
   });

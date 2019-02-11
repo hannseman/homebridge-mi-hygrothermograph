@@ -33,62 +33,83 @@ describe("scanner", () => {
   });
 
   it("should discover temperature event", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("temperatureChange", eventSpy);
+    const temperatureEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("temperatureChange", temperatureEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.temperature);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(21.7));
+    assert(temperatureEventSpy.calledWith(21.7));
+    assert(changeEventSpy.called);
   });
 
   it("should discover humidity event", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("humidityChange", eventSpy);
+    const humidityEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("humidityChange", humidityEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.humidity);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(34.9));
+    assert(humidityEventSpy.calledWith(34.9));
+    assert(changeEventSpy.called);
   });
 
   it("should discover humidity & temperature event", () => {
     const humidityEventSpy = sinon.spy();
     const temperatureEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
     this.scanner.on("humidityChange", humidityEventSpy);
     this.scanner.on("temperatureChange", temperatureEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.temperatureAndHumidity);
     nobleMock.emit("discover", peripheral);
     assert(temperatureEventSpy.calledWith(21.7));
     assert(humidityEventSpy.calledWith(35.2));
+    assert(changeEventSpy.called);
   });
 
   it("should discover battery event", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("batteryChange", eventSpy);
+    const batteryEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("batteryChange", batteryEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.battery);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(93));
+    assert(batteryEventSpy.calledWith(93));
+    assert(changeEventSpy.called);
   });
 
   it("should discover illuminance event", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("illuminanceChange", eventSpy);
+    const illuminanceEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("illuminanceChange", illuminanceEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.illuminance);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(14));
+    assert(illuminanceEventSpy.calledWith(14));
+    assert(changeEventSpy.called);
   });
 
   it("should discover moisture event", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("moistureChange", eventSpy);
+    const moistureEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("moistureChange", moistureEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.moisture);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(18));
+    assert(moistureEventSpy.calledWith(18));
+    assert(changeEventSpy.called);
   });
 
   it("should discover fertility event", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("fertilityChange", eventSpy);
+    const fertilityEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("fertilityChange", fertilityEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(sensorData.fertility);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(184));
+    assert(fertilityEventSpy.calledWith(184));
+    assert(changeEventSpy.called);
   });
 
   it("should not discover all peripherals with defined address", () => {
@@ -153,11 +174,14 @@ describe("scanner", () => {
   });
 
   it("should emit errors", () => {
-    const eventSpy = sinon.spy();
-    this.scanner.on("error", eventSpy);
+    const errorEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    this.scanner.on("error", errorEventSpy);
+    this.scanner.on("change", changeEventSpy);
     const peripheral = new PeripheralMock(Buffer.from("deadbeefed", "hex"));
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(sinon.match.instanceOf(Error)));
+    assert(errorEventSpy.calledWith(sinon.match.instanceOf(Error)));
+    assert(changeEventSpy.called === false);
   });
 
   it("should start scanning", () => {
@@ -194,10 +218,13 @@ describe("scanner", () => {
       Buffer.from("5020aa01a164aed0a8654c0610025d01", "hex")
     );
     assert.throws(() => nobleMock.emit("discover", peripheral), Error);
-    const eventSpy = sinon.spy();
-    scanner.on("error", eventSpy);
+    const errorEventSpy = sinon.spy();
+    const changeEventSpy = sinon.spy();
+    scanner.on("error", errorEventSpy);
+    scanner.on("change", changeEventSpy);
     nobleMock.emit("discover", peripheral);
-    assert(eventSpy.calledWith(sinon.match.instanceOf(Error)));
+    assert(errorEventSpy.calledWith(sinon.match.instanceOf(Error)));
+    assert(changeEventSpy.called === false);
   });
 
   it("should log on scanStart", () => {

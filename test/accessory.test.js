@@ -236,16 +236,16 @@ describe("accessory", () => {
     });
     const characteristic = this.characteristics.StatusLowBattery;
     // Low battery
-    accessory.batteryLevel = 9;
+    accessory.setBatteryLevel(9);
     characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
 
-    accessory.batteryLevel = 15;
+    accessory.setBatteryLevel(15);
     characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
 
     // Normal battery
-    accessory.batteryLevel = 21;
+    accessory.setBatteryLevel(21);
     characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_NORMAL));
   });

@@ -172,7 +172,7 @@ describe("accessory", () => {
 
   it("should answer low battery characteristic get value", () => {
     const lowBatterySpy = sinon.spy();
-    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const accessory = new this.HygrothermographAccessory(mockLogger);
     const characteristic = this.characteristics.StatusLowBattery;
     // Low battery
     accessory.batteryLevel = 9;
@@ -180,6 +180,27 @@ describe("accessory", () => {
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
     // Normal battery
     accessory.batteryLevel = 15;
+    characteristic.emit("get", lowBatterySpy);
+    assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_NORMAL));
+  });
+
+  it("should answer used configured low battery threshold", () => {
+    const lowBatterySpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      lowBattery: 20
+    });
+    const characteristic = this.characteristics.StatusLowBattery;
+    // Low battery
+    accessory.batteryLevel = 9;
+    characteristic.emit("get", lowBatterySpy);
+    assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
+
+    accessory.batteryLevel = 15;
+    characteristic.emit("get", lowBatterySpy);
+    assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_LOW));
+
+    // Normal battery
+    accessory.batteryLevel = 21;
     characteristic.emit("get", lowBatterySpy);
     assert(lowBatterySpy.calledWith(null, characteristic.BATTERY_LEVEL_NORMAL));
   });

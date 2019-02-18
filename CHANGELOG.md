@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0
+
+* Add support for batch updating values at defined intervals. 
+* Add support for configuring at what battery level the sensor should warn about low battery.
+
 ## 2.0.0
 
 * Support for Node >= 10. 

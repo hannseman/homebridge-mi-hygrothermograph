@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+* Add support for MacOS Mojave.
+
 ## 2.1.0
 
 * Add support for batch updating values at defined intervals. 

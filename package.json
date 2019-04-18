@@ -39,17 +39,17 @@
   "dependencies": {
     "fakegato-history": "^0.5.3",
     "mqtt": "^2.18.8",
-    "@abandonware/noble": "1.9.2-1"
+    "@abandonware/noble": "1.9.2-2"
   },
   "devDependencies": {
-    "coveralls": "^3.0.2",
-    "eslint": "^5.12.1",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
     "eslint-config-prettier": "^3.6.0",
     "eslint-plugin-prettier": "^3.0.1",
     "mocha": "^5.2.0",
-    "nyc": "^13.1.0",
-    "prettier": "^1.16.1",
+    "nyc": "^13.3.0",
+    "prettier": "^1.17.0",
     "proxyquire": "^2.1.0",
-    "sinon": "^7.2.3"
+    "sinon": "^7.3.2"
   }
 }

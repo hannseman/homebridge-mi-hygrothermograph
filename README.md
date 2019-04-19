@@ -18,10 +18,6 @@ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 
 For more detailed information and descriptions for other platforms please see the [Noble documentation](https://github.com/noble/noble#readme).
 
-## Known issues
-
-* At the moment [Noble](https://www.npmjs.com/package/noble) does not support MacOS 10.14 (Mojave). See [noble/noble#804](https://github.com/noble/noble/pull/804).
-
 ### Install homebridge and this plugin 
 ```
 [sudo] npm install -g --unsafe-perm homebridge

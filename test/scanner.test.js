@@ -153,6 +153,15 @@ describe("scanner", () => {
     assert(eventSpy.calledWith(21.7));
   });
 
+  it("should handle invalid peripheral data", () => {
+    const errorEventSpy = sinon.spy();
+    const scanner = new Scanner();
+    scanner.on("error", errorEventSpy);
+    nobleMock.emit("discover", {});
+    nobleMock.emit("discover", undefined);
+    assert(errorEventSpy.notCalled);
+  });
+
   it("should discard wrongs uuids", () => {
     const eventSpy = sinon.spy();
     this.scanner.on("temperatureChange", eventSpy);

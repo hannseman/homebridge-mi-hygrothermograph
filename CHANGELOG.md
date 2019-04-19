@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1
+
+* Remove documentation about not supporting MacOS Mojave.
+* Safer peripheral parsing when encountering invalid values.
+
 ## 2.2.0
 
 * Add support for MacOS Mojave.

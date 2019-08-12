@@ -59,6 +59,8 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `forceDiscoveringDelay` | `2500`          | The delay for when to start scanning again when stopped. Only applicable if `forceDiscovering` is `true`.                                                                                                   |
 | `updateInterval`        |                 | By default values will be updated as they come in. Often this is once per second, if this is not desired `updateInterval` can be set to how often updates should be made. Accepts values in seconds.        |
 | `lowBattery`            | `10`            | At what battery percentage Homekit should start warning about low battery.                                                                                                                                  |
+| `temperatureOffset`     | `0`             | An offset to apply to temperature values for calibration if measured values are incorrect.                                                                                                                  |
+| `humidityOffset`        | `0`             | An offset to apply to humidity values for calibration if measured values are incorrect.                                                                                                                     |
 
 
 ### Multiple sensors 

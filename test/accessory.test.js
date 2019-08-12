@@ -798,4 +798,76 @@ describe("accessory", () => {
     assert(updateHumidityValueSpy.called);
     assert(updateBatteryValueSpy.called);
   });
+
+  it("should apply positive temperatureOffset", () => {
+    const positiveOffset = 2;
+    const temperatureValue = 23;
+    const positiveTemperatureSpy = sinon.spy();
+    const accessoryWithPositiveOffset = new this.HygrothermographAccessory(
+      mockLogger,
+      {
+        temperatureOffset: 2
+      }
+    );
+    const characteristic = this.characteristics.CurrentTemperature;
+    accessoryWithPositiveOffset.setTemperature(temperatureValue);
+    characteristic.emit("get", positiveTemperatureSpy);
+    assert(
+      positiveTemperatureSpy.calledWith(null, temperatureValue + positiveOffset)
+    );
+  });
+
+  it("should apply negative temperatureOffset", () => {
+    const negativeOffset = -2;
+    const temperatureValue = 23;
+    const negativeTemperatureSpy = sinon.spy();
+    const accessoryWithNegativeOffset = new this.HygrothermographAccessory(
+      mockLogger,
+      {
+        temperatureOffset: 2
+      }
+    );
+    const characteristic = this.characteristics.CurrentTemperature;
+    accessoryWithNegativeOffset.setTemperature(temperatureValue);
+    characteristic.emit("get", negativeTemperatureSpy);
+    assert(
+      negativeTemperatureSpy.calledWith(null, temperatureValue - negativeOffset)
+    );
+  });
+
+  it("should apply positive humidityOffset", () => {
+    const positiveOffset = 2;
+    const humidityValue = 23;
+    const positiveHumiditySpy = sinon.spy();
+    const accessoryWithPositiveOffset = new this.HygrothermographAccessory(
+      mockLogger,
+      {
+        humidityOffset: 2
+      }
+    );
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    accessoryWithPositiveOffset.setHumidity(humidityValue);
+    characteristic.emit("get", positiveHumiditySpy);
+    assert(
+      positiveHumiditySpy.calledWith(null, humidityValue + positiveOffset)
+    );
+  });
+
+  it("should apply negative humidityOffset", () => {
+    const negativeOffset = -2;
+    const humidityValue = 23;
+    const negativeHumiditySpy = sinon.spy();
+    const accessoryWithNegativeOffset = new this.HygrothermographAccessory(
+      mockLogger,
+      {
+        humidityOffset: 2
+      }
+    );
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    accessoryWithNegativeOffset.setHumidity(humidityValue);
+    characteristic.emit("get", negativeHumiditySpy);
+    assert(
+      negativeHumiditySpy.calledWith(null, humidityValue - negativeOffset)
+    );
+  });
 });

@@ -10,7 +10,7 @@ Make sure your system matches the prerequisites. You need to have a C compiler a
 
 [Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor. 
 
- These libraries and their dependencies are required by [Noble](https://www.npmjs.com/package/noble) package and provide access to the kernel Bluetooth subsystem:
+ These libraries and their dependencies are required by the [Noble](https://www.npmjs.com/package/noble) library and provide access to the kernel Bluetooth subsystem:
 
 ```sh
 sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
@@ -93,8 +93,7 @@ Note that this step is also required when running [Mi Flora](https://xiaomi-mi.c
 
 On MacOS `hcitool` can't be used since MacOS does not provide a way to read the MAC-address of a BLE device. 
 Instead MacOS assigns a device unique identifier for each BLE device in the format of `5C61F8CE-9F0B-4371-B996-5C9AE0E0D14B`. 
-This identifier can be found using iOS apps like [nRF Connect](https://itunes.apple.com/us/app/nrf-connect/id1054362403) 
-or MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/). Use this identifier as `address` in the configuration file.
+This identifier can be found using MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/). Use this identifier as `address` in the configuration file.
 
 
 ### Timeout

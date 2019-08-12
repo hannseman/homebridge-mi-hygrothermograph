@@ -799,6 +799,30 @@ describe("accessory", () => {
     assert(updateBatteryValueSpy.called);
   });
 
+  it("should not setup batteryService when disabled", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      disableBatteryLevel: true
+    });
+    assert.strictEqual(accessory.batteryService, undefined);
+  });
+
+  it("should not try and update batteryService when disabled", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      disableBatteryLevel: true
+    });
+    const characteristic = this.characteristics.BatteryLevel;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("batteryChange", 90, { address: "123", id: "123" });
+    assert(updateValueSpy.notCalled);
+  });
+
+  it("should setup batteryService when enabled", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      disableBatteryLevel: false
+    });
+    assert(accessory.batteryService !== undefined);
+  });
+
   it("should apply positive temperatureOffset", () => {
     const positiveOffset = 2;
     const temperatureValue = 23;

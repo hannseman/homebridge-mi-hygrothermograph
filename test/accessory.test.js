@@ -870,4 +870,18 @@ describe("accessory", () => {
       negativeHumiditySpy.calledWith(null, humidityValue - negativeOffset)
     );
   });
+
+  it("should warn on missing address", () => {
+    const spyLogger = sinon.spy(mockLogger, "warn");
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    assert(spyLogger.called);
+  });
+
+  it("should not warn on missing address when defined", () => {
+    const spyLogger = sinon.spy(mockLogger, "warn");
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      address: "123"
+    });
+    assert(spyLogger.notCalled);
+  });
 });

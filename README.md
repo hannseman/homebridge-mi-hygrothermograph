@@ -96,7 +96,8 @@ Note that this step is also required when running [Mi Flora](https://xiaomi-mi.c
 
 On MacOS `hcitool` can't be used since MacOS does not provide a way to read the MAC-address of a BLE device. 
 Instead MacOS assigns a device unique identifier for each BLE device in the format of `5C61F8CE-9F0B-4371-B996-5C9AE0E0D14B`. 
-This identifier can be found using MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/). Use this identifier as `address` in the configuration file.
+This identifier can be found using MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/). 
+One can also run Homebridge with debug-mode enabled by using `homebridge -D` and then watch the logs for the string "Discovered peripheral" and fetch the value under `Id`. Use this identifier as `address` in the configuration file.
 
 
 ### Timeout

@@ -1,7 +1,7 @@
 # homebridge-mi-hygrothermograph
 [![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Travis](https://img.shields.io/travis/hannseman/homebridge-mi-hygrothermograph.svg)](https://travis-ci.com/hannseman/homebridge-mi-hygrothermograph) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
-[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory. The new E Ink [sensor](https://cleargrass.com/cg_temp_rh_monitor/overview) and [clock](https://item.mi.com/product/9542.html) are also supported but currently not capable of sending current battery levels.
+[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory. The new E-Ink [sensor](https://cleargrass.com/cg_temp_rh_monitor/overview) and [clock](https://item.mi.com/product/9542.html) are also supported but currently not capable of reporting current battery levels.
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 
@@ -139,6 +139,7 @@ This is required because [fakegato-history](https://github.com/simont77/fakegato
 
 When restarting Homebridge the Eve app will show the Accessories as having 0% battery until the sensor actually reports its battery status. This can sometimes take a couple of minutes. Just be patient and the actual battery status will show up.
 
+The E-Ink sensors do not report the current battery level. This will cause Elgato Eve to incorrectly warn about low battery. Set `disableBatteryLevel` to `true` to disable these warnings.
 
 To enable the Elgato Eve feature set `fakeGatoEnabled` to `true` in `config.json`
 

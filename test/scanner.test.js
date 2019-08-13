@@ -143,6 +143,12 @@ describe("scanner", () => {
       "unknown",
       uuid
     );
+    const correctMissingAddress = new PeripheralMock(
+      sensorData.temperatureAndHumidity,
+      null,
+      uuid
+    );
+
     const scanner = new Scanner("f4f7f990-7f7c-4d5a-8c9f-8c264e9baa7d", {
       log: mockLogger
     });
@@ -150,6 +156,9 @@ describe("scanner", () => {
     nobleMock.emit("discover", wrongPeripheral);
     assert(eventSpy.notCalled);
     nobleMock.emit("discover", correctPeripheral);
+    assert(eventSpy.calledWith(21.7));
+    eventSpy.resetHistory();
+    nobleMock.emit("discover", correctMissingAddress);
     assert(eventSpy.calledWith(21.7));
   });
 

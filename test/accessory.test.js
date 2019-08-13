@@ -82,6 +82,9 @@ describe("accessory", () => {
     });
     assert.strictEqual(accessory.latestTemperature, 25.5);
     assert(updateValueSpy.called);
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      id: "123"
+    });
   });
 
   it("should not update temperature characteristic when using update interval", () => {
@@ -112,6 +115,9 @@ describe("accessory", () => {
     });
     assert.strictEqual(accessory.latestHumidity, 35.5);
     assert(updateValueSpy.called);
+    accessory.scanner.emit("humidityChange", 35.5, {
+      id: "123"
+    });
   });
 
   it("should not update humidity characteristic when using update interval", () => {
@@ -136,6 +142,7 @@ describe("accessory", () => {
     accessory.scanner.emit("batteryChange", 9, { address: "123", id: "123" });
     assert.strictEqual(accessory.latestBatteryLevel, 9);
     assert(updateValueSpy.called);
+    accessory.scanner.emit("batteryChange", 9, { id: "123" });
   });
 
   it("should not update battery characteristic when using update interval", () => {

@@ -1,7 +1,7 @@
 # homebridge-mi-hygrothermograph
 [![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Travis](https://img.shields.io/travis/hannseman/homebridge-mi-hygrothermograph.svg)](https://travis-ci.com/hannseman/homebridge-mi-hygrothermograph) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
-[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory. The new E-Ink [sensor](https://cleargrass.com/cg_temp_rh_monitor/overview) and [clock](https://item.mi.com/product/9542.html) are also supported but currently not capable of reporting current battery levels.
+[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory. The new E-Ink [sensor](https://cleargrass.com/cg_temp_rh_monitor/overview) and [clock](https://item.mi.com/product/9542.html) are also supported but currently not capable of reporting battery levels.
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 

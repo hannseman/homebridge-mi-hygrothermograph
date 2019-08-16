@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.0
+
+* Add support for setting temperature/humidity offsets.
+* Add support for disabling battery level to disable warnings in Elgato Eve on newer E-Ink sensors.
+* Upgrade MQTT.js to 3.0.0
+* Warn when address is not set in config.
+
 ## 2.2.1
 
 * Remove documentation about not supporting MacOS Mojave.

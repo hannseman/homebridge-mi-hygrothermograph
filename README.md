@@ -246,6 +246,14 @@ After some investigation and thanks to [node-xiaomi-gap-parser](https://github.c
 
 Bytes 1-14 have the same function for all 4 variations but the following bytes contain different sensor data.
 
+## Automation (iOS 13+)
+There is a new very handy automation option in iOS 13 allowing us to convert home automation rule to "Advanced shortcut". 
+
+Using that you can make rules like "If temperature drops below 21C and someone is at home and it is not during night then turn on heater". Unfortunately you can't normally bind this rule to any timer trigger. However you can use other homebridge plugin which fakes sensor events e.g. every 5 seconds and you can bind that rule to it! Check https://github.com/nitaybz/homebridge-delay-switch
+
+## Known problems
+Some hardware combinations are problematic and may cause weird troubles like sensor timeout after some time etc. 
+* Asus BT-400 bluetooth dongle (at least in combination with older RPi 2B)
 
 ## Legal
 

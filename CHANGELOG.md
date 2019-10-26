@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.1
+
+* Add support for the MQTT `retain` publish option.
+* Document iOS automations with Shortcuts.
+* Update dependencies.
+
+
 ## 2.3.0
 
 * Add support for setting temperature/humidity offsets.

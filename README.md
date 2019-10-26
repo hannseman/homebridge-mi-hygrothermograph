@@ -201,6 +201,7 @@ To enable authentication specify the `username` and `password` parameters:
 
 For more options see the [MQTT.js documentation](https://github.com/mqttjs/MQTT.js/blob/master/README.md#client).
 Everything set in `mqtt` will be passed to the `options` argument on `Client`.
+The `Client#publish` options `qos` and `retain` can also be configured the same way.
 
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.

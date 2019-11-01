@@ -1,0 +1,144 @@
+{
+   "pluginAlias":"Hygrotermograph",
+   "pluginType":"accessory",
+   "singular":true,
+   "headerDisplay":null,
+   "schema":{
+      "type":"object",
+      "properties":{
+         "name":{
+            "title":"Accessory Name",
+            "type":"string",
+            "format":"string",
+            "default":"Temperature & Humidity",
+            "minLength":1,
+            "required":true
+         },
+         "address":{
+            "title":"Device MAC Address",
+            "type":"string",
+            "format":"string",
+            "placeholder":"e.g. 00:00:00:00:00:00",
+            "description":"Optional. Specify when running multiple devices"
+         },
+         "temperatureName":{
+            "title":"Custom Name - Temperature",
+            "type":"string",
+            "format":"string",
+            "default":"Temperature"
+         },
+         "humidityName":{
+            "title":"Custom Name - Humidity",
+            "type":"string",
+            "format":"string",
+            "default":"Humidity"
+         },
+         "fakeGatoEnabled":{
+            "title":"Enable FakeGato",
+            "type":"boolean",
+            "default":false,
+            "description":"Enable to send historical data to the Elgato Eve app."
+         },
+         "fakeGatoStoragePath":{
+            "title":"FakeGato Storage Path",
+            "type":"string",
+            "description":"Optional. Specify a custom path to save FakeGato history."
+         },
+         "timeout":{
+            "title":"Timeout (minutes)",
+            "type":"integer",
+            "default":15,
+            "description":"Time in minutes after last contact when the accessory should be regarded as unreachable. If set to 0, timeout will be disabled."
+         },
+         "forceDiscovering":{
+            "title":"Enable Force Discovering",
+            "type":"boolean",
+            "default":true,
+            "description":"Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting forceDiscovering to true will start scanning again in these cases."
+         },
+         "forceDiscoveringDelay":{
+            "title":"Force Discovering Interval (seconds)",
+            "type":"integer",
+            "default":2500,
+            "description":"The delay for when to start scanning again when stopped. Only applicable if forceDiscovering is true."
+         },
+         "updateInterval":{
+            "title":"Update Interval (seconds)",
+            "type":"integer",
+            "description":"By default values will be updated as they come in. Often this is once per second, if this is not desired updateInterval can be set to how often updates should be made. Accepts values in seconds."
+         },
+         "disableBatteryLevel":{
+            "title":"Disable Battery Level",
+            "type":"boolean",
+            "default":false,
+            "description":"If battery level should not be exposed to Homekit. New E-Ink sensors do currently not support sending battery levels and setting this to true will make Elgato Eve not warn about it."
+         },
+         "lowBattery":{
+            "title":"Low Battery Threshold",
+            "type":"integer",
+            "default":10,
+            "description":"At what battery percentage Homekit should start warning about low battery."
+         },
+         "temperatureOffset":{
+            "title":"Offset - Temperature",
+            "type":"integer",
+            "default":0,
+            "description":"An offset to apply to temperature values for calibration if measured values are incorrect."
+         },
+         "humidityOffset":{
+            "title":"Offset - Humidity",
+            "type":"integer",
+            "default":0,
+            "description":"An offset to apply to humidity values for calibration if measured values are incorrect."
+         }
+      }
+   },
+   "layout":[
+      {
+         "type":"flex",
+         "flex-flow":"row wrap",
+         "items":[
+            "name"
+         ]
+      },
+      {
+         "type":"flex",
+         "flex-flow":"row wrap",
+         "items":[
+            "temperatureName",
+            "humidityName"
+         ]
+      },
+      {
+         "type":"flex",
+         "flex-flow":"row wrap",
+         "items":[
+            "address"
+         ]
+      },
+      {
+         "type":"fieldset",
+         "title":"FakeGato",
+         "expandable":true,
+         "items":[
+            "fakeGatoEnabled",
+            "fakeGatoStoragePath"
+         ]
+     },
+      {
+         "type":"fieldset",
+         "title":"Advanced configuration",
+         "expandable":true,
+         "items":[
+             "timeout",
+             "forceDiscovering",
+             "forceDiscoveringDelay",
+             "updateInterval",
+             "disableBatteryLevel",
+             "lowBattery",
+             "temperatureOffset",
+             "humidityOffset"
+         ]
+      }
+   ]
+}

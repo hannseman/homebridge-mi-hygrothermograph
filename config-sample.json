@@ -1,0 +1,20 @@
+{
+  "bridge": {
+    "name": "Homebridge",
+    "username": "CC:22:3D:E3:CE:30",
+    "port": 51826,
+    "pin": "031-45-154"
+  },
+  "description": "This is an example configuration file with one Hygrotermograph accessory. You can use this as a template for creating your own configuration file containing devices you actually own.",
+  "accessories": [
+    {
+      "accessory": "Hygrotermograph",
+      "name": "Temperature & Humidity",
+      "address": "4c:64:a8:d0:ae:65",
+      "timeout": 15,
+      "temperatureName": "Temperature",
+      "humidityName": "Humidity",
+      "fakeGatoEnabled": true
+    }
+  ]
+}

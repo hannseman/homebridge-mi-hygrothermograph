@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.2
+
+* Add support for [homebridge-config-ui-x](https://github.com/oznu/homebridge-config-ui-x).
+
 ## 2.3.1
 
 * Add support for the MQTT `retain` publish option.

@@ -29,6 +29,7 @@
   "files": [
     "index.js",
     "config-sample.json",
+    "config.schema.json",
     "lib/",
     "test/"
   ],

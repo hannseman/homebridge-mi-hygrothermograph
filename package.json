@@ -38,7 +38,7 @@
     "node": ">=8.6.0"
   },
   "dependencies": {
-    "@abandonware/noble": "1.9.2-2",
+    "@abandonware/noble": "1.9.2-5",
     "fakegato-history": "^0.5.6",
     "mqtt": "^3.0.0"
   },

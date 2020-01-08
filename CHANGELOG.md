@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0
+
+* Update [noble](https://www.npmjs.com/package/@abandonware/noble) to 1.9.2-5, which supports Node 12+.
+
 ## 2.3.2
 
 * Add support for [homebridge-config-ui-x](https://github.com/oznu/homebridge-config-ui-x).
@@ -29,12 +33,12 @@
 
 ## 2.1.0
 
-* Add support for batch updating values at defined intervals. 
+* Add support for batch updating values at defined intervals.
 * Add support for configuring at what battery level the sensor should warn about low battery.
 
 ## 2.0.0
 
-* Support for Node >= 10. 
+* Support for Node >= 10.
 * Dropped support for Node < 8.6.0.
 
 ## 1.9.0
@@ -101,7 +105,7 @@
 
 ## 1.2.0
 
-* Handle negative temperatures. 
+* Handle negative temperatures.
 * Let sensor data initially be `undefined` to properly report connectivity errors on startup.
 * Set `BatteryService.ChargingState` as `NOT_CHARGEABLE`.
 * General code cleanup and extended tests.

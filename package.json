@@ -40,7 +40,8 @@
   "dependencies": {
     "@abandonware/noble": "1.9.2-5",
     "fakegato-history": "^0.5.6",
-    "mqtt": "^3.0.0"
+    "mqtt": "^3.0.0",
+    "aes-ccm": "^1.0.3"
   },
   "devDependencies": {
     "coveralls": "^3.0.7",

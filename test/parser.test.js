@@ -16,6 +16,9 @@ describe("parser", () => {
     moisture: Buffer.from("71209800a864aed0a8654c0d08100112", "hex"),
     fertility: Buffer.from("71209800a564aed0a8654c0d091002b800", "hex")
   };
+  const sensorDataCrypted = {
+    humidity: Buffer.from("58585b05db184bf838c1a472c3fa42cd050000ce7b8a28", "hex")
+  };
   Object.keys(sensorData).forEach(sensorKey => {
     it("should parse frame control", () => {
       const result = new Parser(sensorData[sensorKey]).parse();
@@ -110,6 +113,14 @@ describe("parser", () => {
     assert.strictEqual(result.eventType, 4102);
     assert.strictEqual(result.eventLength, 2);
     assert.strictEqual(result.event.humidity, 34.9);
+  });
+
+  it("should parse humidity data from crypted", () => {
+    const buffer = Buffer.from(sensorDataCrypted.humidity, "hex");
+    const result = new Parser(buffer).parse();
+    assert.strictEqual(result.eventType, 4102);
+    assert.strictEqual(result.eventLength, 2);
+    assert.strictEqual(result.event.humidity, 43.9);
   });
 
   it("should parse battery data", () => {

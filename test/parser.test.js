@@ -117,7 +117,7 @@ describe("parser", () => {
 
   it("should parse humidity data from crypted", () => {
     const buffer = Buffer.from(sensorDataCrypted.humidity, "hex");
-    const result = new Parser(buffer, "58585b05db184bf838c1a472c3fa42cd050000ce7b8a28").parse();
+    const result = new Parser(buffer, "B2D46F0CD168C18B247C0C79E9AD5B8D").parse();
     assert.strictEqual(result.eventType, 4102);
     assert.strictEqual(result.eventLength, 2);
     assert.strictEqual(result.event.humidity, 43.9);

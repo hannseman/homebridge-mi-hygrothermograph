@@ -1,7 +1,9 @@
 # homebridge-mi-hygrothermograph
 [![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Travis](https://img.shields.io/travis/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://travis-ci.com/hannseman/homebridge-mi-hygrothermograph) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
-[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory. The new E-Ink [sensor](https://cleargrass.com/cg_temp_rh_monitor/overview) and [clock](https://item.mi.com/product/9542.html) are also supported but currently not capable of reporting battery levels.
+[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor / LYWSD02](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory.
+The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview) and [E-Ink clock](https://item.mi.com/product/9542.html) are also supported.
+The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 
@@ -62,6 +64,7 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `disableBatteryLevel`   | `false`         | If battery level should not be exposed to Homekit. New E-Ink sensors do currently not support sending battery levels and setting this to `true` will make Elgato Eve not warn about it.                     |
 | `temperatureOffset`     | `0`             | An offset to apply to temperature values for calibration if measured values are incorrect.                                                                                                                  |
 | `humidityOffset`        | `0`             | An offset to apply to humidity values for calibration if measured values are incorrect.                                                                                                                     |
+| `bindKey`               |                 | A key which is used to decrypt data sent by sensors with encryption.                                                                                                                     |
 
 
 ### Multiple sensors
@@ -202,6 +205,16 @@ To enable authentication specify the `username` and `password` parameters:
 For more options see the [MQTT.js documentation](https://github.com/mqttjs/MQTT.js/blob/master/README.md#client).
 Everything set in `mqtt` will be passed to the `options` argument on `Client`.
 The `Client#publish` options `qos` and `retain` can also be configured the same way.
+
+## Encryption
+
+Some Xiaomi sensors have encrypted data. For example [LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050).
+To be able to read the data from this sensor one needs to get a hold of the encryption key.
+For ways to get this key please read [this FAQ entry](https://github.com/custom-components/sensor.mitemp_bt/blob/master/faq.md#my-sensors-ble-advertisements-are-encrypted-how-can-i-get-the-key)
+from the [custom-components/sensor.mitemp_bt](https://github.com/custom-components/sensor.mitemp_bt/) repository. When found it can be set with the `bindKey` option.
+
+Thanks [ulrich-berl](https://github.com/ulrich-berl) for implementing support for this.
+
 
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.

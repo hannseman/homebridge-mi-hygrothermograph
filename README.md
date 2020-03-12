@@ -6,9 +6,9 @@
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 
 ## Installation
-Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) newer or equal to version 8.6.0 installed. 
+Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) newer or equal to version 10.0.0 installed.
 
-[Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor. 
+[Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor.
 
  These libraries and their dependencies are required by the [Noble](https://www.npmjs.com/package/noble) library and provide access to the kernel Bluetooth subsystem:
 
@@ -18,7 +18,7 @@ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 
 For more detailed information and descriptions for other platforms please see the [Noble documentation](https://github.com/noble/noble#readme).
 
-### Install homebridge and this plugin 
+### Install homebridge and this plugin
 ```
 [sudo] npm install -g --unsafe-perm homebridge
 [sudo] npm install -g --unsafe-perm homebridge-mi-hygrothermograph
@@ -28,7 +28,7 @@ For more detailed information and descriptions for other platforms please see th
 
 See the [Homebridge documentation](https://github.com/nfarina/homebridge#readme) for more information.
 
-If you are running Homebridge as another user than `root`  (you should) then some additional configuration needs to be made to allow [Node.js](https://nodejs.org/) access to the kernel Bluetooth subsystem without root privileges. 
+If you are running Homebridge as another user than `root`  (you should) then some additional configuration needs to be made to allow [Node.js](https://nodejs.org/) access to the kernel Bluetooth subsystem without root privileges.
 Please see the [Noble documentation](https://github.com/noble/noble#running-without-rootsudo) for instructions.
 
 
@@ -64,12 +64,12 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 | `humidityOffset`        | `0`             | An offset to apply to humidity values for calibration if measured values are incorrect.                                                                                                                     |
 
 
-### Multiple sensors 
-When running just one Hygrotermograph accessory there is no need to specify the address of the BLE device. 
-But if you want to run multiple Hygrotermograph accessories you need to specify the BLE address for each of them. 
-If the address is not specified they will interfere with each other. 
+### Multiple sensors
+When running just one Hygrotermograph accessory there is no need to specify the address of the BLE device.
+But if you want to run multiple Hygrotermograph accessories you need to specify the BLE address for each of them.
+If the address is not specified they will interfere with each other.
 
-The easiest way to find the address of the device is to use `[sudo] hcitool lescan`. 
+The easiest way to find the address of the device is to use `[sudo] hcitool lescan`.
 It will start a scan for all advertising BLE peripherals within range. Look for `MJ_HT_V1` and copy the address.
 The address is in the format of `4c:64:a8:d0:ae:65`.
 
@@ -94,9 +94,9 @@ Note that this step is also required when running [Mi Flora](https://xiaomi-mi.c
 
 #### MacOS
 
-On MacOS `hcitool` can't be used since MacOS does not provide a way to read the MAC-address of a BLE device. 
-Instead MacOS assigns a device unique identifier for each BLE device in the format of `5C61F8CE-9F0B-4371-B996-5C9AE0E0D14B`. 
-This identifier can be found using MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/). 
+On MacOS `hcitool` can't be used since MacOS does not provide a way to read the MAC-address of a BLE device.
+Instead MacOS assigns a device unique identifier for each BLE device in the format of `5C61F8CE-9F0B-4371-B996-5C9AE0E0D14B`.
+This identifier can be found using MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/).
 One can also run Homebridge with debug-mode enabled by using `homebridge -D` and then watch the logs for the string "Discovered peripheral" and fetch the value under `Id`. Use this identifier as `address` in the configuration file.
 
 
@@ -160,7 +160,7 @@ Usually located in `/var/lib/homebridge` or `~/.homebridge`. To customise this o
 
 ### MQTT
 
-The plugin can be configured to publish temperature/humidity/battery values to an MQTT-broker. 
+The plugin can be configured to publish temperature/humidity/battery values to an MQTT-broker.
 
 Basic configuration:
 
@@ -208,7 +208,7 @@ The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Blueto
 By only reading the advertisement packet there is no need to establish a connection to the peripheral.
 Inside each packet discovered we look for Service Data with a UUID of `0xfe95`. If found we start trying to parse the actual Service Data to find the temperature and humidity.
 
-By using a [Bluetooth LE Sniffer](https://www.adafruit.com/product/2269) it is possible to see that the peripheral advertises 3 different sized Service Data: 
+By using a [Bluetooth LE Sniffer](https://www.adafruit.com/product/2269) it is possible to see that the peripheral advertises 3 different sized Service Data:
 1. `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01`
 2. `50:20:aa:01:ba:64:ae:d0:a8:65:4c:06:10:02:84:01`
 3. `50:20:aa:01:c0:64:ae:d0:a8:65:4c:0a:10:01:5d`
@@ -217,13 +217,13 @@ Some bytes stay the same and some bytes change over time. By placing the periphe
 
 These were the observations:
 
-* In the first example the last two bytes `8a:01` contains the humidity data. `8a:01` as an little endian 16-bit integer is equal to `394` as in 39.4 % relative humidity. If we check the next two bytes `cc:00` they equal to `204` as in 20.4 celsius. 
-* In the second example `84:01` equals to `388` as in 38.8 % relative humidity. No temperature could be found in this data, more on that later. 
+* In the first example the last two bytes `8a:01` contains the humidity data. `8a:01` as an little endian 16-bit integer is equal to `394` as in 39.4 % relative humidity. If we check the next two bytes `cc:00` they equal to `204` as in 20.4 celsius.
+* In the second example `84:01` equals to `388` as in 38.8 % relative humidity. No temperature could be found in this data, more on that later.
 * In the shortest and third example `5d` equals to `93` and this very much looks like the charge level on the battery in percent.
-* If we start looking at the other bytes in order the next one looks like a length indicator for the following bytes with `04`, `02` and `01` as values. 
-* The following two bytes almost always stays the same for each sized packet except for the 16 bytes sized data here they alterate between `06:10` and `04:10`. 
+* If we start looking at the other bytes in order the next one looks like a length indicator for the following bytes with `04`, `02` and `01` as values.
+* The following two bytes almost always stays the same for each sized packet except for the 16 bytes sized data here they alterate between `06:10` and `04:10`.
 After some investigation it is established that these bytes indicate what type of sensor data that will follow. `06:10` will have humidity data and `04:10` will have temperature data.
-`0d:10` indicate that both humidity and temperature data will follow and `0a:10` that battery data is to be expected. 
+`0d:10` indicate that both humidity and temperature data will follow and `0a:10` that battery data is to be expected.
 
 So we actually have 4 different packets that contains the sensor data:
 
@@ -232,7 +232,7 @@ So we actually have 4 different packets that contains the sensor data:
 3. `50:20:aa:01:bf:65:ae:d0:a8:65:4c:04:10:02:cc:00`
 4. `50:20:aa:01:c0:64:ae:d0:a8:65:4c:0a:10:01:5d`
 
-After some investigation and thanks to [node-xiaomi-gap-parser](https://github.com/LynxyssCZ/node-xiaomi-gap-parser) it is probable that the data of `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01` represents the following: 
+After some investigation and thanks to [node-xiaomi-gap-parser](https://github.com/LynxyssCZ/node-xiaomi-gap-parser) it is probable that the data of `50:20:aa:01:be:64:ae:d0:a8:65:4c:0d:10:04:cc:00:8a:01` represents the following:
 
 | byte  | function      | type      |
 |:-----:|---------------|-----------|
@@ -248,12 +248,12 @@ After some investigation and thanks to [node-xiaomi-gap-parser](https://github.c
 Bytes 1-14 have the same function for all 4 variations but the following bytes contain different sensor data.
 
 ## Automation (iOS 13+)
-There is a new very handy automation option in iOS 13 allowing us to convert home automation rule to "Advanced shortcut". 
+There is a new very handy automation option in iOS 13 allowing us to convert home automation rule to "Advanced shortcut".
 
 Using that you can make rules like "If temperature drops below 21C and someone is at home and it is not during night then turn on heater". Unfortunately you can't normally bind this rule to any timer trigger. However you can use other homebridge plugin which fakes sensor events e.g. every 5 seconds and you can bind that rule to it! Check https://github.com/nitaybz/homebridge-delay-switch
 
 ## Known problems
-Some hardware combinations are problematic and may cause weird troubles like sensor timeout after some time etc. 
+Some hardware combinations are problematic and may cause weird troubles like sensor timeout after some time etc.
 * Asus BT-400 bluetooth dongle (at least in combination with older RPi 2B)
 
 ## Legal

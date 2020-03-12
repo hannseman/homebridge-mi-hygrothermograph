@@ -129,6 +129,14 @@ describe("parser", () => {
     assert.strictEqual(result.event.humidity, 43.9);
   });
 
+  it("should throw on encrypted data without bindKey", () => {
+    const buffer = Buffer.from(sensorDataCrypted.humidity, "hex");
+    assert.throws(
+      () => new Parser(buffer, null).parse(),
+      /^Error: Sensor data is encrypted. Please configure a bindKey.$/
+    );
+  });
+
   it("should parse battery data", () => {
     const buffer = Buffer.from(sensorData.battery, "hex");
     const result = new Parser(buffer).parse();

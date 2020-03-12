@@ -19,7 +19,8 @@ describe("parser", () => {
   const sensorDataCrypted = {
     humidity: Buffer.from(
       "58585b05db184bf838c1a472c3fa42cd050000ce7b8a28",
-      "hex")
+      "hex"
+    )
   };
   Object.keys(sensorData).forEach(sensorKey => {
     it("should parse frame control", () => {

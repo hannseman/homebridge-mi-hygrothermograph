@@ -2,7 +2,13 @@ const assert = require("assert");
 const { describe, it, beforeEach, afterEach } = require("mocha");
 const proxyquire = require("proxyquire").noCallThru();
 const sinon = require("sinon");
-const { PeripheralMock, ParseMock, nobleMock, mockLogger } = require("./mocks");
+const {
+  PeripheralMock,
+  ParseMock,
+  NoEventParseMock,
+  nobleMock,
+  mockLogger
+} = require("./mocks");
 const { EventTypes, SERVICE_DATA_UUID } = require("../lib/parser");
 
 const { Scanner } = proxyquire("../lib/scanner", {
@@ -243,6 +249,24 @@ describe("scanner", () => {
     nobleMock.emit("discover", peripheral);
     assert(errorEventSpy.calledWith(sinon.match.instanceOf(Error)));
     assert(changeEventSpy.called === false);
+  });
+
+  it("should handle no event data", () => {
+    const spyDebugLogger = sinon.spy(mockLogger, "debug");
+    const mockedScanner = proxyquire("../lib/scanner", {
+      "@abandonware/noble": nobleMock,
+      "./parser": {
+        Parser: NoEventParseMock,
+        SERVICE_DATA_UUID,
+        EventTypes
+      }
+    });
+    const scanner = new mockedScanner.Scanner(null, { log: mockLogger });
+    const peripheral = new PeripheralMock(
+      Buffer.from("5020aa01a164aed0a8654c0610025d01", "hex")
+    );
+    nobleMock.emit("discover", peripheral);
+    assert(spyDebugLogger.calledWith("No event"));
   });
 
   it("should log on scanStart", () => {

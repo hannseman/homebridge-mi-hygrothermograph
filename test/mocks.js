@@ -61,6 +61,17 @@ class ParseMock {
   parse() {
     return {
       event: undefined,
+      frameControl: { hasEvent: true },
+      eventType: 1337
+    };
+  }
+}
+
+class NoEventParseMock {
+  parse() {
+    return {
+      event: undefined,
+      frameControl: { hasEvent: false },
       eventType: 1337
     };
   }
@@ -77,6 +88,7 @@ module.exports = {
   PeripheralMock,
   ParseMock,
   FakeGatoHistoryServiceMock,
+  NoEventParseMock,
   mockLogger: logMock,
   nobleMock: new NobleMock(),
   mqttMock: { connect: () => new MQTTMock() }

@@ -35,7 +35,7 @@
   ],
   "engines": {
     "homebridge": ">=0.4.0",
-    "node": ">=8.6.0"
+    "node": ">=10.0.0"
   },
   "dependencies": {
     "@abandonware/noble": "1.9.2-5",

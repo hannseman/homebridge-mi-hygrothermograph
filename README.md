@@ -1,9 +1,14 @@
 # homebridge-mi-hygrothermograph
 [![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![Travis](https://img.shields.io/travis/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://travis-ci.com/hannseman/homebridge-mi-hygrothermograph) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
-[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from the [Xiaomi Mi Bluetooth Temperature and Humidity Sensor / LYWSD02](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) as a [HomeKit](https://www.apple.com/ios/home/) accessory.
-The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview) and [E-Ink clock](https://item.mi.com/product/9542.html) are also supported.
-The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
+[Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from Xiaomi sensors as [HomeKit](https://www.apple.com/ios/home/) accessories.
+
+Supported sensorrs:
+
+* [Xiaomi Mi Bluetooth Temperature and Humidity Sensor / LYWSD02](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) shown below.
+* The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview) 
+* [E-Ink clock / LYWSD02MMC](https://item.mi.com/product/9542.html).
+* The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 

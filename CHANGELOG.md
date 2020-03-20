@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0
+
+* Added support for LYWSD03MMC and other models using encryption.
+* Dropped support for Node < 10.
+
 ## 2.4.0
 
 * Update [noble](https://www.npmjs.com/package/@abandonware/noble) to 1.9.2-5, which supports Node 12+.

@@ -3,10 +3,10 @@
 
 [Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from Xiaomi sensors as [HomeKit](https://www.apple.com/ios/home/) accessories.
 
-Supported sensorrs:
+Supported sensors:
 
 * [Xiaomi Mi Bluetooth Temperature and Humidity Sensor / LYWSD02](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) shown below.
-* The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview) 
+* The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview)
 * [E-Ink clock / LYWSD02MMC](https://item.mi.com/product/9542.html).
 * The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
 
@@ -36,7 +36,14 @@ For more detailed information and descriptions for other platforms please see th
 See the [Homebridge documentation](https://github.com/nfarina/homebridge#readme) for more information.
 
 If you are running Homebridge as another user than `root`  (you should) then some additional configuration needs to be made to allow [Node.js](https://nodejs.org/) access to the kernel Bluetooth subsystem without root privileges.
-Please see the [Noble documentation](https://github.com/noble/noble#running-without-rootsudo) for instructions.
+
+You'll need to grant the node binary cap_net_raw privileges:
+
+```
+sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
+```
+
+Please see the [Noble documentation](https://github.com/noble/noble#running-without-rootsudo) for more details.
 
 
 ## Homebridge configuration

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1
+
+* Update [noble](https://www.npmjs.com/package/@abandonware/noble) to 1.9.2-9.
+
 ## 3.0.0
 
 * Added support for LYWSD03MMC and other models using encryption.

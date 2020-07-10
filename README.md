@@ -280,7 +280,7 @@ Using that you can make rules like "If temperature drops below 21C and someone i
 ## Known problems
 Some hardware combinations are problematic and may cause weird troubles like sensor timeout after some time etc.
 * Asus BT-400 bluetooth dongle (at least in combination with older RPi 2B)
-* If you get "timeout" in Homekit app: use last version of raspbian (buster or newer) or add this to your crontab file "0 * * * * sudo timeout -s INT 1s hcitool lescan"
+* Raspbian Stretch is known to get recurring timeouts with certain RPi-models. Upgrade to Buster or newer and if not possible one can mitigate this by triggering a `hcitool lescan`. Automate this by adding the following to your crontab file: `0 * * * * sudo timeout -s INT 1s hcitool lescan`.
 
 ## Legal
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.2
+
+* Update [noble](https://www.npmjs.com/package/@abandonware/noble) to 1.9.2-10.
+* Moved some logging to the debug level.
+
 ## 3.0.1
 
 * Update [noble](https://www.npmjs.com/package/@abandonware/noble) to 1.9.2-9.

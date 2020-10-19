@@ -277,7 +277,7 @@ describe("scanner", () => {
   });
 
   it("should log on scanStop", () => {
-    const spyInfoLogger = sinon.spy(mockLogger, "info");
+    const spyInfoLogger = sinon.spy(mockLogger, "debug");
     new Scanner("ABC", { log: mockLogger });
     nobleMock.emit("scanStop");
     assert(spyInfoLogger.called);

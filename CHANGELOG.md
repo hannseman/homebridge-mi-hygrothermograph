@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.3
+
+* Update dependencies.
+* Allow multiple sensors to be configured in `homebridge-config-ui-x`.
+
 ## 3.0.2
 
 * Update [noble](https://www.npmjs.com/package/@abandonware/noble) to 1.9.2-10.

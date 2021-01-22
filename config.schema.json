@@ -90,6 +90,35 @@
         "type": "integer",
         "default": 0,
         "description": "An offset to apply to humidity values for calibration if measured values are incorrect."
+      },
+      "bindKey": {
+        "title": "Bind Key",
+        "type": "string",
+        "default": "",
+        "description": "Optional. Specify when using sensors with encryption"
+      },
+      "mqtt": {
+        "type": "object",
+        "title": "MQTT",
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Broker URL",
+            "placeholder": "mqtt://localhost:1883"
+          },
+          "temperatureTopic": {
+            "type": "string",
+            "title": "Temperature Topic"
+          },
+          "humidityTopic": {
+            "type": "string",
+            "title": "Humidity Topic"
+          },
+          "batteryTopic": {
+            "type": "string",
+            "title": "Battery Topic"
+          }
+        }
       }
     }
   },
@@ -117,12 +146,30 @@
       ]
     },
     {
+      "type": "flex",
+      "flex-flow": "row wrap",
+      "items": [
+        "bindKey"
+      ]
+    },
+    {
       "type": "fieldset",
       "title": "FakeGato",
       "expandable": true,
       "items": [
         "fakeGatoEnabled",
         "fakeGatoStoragePath"
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "MQTT",
+      "expandable": true,
+      "items": [
+        "mqtt.url",
+        "mqtt.temperatureTopic",
+        "mqtt.humidityTopic",
+        "mqtt.batteryTopic"
       ]
     },
     {

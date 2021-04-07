@@ -23,7 +23,11 @@ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 ```
 
 For more detailed information and descriptions for other platforms please see the [Noble documentation](https://github.com/noble/noble#readme).
+### Pair with Qingping+ App
 
+Download the iOS or Android Qingping+ App and setup your CGDK2. This causes the temperature sensor to send unencrypted data.
+
+**Note:** This step is necessary.
 ### Install homebridge and this plugin
 ```
 [sudo] npm install -g --unsafe-perm homebridge

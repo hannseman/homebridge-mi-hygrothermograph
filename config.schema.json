@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "Hygrotermograph",
+  "pluginAlias": "HygrotermographCGDK2",
   "pluginType": "accessory",
   "singular": false,
   "headerDisplay": null,
@@ -97,33 +97,23 @@
     {
       "type": "flex",
       "flex-flow": "row wrap",
-      "items": [
-        "name"
-      ]
+      "items": ["name"]
     },
     {
       "type": "flex",
       "flex-flow": "row wrap",
-      "items": [
-        "temperatureName",
-        "humidityName"
-      ]
+      "items": ["temperatureName", "humidityName"]
     },
     {
       "type": "flex",
       "flex-flow": "row wrap",
-      "items": [
-        "address"
-      ]
+      "items": ["address"]
     },
     {
       "type": "fieldset",
       "title": "FakeGato",
       "expandable": true,
-      "items": [
-        "fakeGatoEnabled",
-        "fakeGatoStoragePath"
-      ]
+      "items": ["fakeGatoEnabled", "fakeGatoStoragePath"]
     },
     {
       "type": "fieldset",

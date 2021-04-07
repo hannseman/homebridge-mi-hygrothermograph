@@ -8,7 +8,7 @@
   "description": "This is an example configuration file with one Hygrotermograph accessory. You can use this as a template for creating your own configuration file containing devices you actually own.",
   "accessories": [
     {
-      "accessory": "Hygrotermograph",
+      "accessory": "HygrotermographCGDK2",
       "name": "Temperature & Humidity",
       "address": "4c:64:a8:d0:ae:65",
       "timeout": 15,

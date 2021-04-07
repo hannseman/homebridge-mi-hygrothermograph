@@ -62,3 +62,4 @@ typings/
 
 # Pycharm
 .idea/
+/.DS_Store

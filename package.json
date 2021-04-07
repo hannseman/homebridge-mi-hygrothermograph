@@ -1,14 +1,14 @@
 {
-  "name": "homebridge-mi-hygrothermograph",
-  "version": "3.0.3",
-  "description": "Homebridge plugin for Xiaomi Mi Bluetooth Temperature and Humidity Sensor",
+  "name": "homebridge-hygrothermograph-cgdk2",
+  "version": "3.0.4",
+  "description": "Homebridge plugin for Qingping Technology CGDK2 Qingping Temp & RH Monitor Lite",
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint ."
   },
-  "author": "Hannes Ljungberg",
+  "author": "Ormisum Aaron",
   "license": "MIT",
   "keywords": [
     "homebridge-plugin",
@@ -20,12 +20,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hannseman/homebridge-mi-hygrothermograph"
+    "url": "https://github.com/ormisum/homebridge-hygrothermograph-cgdk2"
   },
   "bugs": {
-    "url": "https://github.com/hannseman/homebridge-mi-hygrothermograph/issues"
+    "url": "https://github.com/ormisum/homebridge-hygrothermograph-cgdk2/issues"
   },
-  "homepage": "https://github.com/hannseman/homebridge-mi-hygrothermograph#readme",
+  "homepage": "https://github.com/ormisum/homebridge-hygrothermograph-cgdk2#readme",
   "files": [
     "index.js",
     "config-sample.json",

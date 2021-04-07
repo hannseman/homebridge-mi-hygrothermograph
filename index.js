@@ -1,8 +1,8 @@
 module.exports = homebridge => {
-  const { HygrothermographAccessory } = require("./lib/accessory")(homebridge);
+  const { HygrothermographCgdk2Accessory } = require("./lib/accessory")(homebridge);
   homebridge.registerAccessory(
-    "homebridge-mi-hygrothermograph",
-    "Hygrotermograph",
-    HygrothermographAccessory
+    "homebridge-hygrothermograph-cgdk2",
+    "HygrotermographCGDK2",
+    HygrothermographCgdk2Accessory
   );
 };

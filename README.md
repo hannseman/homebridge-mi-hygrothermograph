@@ -1,6 +1,6 @@
 # homebridge-mi-hygrothermograph
 [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
-[![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) [![npm](https://img.shields.io/npm/dt/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/hannseman/homebridge-mi-hygrothermograph/CI/master) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
+[![npm](https://img.shields.io/npm/v/homebridge-mi-hygrothermograph.svg)](https://www.npmjs.com/package/homebridge-mi-hygrothermograph) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/hannseman/homebridge-mi-hygrothermograph/CI/master) [![Coveralls github](https://img.shields.io/coveralls/github/hannseman/homebridge-mi-hygrothermograph/master.svg)](https://coveralls.io/github/hannseman/homebridge-mi-hygrothermograph?branch=master)
 
 [Homebridge](https://github.com/nfarina/homebridge) plugin for exposing measured temperature and humidity from Xiaomi sensors as [HomeKit](https://www.apple.com/ios/home/) accessories.
 

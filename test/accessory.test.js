@@ -388,6 +388,32 @@ describe("accessory", () => {
       fakeGatoEnabled: true,
     });
     assert(accessory.fakeGatoHistoryService !== undefined);
+    assert.strictEqual(accessory.fakeGatoHistoryService.accessoryType, "room");
+    assert.strictEqual(accessory.fakeGatoHistoryService.accessory, accessory);
+    assert.strictEqual(
+      accessory.fakeGatoHistoryService.optionalParams.path,
+      "/tmp/"
+    );
+    assert.strictEqual(
+      accessory.fakeGatoHistoryService.optionalParams.storage,
+      "fs"
+    );
+    assert.strictEqual(
+      accessory.fakeGatoHistoryService.optionalParams.filename,
+      "fakegato-history_HygrothermographAccessory.json"
+    );
+  });
+
+  it("should setup fakeGatoHistoryService when configured with options", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true,
+      fakeGatoOptions: { disableRepeatLastData: true },
+    });
+    assert(accessory.fakeGatoHistoryService !== undefined);
+    assert.strictEqual(
+      accessory.fakeGatoHistoryService.optionalParams.disableRepeatLastData,
+      true
+    );
   });
 
   it("should not setup fakeGatoHistoryService when not configured", () => {

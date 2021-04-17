@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.0
+
+* Add support for fully configuring fakegato-history through the `fakeGatoOptions` option.
+* Bring config-ui-x options up to date.
+* Update dependencies.
+
 ## 3.0.3
 
 * Update dependencies.

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=cobertura",
     "lint": "eslint ."
   },
   "author": "Hannes Ljungberg",

@@ -12,10 +12,10 @@ describe("index", () => {
     const registerStub = sinon.stub();
     const accessoryStub = sinon.stub();
     const HomebridgeMock = {
-      registerAccessory: registerStub
+      registerAccessory: registerStub,
     };
     proxyquire("../index", {
-      "./lib/accessory": () => ({ HygrothermographAccessory: accessoryStub })
+      "./lib/accessory": () => ({ HygrothermographAccessory: accessoryStub }),
     })(HomebridgeMock);
     assert(
       registerStub.calledWith(

@@ -7,12 +7,12 @@ const {
   ParseMock,
   NoEventParseMock,
   nobleMock,
-  mockLogger
+  mockLogger,
 } = require("./mocks");
 const { EventTypes, SERVICE_DATA_UUID } = require("../lib/parser");
 
 const { Scanner } = proxyquire("../lib/scanner", {
-  "@abandonware/noble": nobleMock
+  "@abandonware/noble": nobleMock,
 });
 
 describe("scanner", () => {
@@ -26,7 +26,7 @@ describe("scanner", () => {
     battery: Buffer.from("5020aa014e64aed0a8654c0a10015d", "hex"),
     illuminance: Buffer.from("71209800a764aed0a8654c0d0710030e0000", "hex"),
     moisture: Buffer.from("71209800a864aed0a8654c0d08100112", "hex"),
-    fertility: Buffer.from("71209800a564aed0a8654c0d091002b800", "hex")
+    fertility: Buffer.from("71209800a564aed0a8654c0d091002b800", "hex"),
   };
 
   beforeEach(() => {
@@ -156,7 +156,7 @@ describe("scanner", () => {
     );
 
     const scanner = new Scanner("f4f7f990-7f7c-4d5a-8c9f-8c264e9baa7d", {
-      log: mockLogger
+      log: mockLogger,
     });
     scanner.on("temperatureChange", eventSpy);
     nobleMock.emit("discover", wrongPeripheral);
@@ -234,8 +234,8 @@ describe("scanner", () => {
       "./parser": {
         Parser: ParseMock,
         SERVICE_DATA_UUID,
-        EventTypes
-      }
+        EventTypes,
+      },
     });
     const scanner = new mockedScanner.Scanner(null, { log: mockLogger });
     const peripheral = new PeripheralMock(
@@ -258,8 +258,8 @@ describe("scanner", () => {
       "./parser": {
         Parser: NoEventParseMock,
         SERVICE_DATA_UUID,
-        EventTypes
-      }
+        EventTypes,
+      },
     });
     const scanner = new mockedScanner.Scanner(null, { log: mockLogger });
     const peripheral = new PeripheralMock(
@@ -304,7 +304,7 @@ describe("scanner", () => {
     const clock = sinon.useFakeTimers();
     const scanner = new Scanner("de:ad:be:ef", {
       log: mockLogger,
-      forceDiscovering: true
+      forceDiscovering: true,
     });
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");
@@ -317,7 +317,7 @@ describe("scanner", () => {
     const clock = sinon.useFakeTimers();
     const scanner = new Scanner("de:ad:be:ef", {
       log: mockLogger,
-      forceDiscovering: false
+      forceDiscovering: false,
     });
     nobleMock.emit("stateChange", "poweredOn");
     const startSpy = sinon.spy(scanner, "start");

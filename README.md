@@ -115,6 +115,7 @@ Instead MacOS assigns a device unique identifier for each BLE device in the form
 This identifier can be found using MacOS tools like [Bluetooth Explorer](https://developer.apple.com/bluetooth/).
 One can also run Homebridge with debug-mode enabled by using `homebridge -D` and then watch the logs for the string "Discovered peripheral" and fetch the value under `Id`. Use this identifier as `address` in the configuration file.
 
+You also need to make sure that `node` is allowed to use Bluetooth. This can be configured in the MacOS Security & Privacy panel. See [this issue](https://github.com/hannseman/homebridge-mi-hygrothermograph/issues/127) for more details.
 
 ### Timeout
 If the accessory has not received an updated value from the sensor within the specified timeout it will inform Homekit
@@ -228,6 +229,8 @@ from the [custom-components/sensor.mitemp_bt](https://github.com/custom-componen
 
 Thanks [ulrich-berl](https://github.com/ulrich-berl) for implementing support for this.
 
+Encryption can also be turned off by installing the [ATC_MiThermometer](https://github.com/atc1441/ATC_MiThermometer) custom firmware. If you find yourself having issues with getting
+the device working with the `bindKey` option then give this firmware a try.
 
 ## Technical details
 The plugin scans for [Bluetooth Low Energy](https://en.wikipedia.org/wiki/Bluetooth_Low_Energy) peripherals and check the broadcast advertisement packets.

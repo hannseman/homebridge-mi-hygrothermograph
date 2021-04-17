@@ -24,7 +24,7 @@ jobs:
           name: coverage
           path: coverage
       - name: Produce Coverage report
-        uses: ./
+        uses: 5monkeys/cobertura-action@master
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}

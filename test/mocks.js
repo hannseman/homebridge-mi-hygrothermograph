@@ -46,9 +46,9 @@ class PeripheralMock {
       serviceData: [
         {
           uuid,
-          data: event
-        }
-      ]
+          data: event,
+        },
+      ],
     };
   }
 }
@@ -62,7 +62,7 @@ class ParseMock {
     return {
       event: undefined,
       frameControl: { hasEvent: true },
-      eventType: 1337
+      eventType: 1337,
     };
   }
 }
@@ -72,7 +72,7 @@ class NoEventParseMock {
     return {
       event: undefined,
       frameControl: { hasEvent: false },
-      eventType: 1337
+      eventType: 1337,
     };
   }
 }
@@ -91,5 +91,5 @@ module.exports = {
   NoEventParseMock,
   mockLogger: logMock,
   nobleMock: new NobleMock(),
-  mqttMock: { connect: () => new MQTTMock() }
+  mqttMock: { connect: () => new MQTTMock() },
 };

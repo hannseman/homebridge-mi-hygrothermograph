@@ -114,6 +114,10 @@
             "type": "string",
             "title": "Humidity Topic"
           },
+          "dewPointTopic": {
+            "type": "string",
+            "title": "Dew Point Topic"
+          },
           "batteryTopic": {
             "type": "string",
             "title": "Battery Topic"
@@ -169,6 +173,7 @@
         "mqtt.url",
         "mqtt.temperatureTopic",
         "mqtt.humidityTopic",
+        "mqtt.dewPointTopic",
         "mqtt.batteryTopic"
       ]
     },

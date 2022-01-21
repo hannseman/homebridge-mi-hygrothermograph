@@ -54,8 +54,8 @@ class PeripheralMock {
 }
 
 class FakeGatoHistoryServiceMock {
-  constructor(accessoryType, accessory, optionalParams) {
-    this.accessoryType = accessoryType;
+  constructor(type, accessory, optionalParams) {
+    this.type = type;
     this.accessory = accessory;
     this.optionalParams = optionalParams;
   }

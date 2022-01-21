@@ -9,11 +9,24 @@
   "accessories": [
     {
       "accessory": "Hygrotermograph",
+      "type": "Hygrotermograph",
       "name": "Temperature & Humidity",
       "address": "4c:64:a8:d0:ae:65",
       "timeout": 15,
       "temperatureName": "Temperature",
       "humidityName": "Humidity",
+      "fakeGatoEnabled": true
+    },
+    {
+      "accessory": "Hygrotermograph",
+      "type": "MiFlora",
+      "name": "Zamioculcas",
+      "address": "cd:ef:4b:62:69:99",
+      "timeout": 15,
+      "temperatureName": "Temperature",
+      "moistureName": "Moisture",
+      "fertilityName": "Fertility",
+      "illuminanceName": "Plant light",
       "fakeGatoEnabled": true
     }
   ]

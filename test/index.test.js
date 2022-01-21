@@ -11,17 +11,26 @@ describe("index", () => {
   it("should export accessory", () => {
     const registerStub = sinon.stub();
     const accessoryStub = sinon.stub();
+    const miFloraAccessoryStub = sinon.stub();
     const HomebridgeMock = {
       registerAccessory: registerStub,
     };
     proxyquire("../index", {
-      "./lib/accessory": () => ({ HygrothermographAccessory: accessoryStub }),
+      "./lib/accessory": () => ({
+        HygrothermographAccessory: accessoryStub,
+        MiFloraAccessory: miFloraAccessoryStub,
+      }),
     })(HomebridgeMock);
     assert(
       registerStub.calledWith(
         "homebridge-mi-hygrothermograph",
         "Hygrotermograph",
         accessoryStub
+      ),
+      registerStub.calledWith(
+        "homebridge-mi-hygrothermograph",
+        "MiFlora",
+        miFloraAccessoryStub
       )
     );
   });

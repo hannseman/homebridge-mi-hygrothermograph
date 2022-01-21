@@ -27,12 +27,14 @@ describe("accessory", () => {
       SerialNumber: new CharacteristicMock(),
       CurrentTemperature: new CharacteristicMock(),
       CurrentRelativeHumidity: new CharacteristicMock(),
+      CurrentAmbientLightLevel: new CharacteristicMock(),
     };
 
     this.services = {
       BatteryService: ServiceMock,
       HumiditySensor: ServiceMock,
       TemperatureSensor: ServiceMock,
+      LightSensor: ServiceMock,
       AccessoryInformation: ServiceMock,
     };
 
@@ -46,15 +48,19 @@ describe("accessory", () => {
       },
     };
 
-    const { HygrothermographAccessory } = proxyquire("../lib/accessory", {
-      "./scanner": {
-        Scanner,
-      },
-      "fakegato-history": () => FakeGatoHistoryServiceMock,
-      mqtt: mqttMock,
-    })(this.homebridgeMock);
+    const { HygrothermographAccessory, MiFloraAccessory } = proxyquire(
+      "../lib/accessory",
+      {
+        "./scanner": {
+          Scanner,
+        },
+        "fakegato-history": () => FakeGatoHistoryServiceMock,
+        mqtt: mqttMock,
+      }
+    )(this.homebridgeMock);
 
     this.HygrothermographAccessory = HygrothermographAccessory;
+    this.MiFloraAccessory = MiFloraAccessory;
   });
 
   afterEach(() => {
@@ -118,6 +124,75 @@ describe("accessory", () => {
     accessory.scanner.emit("humidityChange", 35.5, {
       id: "123",
     });
+  });
+
+  it("should update current fertility", () => {
+    const accessory = new this.MiFloraAccessory(mockLogger, {});
+    accessory.scanner.emit("fertilityChange", 500, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestFertility, 500);
+    accessory.scanner.emit("fertilityChange", 500, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestFertility, 500);
+    accessory.scanner.emit("fertilityChange", 500, {
+      id: "123",
+    });
+  });
+
+  it("should update current moisture", () => {
+    const accessory = new this.MiFloraAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("moistureChange", 50.7, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestMoisture, 50.7);
+    accessory.scanner.emit("moistureChange", 50.7, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestMoisture, 50.7);
+    assert(updateValueSpy.called);
+    accessory.scanner.emit("moistureChange", 50.7, {
+      id: "123",
+    });
+  });
+
+  it("should update current illuminance", () => {
+    const accessory = new this.MiFloraAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentAmbientLightLevel;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("illuminanceChange", 3000, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestIlluminance, 3000);
+    accessory.scanner.emit("illuminanceChange", 3000, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestIlluminance, 3000);
+    assert(updateValueSpy.called);
+    accessory.scanner.emit("illuminanceChange", 3000, {
+      id: "123",
+    });
+  });
+
+  it("should not update current fertility on non-MiFlora", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    const characteristic = this.characteristics.CurrentRelativeHumidity;
+    const updateValueSpy = sinon.spy(characteristic, "updateValue");
+    accessory.scanner.emit("fertilityChange", 500, {
+      address: "123",
+      id: "123",
+    });
+    assert.strictEqual(accessory.latestFertility, undefined);
+    assert(!updateValueSpy.called);
   });
 
   it("should not update humidity characteristic when using update interval", () => {
@@ -296,10 +371,16 @@ describe("accessory", () => {
     assert(batterySpy.calledWith(sinon.match.instanceOf(Error)));
   });
 
-  it("should return all services", () => {
+  it("should return all services for Hygrothermograph", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger, {});
     const services = accessory.getServices();
     assert.strictEqual(services.length, 4);
+  });
+
+  it("should return all services for MiFlora", () => {
+    const accessory = new this.MiFloraAccessory(mockLogger, {});
+    const services = accessory.getServices();
+    assert.strictEqual(services.length, 6);
   });
 
   it("should set address config", () => {
@@ -627,6 +708,51 @@ describe("accessory", () => {
     assert(updateTemperatureValueSpy.called === false);
     assert(updateHumidityValueSpy.called === false);
     assert(updateBatteryValueSpy.called === false);
+  });
+
+  it("should batch update on change when configured with updateInterval [MiFlora]", () => {
+    const accessory = new this.MiFloraAccessory(mockLogger);
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("moistureChange", 35.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("fertilityChange", 500, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("illuminanceChange", 400, {
+      address: "123",
+      id: "123",
+    });
+    const updateTemperatureValueSpy = sinon.spy(
+      this.characteristics.CurrentTemperature,
+      "updateValue"
+    );
+    const updateMoistureValueSpy = sinon.spy(
+      this.characteristics.CurrentRelativeHumidity,
+      "updateValue"
+    );
+    const updateFertilityValueSpy = sinon.spy(
+      this.characteristics.BatteryLevel,
+      "updateValue"
+    );
+    const updateIlluminanceValueSpy = sinon.spy(
+      this.characteristics.CurrentAmbientLightLevel,
+      "updateValue"
+    );
+
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateMoistureValueSpy.called === false);
+    assert(updateFertilityValueSpy.called === false);
+    assert(updateIlluminanceValueSpy.called === false);
   });
 
   it("should not batch update on change when configured with updateInterval", () => {

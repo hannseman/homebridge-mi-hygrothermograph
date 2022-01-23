@@ -75,7 +75,7 @@ describe("accessory", () => {
 
   it("should initialize Hygrothermograph type without config param", () => {
     const accessory = new this.HygrothermographAccessory(mockLogger);
-    assert.strictEqual(accessory.type, this.AccessoryType.Hygrothermograph);
+    assert.strictEqual(accessory.type, this.AccessoryType.Hygrotermograph);
   });
 
   it("should throw on unknown accessory type", () => {

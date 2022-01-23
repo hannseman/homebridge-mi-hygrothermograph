@@ -10,6 +10,7 @@ Supported sensors:
 * The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview)
 * [E-Ink clock / LYWSD02MMC](https://item.mi.com/product/9542.html).
 * The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
+* The [Xiaomi HHCC Mi Flora Flower Care sensor](http://www.huahuacaocao.com/product)
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 
@@ -59,26 +60,33 @@ Update your Homebridge `config.json` file. See [config-sample.json](config-sampl
 ]
 ```
 
-| Key                     | Default         | Description                                                                                                                                                                                                 |
-|-------------------------|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `accessory`             |                 | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".                                                                                                                                      |
-| `name`                  |                 | Mandatory. The name of this accessory. This will appear in your Home-app.                                                                                                                                   |
-| `address`               |                 | Optional. The address of the device. Used when running multiple devices.                                                                                                                                    |
-| `timeout`               | `15`            | Time in minutes after last contact when the accessory should be regarded as unreachable. If set to `0`, timeout will be disabled.                                                                           |
-| `humidityName`          | `"Humidity"`    | Name of the humidity sensor as it will appear in your Home-app.                                                                                                                                             |
-| `temperatureName`       | `"Temperature"` | Name of the temperature sensor as it will appear in your Home-app.                                                                                                                                          |
-| `fakeGatoEnabled`       | `false`         | If historical data should be reported to the Elgato Eve App.                                                                                                                                                |
-| `fakeGatoStoragePath`   |                 | Optional. Custom path where to save fakegato history.                                                                                                                                                       |
-| `fakeGatoOptions`       |                 | Optional. Configuration options passed straight to fakegato-history. See the [documentation](https://github.com/simont77/fakegato-history#fakegato-history) for details about the options.                                                                                                                                                       |
-| `mqtt`                  |                 | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details.                                                                                                 |
-| `forceDiscovering`      | `true`          | Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting `forceDiscovering` to `true` will start scanning again in these cases. |
-| `forceDiscoveringDelay` | `2500`          | The delay for when to start scanning again when stopped. Only applicable if `forceDiscovering` is `true`.                                                                                                   |
-| `updateInterval`        |                 | By default values will be updated as they come in. Often this is once per second, if this is not desired `updateInterval` can be set to how often updates should be made. Accepts values in seconds.        |
-| `lowBattery`            | `10`            | At what battery percentage Homekit should start warning about low battery.                                                                                                                                  |
-| `disableBatteryLevel`   | `false`         | If battery level should not be exposed to Homekit. New E-Ink sensors do currently not support sending battery levels and setting this to `true` will make Elgato Eve not warn about it.                     |
-| `temperatureOffset`     | `0`             | An offset to apply to temperature values for calibration if measured values are incorrect.                                                                                                                  |
-| `humidityOffset`        | `0`             | An offset to apply to humidity values for calibration if measured values are incorrect.                                                                                                                     |
-| `bindKey`               |                 | A key which is used to decrypt data sent by sensors with encryption.                                                                                                                     |
+| Key                     | Default             | Description                                                                                                                                                                                                 |
+|-------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accessory`             |                     | Mandatory. The name provided to Homebridge. Must be "Hygrotermograph".                                                                                                                                      |
+| `type`                  | `"Hygrotermograph"` | Optional. The type of accessory. `"Hygrotermograph"` or `"MiFlora"`                                                                                                                                         |
+| `name`                  |                     | Mandatory. The name of this accessory. This will appear in your Home-app.                                                                                                                                   |
+| `address`               |                     | Optional. The address of the device. Used when running multiple devices.                                                                                                                                    |
+| `timeout`               | `15`                | Time in minutes after last contact when the accessory should be regarded as unreachable. If set to `0`, timeout will be disabled.                                                                           |
+| `humidityName`          | `"Humidity"`        | Name of the humidity sensor as it will appear in your Home-app. Only for Hydrothermograph accessory `type`.                                                                                                 |
+| `temperatureName`       | `"Temperature"`     | Name of the temperature sensor as it will appear in your Home-app.                                                                                                                                          |
+| `moistureName`          | `"Moisture"`        | Name of the moisture sensor as it will appear in your Home-app. Only For MiFlora accessory `type`.                                                                                                          |
+| `fertilityName`         | `"Fertility"`       | Name of the fertility sensor as it will appear in your Home-app. Only for MiFlora accessory `type`.                                                                                                         |
+| `illuminanceName`       | `"Illuminance"`     | Name of the illuminance sensor as it will appear in your Home-app. Only for MiFlora accessory `type`.                                                                                                       |
+| `fakeGatoEnabled`       | `false`             | If historical data should be reported to the Elgato Eve App.                                                                                                                                                |
+| `fakeGatoStoragePath`   |                     | Optional. Custom path where to save fakegato history.                                                                                                                                                       |
+| `fakeGatoOptions`       |                     | Optional. Configuration options passed straight to fakegato-history. See the [documentation](https://github.com/simont77/fakegato-history#fakegato-history) for details about the options.                  |
+| `mqtt`                  |                     | Optional. Configuration for publishing values to an MQTT-broker. See the [MQTT](#mqtt) section for details.                                                                                                 |
+| `forceDiscovering`      | `true`              | Retry start scanning for devices when stopped. For some users scanning will be stopped when connecting to other BLE devices. Setting `forceDiscovering` to `true` will start scanning again in these cases. |
+| `forceDiscoveringDelay` | `2500`              | The delay for when to start scanning again when stopped. Only applicable if `forceDiscovering` is `true`.                                                                                                   |
+| `updateInterval`        |                     | By default values will be updated as they come in. Often this is once per second, if this is not desired `updateInterval` can be set to how often updates should be made. Accepts values in seconds.        |
+| `lowBattery`            | `10`                | At what battery percentage Homekit should start warning about low battery.                                                                                                                                  |
+| `disableBatteryLevel`   | `false`             | If battery level should not be exposed to Homekit. New E-Ink sensors do currently not support sending battery levels and setting this to `true` will make Elgato Eve not warn about it.                     |
+| `temperatureOffset`     | `0`                 | An offset to apply to temperature values for calibration if measured values are incorrect.                                                                                                                  |
+| `humidityOffset`        | `0`                 | An offset to apply to humidity values for calibration if measured values are incorrect. Only for Hydrothermograph accessory `type`.                                                                         |
+| `moistureOffset`        | `0`                 | An offset to apply to moisture values for calibration if measured values are incorrect. Only for MiFlora accessory `type`.                                                                                  |
+| `fertilityOffset`       | `0`                 | An offset to apply to fertility values for calibration if measured values are incorrect. Only for MiFlora accessory `type`.                                                                                 |
+| `illuminanceOffset`     | `0`                 | An offset to apply to illuminance values for calibration if measured values are incorrect. Only for MiFlora accessory `type`.                                                                               |
+| `bindKey`               |                     | A key which is used to decrypt data sent by sensors with encryption.                                                                                                                                        |
 
 
 ### Multiple sensors
@@ -103,6 +111,12 @@ Update your Homebridge `config.json` and specify the `address` key:
       "accessory": "Hygrotermograph",
       "name": "Room 2",
       "address": "2c:34:b3:d4:a1:61"
+    },
+    {
+      "accessory": "Hygrotermograph",
+      "type": "MiFlora",
+      "name": "Garden",
+      "address": "2f:34:b5:d4:a2:20"
     }
 ]
 ```
@@ -188,6 +202,21 @@ Basic configuration:
     "url": "mqtt://test.mosquitto.org",
     "temperatureTopic": "sensors/temperature",
     "humidityTopic": "sensors/humidity",
+    "batteryTopic": "sensors/battery"
+  }
+}
+```
+
+Basic configuration for Mi Flora:
+
+```json
+{
+  "mqtt": {
+    "url": "mqtt://test.mosquitto.org",
+    "temperatureTopic": "sensors/temperature",
+    "moistureTopic": "sensors/moisture",
+    "fertilityTopic": "sensors/fertility",
+    "illuminanceTopic": "sensors/illuminance",
     "batteryTopic": "sensors/battery"
   }
 }

@@ -598,7 +598,7 @@ describe("accessory", () => {
       fakeGatoEnabled: true,
     });
     assert(accessory.fakeGatoHistoryService !== undefined);
-    assert.strictEqual(accessory.fakeGatoHistoryService.type, "room");
+    assert.strictEqual(accessory.fakeGatoHistoryService.accessoryType, "room");
     assert.strictEqual(accessory.fakeGatoHistoryService.accessory, accessory);
     assert.strictEqual(
       accessory.fakeGatoHistoryService.optionalParams.path,

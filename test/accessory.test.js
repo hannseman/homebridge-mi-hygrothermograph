@@ -473,6 +473,28 @@ describe("accessory", () => {
     assert(illuminanceSpy.calledWith(null, 5000));
   });
 
+  it("should answer min bound illuminance characteristic get value for MiFlora", () => {
+    const illuminanceSpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      type: this.AccessoryType.MiFlora,
+    });
+    const characteristic = this.characteristics.CurrentAmbientLightLevel;
+    accessory.setIlluminance(0);
+    characteristic.emit("get", illuminanceSpy);
+    assert(illuminanceSpy.calledWith(null, 0.0001));
+  });
+
+  it("should answer max bound illuminance characteristic get value for MiFlora", () => {
+    const illuminanceSpy = sinon.spy();
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      type: this.AccessoryType.MiFlora,
+    });
+    const characteristic = this.characteristics.CurrentAmbientLightLevel;
+    accessory.setIlluminance(99999999);
+    characteristic.emit("get", illuminanceSpy);
+    assert(illuminanceSpy.calledWith(null, 100000));
+  });
+
   it("should error on undefined illuminance characteristic get value ", () => {
     const illuminanceSpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {
@@ -1033,15 +1055,15 @@ describe("accessory", () => {
       id: "123",
     });
     assert(updateMoistureValueSpy.called === false);
-    accessory.scanner.emit("fertilityChange", 500, {
-      address: "123",
-      id: "123",
-    });
-    // assert(updateFertilityValueSpy.called === false);
-    // accessory.scanner.emit("illuminanceChange", 400, {
+    // accessory.scanner.emit("fertilityChange", 500, {
     //   address: "123",
     //   id: "123",
     // });
+    // assert(updateFertilityValueSpy.called === false);
+    accessory.scanner.emit("illuminanceChange", 400, {
+      address: "123",
+      id: "123",
+    });
     assert(updateIlluminanceValueSpy.called === false);
     accessory.scanner.emit("change", {
       address: "123",
@@ -1140,6 +1162,186 @@ describe("accessory", () => {
     assert(updateTemperatureValueSpy.called === false);
     assert(updateHumidityValueSpy.called);
     assert(updateBatteryValueSpy.called);
+  });
+
+  it("should batch update with missing values on MiFlora [1]", () => {
+    const updateInterval = 60;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: updateInterval,
+      type: this.AccessoryType.MiFlora,
+    });
+    const updateTemperatureValueSpy = sinon.spy(
+      this.characteristics.CurrentTemperature,
+      "updateValue"
+    );
+    const updateMoistureValueSpy = sinon.spy(
+      this.characteristics.CurrentRelativeHumidity,
+      "updateValue"
+    );
+    const updateIlluminanceValueSpy = sinon.spy(
+      this.characteristics.CurrentAmbientLightLevel,
+      "updateValue"
+    );
+    accessory.lastBatchUpdatedAt = Date.now();
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateMoistureValueSpy.called === false);
+    assert(updateIlluminanceValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("temperatureChange", 26.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateMoistureValueSpy.called === false);
+    assert(updateIlluminanceValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+
+    accessory.scanner.emit("moistureChange", 35.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateMoistureValueSpy.called);
+    assert(updateIlluminanceValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("illuminanceChange", 99, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+
+    assert(updateTemperatureValueSpy.called);
+    assert(updateMoistureValueSpy.called);
+    assert(updateIlluminanceValueSpy.called);
+
+    // Reset temperature
+    accessory.latestTemperature = null;
+    updateTemperatureValueSpy.resetHistory();
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("illuminanceChange", 99, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateMoistureValueSpy.called);
+    assert(updateIlluminanceValueSpy.called);
+  });
+
+  it("should batch update with missing values on MiFlora", () => {
+    const updateInterval = 60;
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      updateInterval: updateInterval,
+      type: this.AccessoryType.MiFlora,
+    });
+    const updateTemperatureValueSpy = sinon.spy(
+      this.characteristics.CurrentTemperature,
+      "updateValue"
+    );
+    const updateMoistureValueSpy = sinon.spy(
+      this.characteristics.CurrentRelativeHumidity,
+      "updateValue"
+    );
+    const updateFertilityValueSpy = sinon.spy(
+      this.characteristics.CurrentAmbientLightLevel,
+      "updateValue"
+    );
+    accessory.lastBatchUpdatedAt = Date.now();
+    accessory.scanner.emit("temperatureChange", 25.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateMoistureValueSpy.called === false);
+    assert(updateFertilityValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("temperatureChange", 26.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateMoistureValueSpy.called === false);
+    assert(updateFertilityValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+
+    accessory.scanner.emit("moistureChange", 35.5, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+    assert(updateTemperatureValueSpy.called);
+    assert(updateMoistureValueSpy.called);
+    assert(updateFertilityValueSpy.called === false);
+
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("fertilityChange", 99, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+
+    assert(updateTemperatureValueSpy.called);
+    assert(updateMoistureValueSpy.called);
+    assert(updateFertilityValueSpy.called);
+
+    // Reset temperature
+    accessory.latestTemperature = null;
+    updateTemperatureValueSpy.resetHistory();
+    sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+    accessory.scanner.emit("fertilityChange", 99, {
+      address: "123",
+      id: "123",
+    });
+    accessory.scanner.emit("change", {
+      address: "123",
+      id: "123",
+    });
+
+    assert(updateTemperatureValueSpy.called === false);
+    assert(updateMoistureValueSpy.called);
+    assert(updateFertilityValueSpy.called);
   });
 
   it("should not batch update until interval delta is reached", () => {
@@ -1324,5 +1526,92 @@ describe("accessory", () => {
       address: "123",
     });
     assert(spyLogger.notCalled);
+  });
+
+  it("should throw on unknown accessory type when setting up a scanner", () => {
+    assert.throws(() => {
+      accessory = new this.HygrothermographAccessory(mockLogger, {});
+      // Hacking accessory with another type
+      accessory.type = "foo-bar";
+
+      // calling setupScanner again
+      accessory.scanner = accessory.setupScanner();
+    }, /setupScanner not implemented for Accessory "foo-bar"/);
+  });
+
+  it("should throw on unknown accessory type when calling getInformationService", () => {
+    assert.throws(() => {
+      accessory = new this.HygrothermographAccessory(mockLogger, {});
+      // Hacking accessory with another type
+      accessory.type = "foo-bar";
+
+      // calling getInformationService again
+      accessory.informationService = accessory.getInformationService();
+    }, /getInformationService not implemented for Accessory "foo-bar"/);
+  });
+
+  it("should throw on unknown accessory type when calling getServices", () => {
+    assert.throws(() => {
+      accessory = new this.HygrothermographAccessory(mockLogger, {});
+      // Hacking accessory with another type
+      accessory.type = "foo-bar";
+      accessory.getServices();
+    }, /getServices not implemented for Accessory "foo-bar"/);
+  });
+
+  it("should throw on unknown accessory type when calling setupMQTTClient", () => {
+    assert.throws(() => {
+      const topic = "sensors/temperature";
+      accessory = new this.HygrothermographAccessory(mockLogger, {
+        mqtt: {
+          url: "mqtt://127.0.0.1",
+          temperatureTopic: topic,
+        },
+      });
+      // Hacking accessory with another type
+      accessory.type = "foo-bar";
+      accessory.mqttClient = accessory.setupMQTTClient();
+    }, /setupMQTTClient not implemented for Accessory "foo-bar"/);
+  });
+
+  it("should throw on unknown accessory type when calling scanner.on change", () => {
+    assert.throws(() => {
+      const updateInterval = 60;
+      const accessory = new this.HygrothermographAccessory(mockLogger, {
+        updateInterval: updateInterval,
+      });
+      // Hacking accessory with another type
+      accessory.type = "foo-bar";
+
+      accessory.lastBatchUpdatedAt = Date.now();
+      accessory.scanner.emit("temperatureChange", 25.5, {
+        address: "123",
+        id: "123",
+      });
+      accessory.scanner.emit("change", {
+        address: "123",
+        id: "123",
+      });
+
+      sinon.useFakeTimers(Date.now() + 1000 * updateInterval);
+      accessory.scanner.emit("temperatureChange", 26.5, {
+        address: "123",
+        id: "123",
+      });
+      accessory.scanner.emit("change", {
+        address: "123",
+        id: "123",
+      });
+
+      accessory.lastBatchUpdatedAt = Date.now();
+      accessory.scanner.emit("temperatureChange", 25.5, {
+        address: "123",
+        id: "123",
+      });
+      accessory.scanner.emit("change", {
+        address: "123",
+        id: "123",
+      });
+    }, /scanner.on\("change" not implemented for Accessory "foo-bar"/);
   });
 });

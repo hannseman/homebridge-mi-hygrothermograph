@@ -35,12 +35,12 @@
   ],
   "engines": {
     "homebridge": ">=0.4.0",
-    "node": ">=10.0.0"
+    "node": ">=12.0.0"
   },
   "dependencies": {
     "@abandonware/noble": "1.9.2-15",
     "fakegato-history": "^0.6.3",
-    "mqtt": "^3.0.0"
+    "mqtt": "^4.3.7"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",

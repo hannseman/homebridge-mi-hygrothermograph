@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.0
+
+* Adjusted minimum value for temp sensor.
+* Update dependencies.
+* Dropped support for Node 10.
+
 ## 3.1.0
 
 * Add support for fully configuring fakegato-history through the `fakeGatoOptions` option.

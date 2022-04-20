@@ -14,6 +14,23 @@
         "minLength": 1,
         "required": true
       },
+      "type": {
+        "type": "string",
+        "title": "Type",
+        "description": "Select the accessory type.",
+        "placeholder": "Hygrotermograph",
+        "default": "Hygrotermograph",
+        "oneOf": [
+          {
+            "title": "Hygrotermograph",
+            "enum": ["Hygrotermograph"]
+          },
+          {
+            "title": "Mi Flora",
+            "enum": ["MiFlora"]
+          }
+        ]
+      },
       "address": {
         "title": "Device MAC Address",
         "type": "string",
@@ -22,16 +39,49 @@
         "description": "Optional. Specify when running multiple devices"
       },
       "temperatureName": {
-        "title": "Custom Name - Temperature",
+        "title": "Temperature",
         "type": "string",
         "format": "string",
-        "default": "Temperature"
+        "default": "Temperature",
+        "condition": {
+          "functionBody": "return ['Hygrotermograph','MiFlora'].includes(model.type);"
+        }
       },
       "humidityName": {
-        "title": "Custom Name - Humidity",
+        "title": "Humidity",
         "type": "string",
         "format": "string",
-        "default": "Humidity"
+        "default": "Humidity",
+        "condition": {
+          "functionBody": "return ['Hygrotermograph'].includes(model.type);"
+        }
+      },
+      "moistureName": {
+        "title": "Moisture",
+        "type": "string",
+        "format": "string",
+        "default": "Moisture",
+        "condition": {
+          "functionBody": "return ['MiFlora'].includes(model.type);"
+        }
+      },
+      "fertilityName": {
+        "title": "Fertility",
+        "type": "string",
+        "format": "string",
+        "default": "Fertility",
+        "condition": {
+          "functionBody": "return ['MiFlora'].includes(model.type);"
+        }
+      },
+      "illuminanceName": {
+        "title": "Illuminance",
+        "type": "string",
+        "format": "string",
+        "default": "Illuminance",
+        "condition": {
+          "functionBody": "return ['MiFlora'].includes(model.type);"
+        }
       },
       "fakeGatoEnabled": {
         "title": "Enable FakeGato",
@@ -83,13 +133,46 @@
         "title": "Offset - Temperature",
         "type": "integer",
         "default": 0,
-        "description": "An offset to apply to temperature values for calibration if measured values are incorrect."
+        "description": "An offset to apply to temperature values for calibration if measured values are incorrect.",
+        "condition": {
+          "functionBody": "return ['Hygrotermograph','MiFlora'].includes(model.type);"
+        }
       },
       "humidityOffset": {
         "title": "Offset - Humidity",
         "type": "integer",
         "default": 0,
-        "description": "An offset to apply to humidity values for calibration if measured values are incorrect."
+        "description": "An offset to apply to humidity values for calibration if measured values are incorrect.",
+        "condition": {
+          "functionBody": "return ['Hygrotermograph'].includes(model.type);"
+        }
+      },
+      "moistureOffset": {
+        "title": "Offset - Moisture",
+        "type": "integer",
+        "default": 0,
+        "description": "An offset to apply to moisture values for calibration if measured values are incorrect.",
+        "condition": {
+          "functionBody": "return ['MiFlora'].includes(model.type);"
+        }
+      },
+      "fertilityOffset": {
+        "title": "Offset - Fertility",
+        "type": "integer",
+        "default": 0,
+        "description": "An offset to apply to fertility values for calibration if measured values are incorrect.",
+        "condition": {
+          "functionBody": "return ['MiFlora'].includes(model.type);"
+        }
+      },
+      "illuminanceOffset": {
+        "title": "Offset - Illuminance",
+        "type": "integer",
+        "default": 0,
+        "description": "An offset to apply to illuminance values for calibration if measured values are incorrect.",
+        "condition": {
+          "functionBody": "return ['MiFlora'].includes(model.type);"
+        }
       },
       "bindKey": {
         "title": "Bind Key",
@@ -108,11 +191,38 @@
           },
           "temperatureTopic": {
             "type": "string",
-            "title": "Temperature Topic"
+            "title": "Temperature Topic",
+            "condition": {
+              "functionBody": "return ['Hygrotermograph','MiFlora'].includes(model.type);"
+            }
           },
           "humidityTopic": {
             "type": "string",
-            "title": "Humidity Topic"
+            "title": "Humidity Topic",
+            "condition": {
+              "functionBody": "return ['Hygrotermograph'].includes(model.type);"
+            }
+          },
+          "moistureTopic": {
+            "type": "string",
+            "title": "Moisture Topic",
+            "condition": {
+              "functionBody": "return ['MiFlora'].includes(model.type);"
+            }
+          },
+          "fertilityTopic": {
+            "type": "string",
+            "title": "Fertility Topic",
+            "condition": {
+              "functionBody": "return ['MiFlora'].includes(model.type);"
+            }
+          },
+          "illuminanceTopic": {
+            "type": "string",
+            "title": "Illuminance Topic",
+            "condition": {
+              "functionBody": "return ['MiFlora'].includes(model.type);"
+            }
           },
           "batteryTopic": {
             "type": "string",
@@ -126,40 +236,40 @@
     {
       "type": "flex",
       "flex-flow": "row wrap",
-      "items": [
-        "name"
-      ]
+      "items": ["type"]
     },
     {
       "type": "flex",
       "flex-flow": "row wrap",
+      "items": ["name"]
+    },
+    {
+      "type": "flex",
+      "title": "<strong>Custom Name</strong>",
+      "flex-flow": "column wrap",
       "items": [
         "temperatureName",
-        "humidityName"
+        "humidityName",
+        "moistureName",
+        "fertilityName",
+        "illuminanceName"
       ]
     },
     {
       "type": "flex",
       "flex-flow": "row wrap",
-      "items": [
-        "address"
-      ]
+      "items": ["address"]
     },
     {
       "type": "flex",
       "flex-flow": "row wrap",
-      "items": [
-        "bindKey"
-      ]
+      "items": ["bindKey"]
     },
     {
       "type": "fieldset",
       "title": "FakeGato",
       "expandable": true,
-      "items": [
-        "fakeGatoEnabled",
-        "fakeGatoStoragePath"
-      ]
+      "items": ["fakeGatoEnabled", "fakeGatoStoragePath"]
     },
     {
       "type": "fieldset",
@@ -169,6 +279,9 @@
         "mqtt.url",
         "mqtt.temperatureTopic",
         "mqtt.humidityTopic",
+        "mqtt.moistureTopic",
+        "mqtt.fertilityTopic",
+        "mqtt.illuminanceTopic",
         "mqtt.batteryTopic"
       ]
     },
@@ -184,7 +297,10 @@
         "disableBatteryLevel",
         "lowBattery",
         "temperatureOffset",
-        "humidityOffset"
+        "humidityOffset",
+        "moistureOffset",
+        "fertilityOffset",
+        "illuminanceOffset"
       ]
     }
   ]

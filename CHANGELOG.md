@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.0
+
+* Added support for Mi Flora devices.
+
 ## 3.2.0
 
 * Adjusted minimum value for temp sensor.

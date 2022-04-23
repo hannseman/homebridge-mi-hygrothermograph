@@ -148,12 +148,12 @@ describe("accessory", () => {
       id: "123",
     });
     assert.strictEqual(accessory.latestFertility, 500);
-    accessory.scanner.emit("fertilityChange", 500, {
+    accessory.scanner.emit("fertilityChange", 600, {
       address: "123",
       id: "123",
     });
-    assert.strictEqual(accessory.latestFertility, 500);
-    accessory.scanner.emit("fertilityChange", 500, {
+    assert.strictEqual(accessory.latestFertility, 600);
+    accessory.scanner.emit("fertilityChange", 600, {
       id: "123",
     });
   });
@@ -169,13 +169,13 @@ describe("accessory", () => {
       id: "123",
     });
     assert.strictEqual(accessory.latestMoisture, 50.7);
-    accessory.scanner.emit("moistureChange", 50.7, {
+    accessory.scanner.emit("moistureChange", 51.7, {
       address: "123",
       id: "123",
     });
-    assert.strictEqual(accessory.latestMoisture, 50.7);
+    assert.strictEqual(accessory.latestMoisture, 51.7);
     assert(updateValueSpy.called);
-    accessory.scanner.emit("moistureChange", 50.7, {
+    accessory.scanner.emit("moistureChange", 51.7, {
       id: "123",
     });
   });
@@ -191,13 +191,13 @@ describe("accessory", () => {
       id: "123",
     });
     assert.strictEqual(accessory.latestIlluminance, 3000);
-    accessory.scanner.emit("illuminanceChange", 3000, {
+    accessory.scanner.emit("illuminanceChange", 3500, {
       address: "123",
       id: "123",
     });
-    assert.strictEqual(accessory.latestIlluminance, 3000);
+    assert.strictEqual(accessory.latestIlluminance, 3500);
     assert(updateValueSpy.called);
-    accessory.scanner.emit("illuminanceChange", 3000, {
+    accessory.scanner.emit("illuminanceChange", 3500, {
       id: "123",
     });
   });
@@ -293,6 +293,14 @@ describe("accessory", () => {
     accessory.setHumidity(30);
     characteristic.emit("get", humiditySpy);
     assert(humiditySpy.calledWith(null, 30));
+  });
+
+  it("should handle setHumidity for MiFlora devices", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      type: this.AccessoryType.MiFlora,
+    });
+    accessory.setHumidity(30);
+    assert.strictEqual(accessory.latestHumidity, undefined);
   });
 
   it("should error on undefined humidity characteristic get value ", () => {
@@ -401,6 +409,12 @@ describe("accessory", () => {
     assert(moistureSpy.calledWith(null, 23.5));
   });
 
+  it("should handle setMoisture for non MiFlora devices", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    accessory.setMoisture(23.5);
+    assert.strictEqual(accessory.latestMoisture, undefined);
+  });
+
   it("should error on undefined moisture characteristic get value ", () => {
     const moistureSpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {
@@ -437,6 +451,12 @@ describe("accessory", () => {
     assert(fertilitySpy.calledWith(null, 500));
   });
 
+  it("should handle setFertility for non MiFlora devices", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    accessory.setFertility(500);
+    assert.strictEqual(accessory.latestFertility, undefined);
+  });
+
   it("should error on undefined fertility characteristic get value ", () => {
     const fertilitySpy = sinon.spy();
     const accessory = new this.HygrothermographAccessory(mockLogger, {
@@ -471,6 +491,12 @@ describe("accessory", () => {
     accessory.setIlluminance(5000);
     characteristic.emit("get", illuminanceSpy);
     assert(illuminanceSpy.calledWith(null, 5000));
+  });
+
+  it("should handle setIlluminance for non MiFlora devices", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {});
+    accessory.setIlluminance(5000);
+    assert.strictEqual(accessory.latestIlluminance, undefined);
   });
 
   it("should answer min bound illuminance characteristic get value for MiFlora", () => {
@@ -704,6 +730,19 @@ describe("accessory", () => {
     assert(spy.called);
     assert.strictEqual(spy.args[0][0].humidity, 34.0);
     assert.strictEqual(spy.args[0][0].temp, 28.0);
+  });
+
+  it("should add humidity fakegato entry for moisture", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true,
+      type: this.AccessoryType.MiFlora,
+    });
+    const spy = sinon.spy(accessory.fakeGatoHistoryService, "addEntry");
+    accessory.latestTemperature = 27.0;
+    accessory.setMoisture(44.0);
+    assert(spy.called);
+    assert.strictEqual(spy.args[0][0].humidity, 44.0);
+    assert.strictEqual(spy.args[0][0].temp, 27.0);
   });
 
   it("should publish temperature to mqtt", () => {
@@ -949,10 +988,10 @@ describe("accessory", () => {
       address: "123",
       id: "123",
     });
-    // accessory.scanner.emit("fertilityChange", 500, {
-    //   address: "123",
-    //   id: "123",
-    // });
+    accessory.scanner.emit("fertilityChange", 500, {
+      address: "123",
+      id: "123",
+    });
     accessory.scanner.emit("illuminanceChange", 400, {
       address: "123",
       id: "123",
@@ -965,10 +1004,6 @@ describe("accessory", () => {
       this.characteristics.CurrentRelativeHumidity,
       "updateValue"
     );
-    // const updateFertilityValueSpy = sinon.spy(
-    //   this.characteristics.CurrentAmbientLightLevel,
-    //   "updateValue"
-    // );
     const updateIlluminanceValueSpy = sinon.spy(
       this.characteristics.CurrentAmbientLightLevel,
       "updateValue"
@@ -980,7 +1015,6 @@ describe("accessory", () => {
     });
     assert(updateTemperatureValueSpy.called === false);
     assert(updateMoistureValueSpy.called === false);
-    // assert(updateFertilityValueSpy.called === false);
     assert(updateIlluminanceValueSpy.called === false);
   });
 
@@ -1037,10 +1071,6 @@ describe("accessory", () => {
       this.characteristics.CurrentRelativeHumidity,
       "updateValue"
     );
-    // const updateFertilityValueSpy = sinon.spy(
-    //   this.characteristics.CurrentAmbientLightLevel,
-    //   "updateValue"
-    // );
     const updateIlluminanceValueSpy = sinon.spy(
       this.characteristics.CurrentAmbientLightLevel,
       "updateValue"
@@ -1055,11 +1085,10 @@ describe("accessory", () => {
       id: "123",
     });
     assert(updateMoistureValueSpy.called === false);
-    // accessory.scanner.emit("fertilityChange", 500, {
-    //   address: "123",
-    //   id: "123",
-    // });
-    // assert(updateFertilityValueSpy.called === false);
+    accessory.scanner.emit("fertilityChange", 500, {
+      address: "123",
+      id: "123",
+    });
     accessory.scanner.emit("illuminanceChange", 400, {
       address: "123",
       id: "123",
@@ -1071,7 +1100,6 @@ describe("accessory", () => {
     });
     assert(updateTemperatureValueSpy.called);
     assert(updateMoistureValueSpy.called);
-    // assert(updateFertilityValueSpy.called);
     assert(updateIlluminanceValueSpy.called);
   });
 

@@ -9,9 +9,9 @@ Supported sensors:
 * [Xiaomi Mi Bluetooth Temperature and Humidity Sensor / LYWSD02](https://www.xiaomistore.pk/mi-bluetooth-temperature-humidity-monitor.html) shown below.
 * The [E-Ink sensor / CGG1](https://cleargrass.com/cg_temp_rh_monitor/overview)
 * [E-Ink clock / LYWSD02MMC](https://item.mi.com/product/9542.html).
-* The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
+* The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) section for more details.
 * The [Xiaomi HHCC Mi Flora Flower Care sensor](http://www.huahuacaocao.com/product)
-* [Qingping Bluetooth Alarm Clock](https://www.qingping.co/bluetooth-alarm-clock/overview) is supported but have encryption enabled. See the [Encryption](#encryption)
+* [Qingping Bluetooth Alarm Clock](https://www.qingping.co/bluetooth-alarm-clock/overview) is supported but have encryption enabled. See the [Encryption](#encryption) section for more details.
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.1
+
+* Fixed issue where fakegato-history entries failed to be written for Mi Flora devices.
+
 ## 3.3.0
 
 * Added support for Mi Flora devices.

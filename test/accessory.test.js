@@ -706,6 +706,19 @@ describe("accessory", () => {
     assert.strictEqual(spy.args[0][0].temp, 28.0);
   });
 
+  it("should add humidity fakegato entry for moisture", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger, {
+      fakeGatoEnabled: true,
+      type: this.AccessoryType.MiFlora,
+    });
+    const spy = sinon.spy(accessory.fakeGatoHistoryService, "addEntry");
+    accessory.latestTemperature = 27.0;
+    accessory.setMoisture(44.0);
+    assert(spy.called);
+    assert.strictEqual(spy.args[0][0].humidity, 44.0);
+    assert.strictEqual(spy.args[0][0].temp, 27.0);
+  });
+
   it("should publish temperature to mqtt", () => {
     const topic = "sensors/temperature";
     const value = 19.0;

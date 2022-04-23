@@ -11,6 +11,7 @@ Supported sensors:
 * [E-Ink clock / LYWSD02MMC](https://item.mi.com/product/9542.html).
 * The [Hygrothermograph 2 / LYWSD03MMC](https://in.c.mi.com/forum.php?mod=viewthread&tid=2047050) is supported but have encryption enabled. See the [Encryption](#encryption) for more details.
 * The [Xiaomi HHCC Mi Flora Flower Care sensor](http://www.huahuacaocao.com/product)
+* [Qingping Bluetooth Alarm Clock](https://www.qingping.co/bluetooth-alarm-clock/overview) is supported but have encryption enabled. See the [Encryption](#encryption)
 
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 

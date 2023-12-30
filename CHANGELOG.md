@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.4.0
+
+* Update dependencies.
+* Drop support for Node versions below 16.
+
 ## 3.3.1
 
 * Fixed issue where fakegato-history entries failed to be written for Mi Flora devices.

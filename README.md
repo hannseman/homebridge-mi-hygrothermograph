@@ -16,7 +16,7 @@ Supported sensors:
 ![alt text](images/hygrothermograph.png "Xiaomi Mi Bluetooth Temperature and Humidity Sensor")
 
 ## Installation
-Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) newer or equal to version 12.0.0 installed.
+Make sure your system matches the prerequisites. You need to have a C compiler and [Node.js](https://nodejs.org/) newer or equal to version 16.0.0 installed.
 
 [Noble](https://github.com/noble/noble) is BLE central module library for [Node.js](https://nodejs.org/) used to discover and read values from the sensor.
 
@@ -316,6 +316,7 @@ Using that you can make rules like "If temperature drops below 21C and someone i
 Some hardware combinations are problematic and may cause weird troubles like sensor timeout after some time etc.
 * Asus BT-400 bluetooth dongle (at least in combination with older RPi 2B)
 * Raspbian Stretch is known to get recurring timeouts with certain RPi-models. Upgrade to Buster or newer and if not possible one can mitigate this by triggering a `hcitool lescan`. Automate this by adding the following to your crontab file: `0 * * * * sudo timeout -s INT 1s hcitool lescan`.
+* Upgrading Node requires recompilation of C++ dependencies, running `npm rebuild homebridge-mi-hygrothermograph` should fix any issues.
 
 ## Mi Flora Fertility level notice
 Soil Fertility measures in `μS/cm`. Plugin will expose it as a separate [Light sensor](https://developers.homebridge.io/#/service/LightSensor) and show `lux` instead, due to lack of suitable Characteristic types in HomeKit.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.4.1
+
+* Update dependencies.
+
 ## 3.4.0
 
 * Update dependencies.

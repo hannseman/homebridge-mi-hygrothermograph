@@ -248,7 +248,6 @@
       "title": "<strong>Custom Name</strong>",
       "flex-flow": "column wrap",
       "items": [
-        "airQualityName",
         "temperatureName",
         "humidityName",
         "moistureName",

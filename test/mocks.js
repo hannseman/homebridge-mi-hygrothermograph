@@ -6,6 +6,7 @@ class CharacteristicMock extends EventEmitter {
     this.BATTERY_LEVEL_LOW = 0;
     this.BATTERY_LEVEL_NORMAL = 1;
     this.NOT_CHARGEABLE = 2;
+    this.EXCELLENT = 3;
   }
   setProps() {
     return this;

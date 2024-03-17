@@ -28,6 +28,7 @@ describe("accessory", () => {
       CurrentTemperature: new CharacteristicMock(),
       CurrentRelativeHumidity: new CharacteristicMock(),
       CurrentAmbientLightLevel: new CharacteristicMock(),
+      AirQuality: new CharacteristicMock(),
     };
 
     this.services = {
@@ -36,6 +37,7 @@ describe("accessory", () => {
       TemperatureSensor: ServiceMock,
       LightSensor: ServiceMock,
       AccessoryInformation: ServiceMock,
+      AirQualitySensor: ServiceMock,
     };
 
     this.homebridgeMock = {
@@ -686,7 +688,7 @@ describe("accessory", () => {
       fakeGatoEnabled: true,
     });
     const services = accessory.getServices();
-    assert.strictEqual(services.length, 5);
+    assert.strictEqual(services.length, 6);
   });
 
   it("should use custom fakegato storage path when configured", () => {
@@ -1641,5 +1643,13 @@ describe("accessory", () => {
         id: "123",
       });
     }, /scanner.on\("change" not implemented for Accessory "foo-bar"/);
+  });
+
+  it("should should return dummy air quality", () => {
+    const accessory = new this.HygrothermographAccessory(mockLogger);
+    assert.strictEqual(
+      accessory.airQuality,
+      this.characteristics.AirQuality.EXCELLENT
+    );
   });
 });

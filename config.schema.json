@@ -38,15 +38,6 @@
         "placeholder": "e.g. 00:00:00:00:00:00",
         "description": "Optional. Specify when running multiple devices"
       },
-      "airQualityName": {
-        "title": "Air Quality Name",
-        "type": "string",
-        "format": "string",
-        "default": "AirQuality",
-        "condition": {
-          "functionBody": "return ['Hygrotermograph'].includes(model.type);"
-        }
-      },
       "temperatureName": {
         "title": "Temperature",
         "type": "string",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.4.2
+
+* Fixed issue where measurements was not exposed to Elgato Eve.
+
 ## 3.4.1
 
 * Update dependencies.

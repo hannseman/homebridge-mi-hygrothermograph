@@ -12,7 +12,7 @@ const {
 const { EventTypes, SERVICE_DATA_UUID } = require("../lib/parser");
 
 const { Scanner } = proxyquire("../lib/scanner", {
-  "@abandonware/noble": nobleMock,
+  "@stoprocent/noble": nobleMock,
 });
 
 describe("scanner", () => {
@@ -230,7 +230,7 @@ describe("scanner", () => {
 
   it("should handle unknown event type", () => {
     const mockedScanner = proxyquire("../lib/scanner", {
-      "@abandonware/noble": nobleMock,
+      "@stoprocent/noble": nobleMock,
       "./parser": {
         Parser: ParseMock,
         SERVICE_DATA_UUID,
@@ -254,7 +254,7 @@ describe("scanner", () => {
   it("should handle no event data", () => {
     const spyDebugLogger = sinon.spy(mockLogger, "debug");
     const mockedScanner = proxyquire("../lib/scanner", {
-      "@abandonware/noble": nobleMock,
+      "@stoprocent/noble": nobleMock,
       "./parser": {
         Parser: NoEventParseMock,
         SERVICE_DATA_UUID,

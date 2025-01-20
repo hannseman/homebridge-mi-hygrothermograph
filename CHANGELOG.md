@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.4.3
+
+* Fixed issue where measurements was not read on Linux 6.8+ kernels.
+
 ## 3.4.2
 
 * Fixed issue where measurements was not exposed to Elgato Eve.

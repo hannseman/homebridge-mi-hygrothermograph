@@ -38,7 +38,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "@stoprocent/noble": "1.15.1",
+    "@stoprocent/noble": "1.18.2",
     "fakegato-history": "^0.6.4",
     "mqtt": "^4.3.8"
   },
